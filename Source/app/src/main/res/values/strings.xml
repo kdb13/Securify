@@ -45,4 +45,6 @@
     <string name="action_retry">Retry</string>
     <string name="error_conf_password_required">Re-enter password</string>
 
+    <string name="button_service">Using it to listen to Volume button clicks.</string>
+
 </resources>
