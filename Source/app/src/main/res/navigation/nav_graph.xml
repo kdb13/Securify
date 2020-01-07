@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/auth_nav_graph">
+
+    <navigation
+        android:id="@+id/auth_nav_graph"
+        app:startDestination="@id/homeFragment">
+
+        <fragment
+            android:id="@+id/homeFragment"
+            android:name="com.lina.securify.views.auth.HomeFragment"
+            android:label="fragment_home"
+            tools:layout="@layout/fragment_home">
+
+            <action
+                android:id="@+id/action_homeFragment_to_verifyEmailFragment"
+                app:destination="@id/emailFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/emailFragment"
+            android:name="com.lina.securify.views.auth.EmailFragment"
+            android:label="fragment_verify_email"
+            tools:layout="@layout/fragment_email" >
+
+            <action
+                android:id="@+id/action_verifyEmailFragment_to_signUpFragment"
+                app:destination="@id/signUpFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+            <action
+                android:id="@+id/action_verifyEmailFragment_to_passwordFragment"
+                app:destination="@id/passwordFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/signUpFragment"
+            android:name="com.lina.securify.views.auth.SignUpFragment"
+            android:label="fragment_sign_up"
+            tools:layout="@layout/fragment_sign_up" >
+
+            <argument
+                android:name="newEmail"
+                app:argType="string"
+                app:nullable="true"
+                android:defaultValue="@null" />
+            <action
+                android:id="@+id/action_signUpFragment_to_verifyPhoneFragment"
+                app:destination="@id/verifyPhoneFragment" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/passwordFragment"
+            android:name="com.lina.securify.views.auth.PasswordFragment"
+            android:label="fragment_password"
+            tools:layout="@layout/fragment_password" />
+
+        <action
+            android:id="@+id/action_global_mainActivity"
+            app:destination="@id/mainActivity" />
+        <fragment
+            android:id="@+id/verifyPhoneFragment"
+            android:name="com.lina.securify.views.auth.VerifyPhoneFragment"
+            android:label="fragment_verify_phone"
+            tools:layout="@layout/fragment_verify_phone" />
+
+    </navigation>
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.lina.securify.views.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+
+</navigation>

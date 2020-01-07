@@ -1,0 +1,99 @@
+package com.lina.securify.views.auth;
+
+
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.fragment.NavHostFragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.lina.securify.repositories.AuthRepository.Result;
+import com.lina.securify.R;
+import com.lina.securify.databinding.FragmentPasswordBinding;
+import com.lina.securify.viewmodels.auth.Constants;
+import com.lina.securify.viewmodels.auth.PasswordViewModel;
+
+import java.util.Objects;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class PasswordFragment extends Fragment implements Observer<Result> {
+
+    private FragmentPasswordBinding binding;
+    private PasswordViewModel viewModel;
+    private PasswordValidation validation;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        viewModel = ViewModelProviders.of(this).get(PasswordViewModel.class);
+        viewModel.getModel().setEmail(getEmailFromBundle());
+
+
+        binding = FragmentPasswordBinding.inflate(
+                inflater, container, false
+        );
+        binding.setFragment(this);
+        binding.setViewModel(viewModel);
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        validation = new PasswordValidation(binding);
+    }
+
+    public void onSignInClick(View view) {
+
+        if (validation.validate()) {
+            viewModel.toggleLoading(true);
+            viewModel.signIn().observe(this, this);
+        }
+
+    }
+
+    @Override
+    public void onChanged(Result result) {
+
+        viewModel.toggleLoading(false);
+
+        switch (result) {
+
+            case WRONG_PASSWORD:
+                viewModel.passwordErrorID.set(R.string.error_wrong_password);
+                break;
+
+            case SIGNED_IN:
+                goToMainActivity();
+                break;
+        }
+
+    }
+
+    private void goToMainActivity() {
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_global_mainActivity);
+
+        getActivity().finish();
+    }
+
+    private String getEmailFromBundle() {
+
+        return Objects.requireNonNull(getArguments())
+                .getString(Constants.BUNDLE_EMAIL);
+
+    }
+
+}

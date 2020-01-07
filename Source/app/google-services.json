@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1036418583097",
+    "firebase_url": "https://securify-004.firebaseio.com",
+    "project_id": "securify-004",
+    "storage_bucket": "securify-004.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036418583097:android:1c819c2f220757520d1be8",
+        "android_client_info": {
+          "package_name": "com.lina.securify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1036418583097-ev448g8etg2cqn0acun7oced4i47sgpu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lina.securify",
+            "certificate_hash": "0b696e0d65cbbc35d949dfdb58b29b7bc63508ba"
+          }
+        },
+        {
+          "client_id": "1036418583097-idmf6c1obaa9s35abnff1tjb7mnnfi5j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDihYQ2l8QxiWiztfmgaO2WK73BzJU9QGY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1036418583097-idmf6c1obaa9s35abnff1tjb7mnnfi5j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
