@@ -1,7 +1,9 @@
-package com.lina.securify;
+package com.lina.securify.services;
 
 import android.content.Context;
 import android.media.AudioManager;
+
+import com.lina.securify.VolumeResetter;
 
 public class VolumeLongPressListener extends LongPressListener {
 

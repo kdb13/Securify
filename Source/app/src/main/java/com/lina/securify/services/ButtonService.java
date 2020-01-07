@@ -1,10 +1,12 @@
-package com.lina.securify;
+package com.lina.securify.services;
 
 import android.accessibilityservice.AccessibilityService;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
+
+import com.lina.securify.BaseListener;
 
 /*
     TODO: Control the volume changes
