@@ -1,4 +1,4 @@
-package com.lina.securify.viewmodels.auth.validators;
+package com.lina.securify.validators;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -7,17 +7,12 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.lina.securify.utils.Utils;
 
 /**
- * Used to validate a TextInputLayout for empty text fields.
+ * Validates a TextInputLayout for empty text fields. Also, watches for text changes.
  */
 public class RequiredFieldValidator extends TextInputValidator implements TextWatcher {
 
     private String errorRequired;
 
-    /**
-     *
-     * @param inputLayout The TextInputLayout to be validated
-     * @param errorRequired The error string displayed if field is empty
-     */
     public RequiredFieldValidator(TextInputLayout inputLayout, String errorRequired) {
         super(inputLayout);
 

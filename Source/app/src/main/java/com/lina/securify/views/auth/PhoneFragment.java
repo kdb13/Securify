@@ -13,9 +13,9 @@ import com.lina.securify.databinding.FragmentVerifyPhoneBinding;
 
 
 /**
- * This fragment verifies the mobile no. of the user.
+ * Verifies the phone no. of the user and adds it to the account.
  */
-public class VerifyPhoneFragment extends Fragment {
+public class PhoneFragment extends Fragment {
 
     private FragmentVerifyPhoneBinding binding;
 
@@ -29,6 +29,9 @@ public class VerifyPhoneFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * Called when the Verify button is clicked.
+     */
     public void onVerifyClick(View view) {
 
     }

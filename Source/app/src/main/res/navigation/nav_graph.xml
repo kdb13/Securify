@@ -77,7 +77,7 @@
             app:destination="@id/mainActivity" />
         <fragment
             android:id="@+id/verifyPhoneFragment"
-            android:name="com.lina.securify.views.auth.VerifyPhoneFragment"
+            android:name="com.lina.securify.views.auth.PhoneFragment"
             android:label="fragment_verify_phone"
             tools:layout="@layout/fragment_verify_phone" />
 

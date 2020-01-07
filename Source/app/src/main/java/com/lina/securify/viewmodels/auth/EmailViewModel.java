@@ -1,15 +1,16 @@
 package com.lina.securify.viewmodels.auth;
 
-import androidx.databinding.ObservableInt;
 import androidx.lifecycle.LiveData;
 
 import com.lina.securify.repositories.AuthRepository;
 
+/**
+ * The ViewModel for EmailFragment
+ */
 public class EmailViewModel extends AuthViewModel {
 
     private static final String TAG = EmailViewModel.class.getSimpleName();
 
-    // Model
     private Model model;
 
     public Model getModel() {
@@ -22,14 +23,13 @@ public class EmailViewModel extends AuthViewModel {
         model = new Model();
     }
 
-    public void setModel(Model model) {
-        this.model = model;
-    }
-
     public LiveData<AuthRepository.Result> checkEmailExists() {
         return authRepository.checkEmailExists(model.getEmail());
     }
 
+    /**
+     * Holds the UI data.
+     */
     public static class Model {
         private String email;
 

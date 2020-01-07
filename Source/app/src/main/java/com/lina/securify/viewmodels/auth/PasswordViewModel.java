@@ -5,10 +5,16 @@ import androidx.lifecycle.LiveData;
 
 import com.lina.securify.repositories.AuthRepository;
 
+/**
+ * The ViewModel for PasswordFragment.
+ */
 public class PasswordViewModel extends AuthViewModel {
 
-    // Model
     private Model model;
+
+    /**
+     * The error string ID for password TextInputLayout.
+     */
     public final ObservableInt passwordErrorID = new ObservableInt();
 
     public PasswordViewModel() {
@@ -16,10 +22,6 @@ public class PasswordViewModel extends AuthViewModel {
 
         model = new Model();
         passwordErrorID.set(-1);
-    }
-
-    public void setModel(Model model) {
-        this.model = model;
     }
 
     public Model getModel() {
@@ -30,6 +32,9 @@ public class PasswordViewModel extends AuthViewModel {
         return authRepository.signIn(model.getEmail(), model.getPassword());
     }
 
+    /**
+     * Holds the UI data.
+     */
     public static class Model {
         private String email;
         private String password;

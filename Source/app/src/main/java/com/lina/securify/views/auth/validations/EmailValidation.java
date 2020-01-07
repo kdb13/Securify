@@ -1,12 +1,15 @@
-package com.lina.securify.views.auth;
+package com.lina.securify.views.auth.validations;
 
 import android.content.Context;
 
 import com.lina.securify.R;
 import com.lina.securify.databinding.FragmentEmailBinding;
-import com.lina.securify.viewmodels.auth.validators.EmailValidator;
-import com.lina.securify.viewmodels.auth.validators.RequiredFieldValidator;
+import com.lina.securify.validators.EmailValidator;
+import com.lina.securify.validators.RequiredFieldValidator;
 
+/**
+ * Abstracts the form validation for EmailFragment.
+ */
 public class EmailValidation {
 
     private RequiredFieldValidator emailRequiredValidator;

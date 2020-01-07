@@ -15,7 +15,6 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".views.auth.EmailFragment">
@@ -28,7 +27,6 @@
         <TextView
             android:id="@+id/text_enter_email"
             android:text="@string/enter_your_email"
-            style="@style/SignInTitle"
             android:layout_marginTop="@dimen/auth_padding"
             android:layout_marginStart="@dimen/auth_padding"
             android:layout_marginEnd="@dimen/auth_padding"
@@ -36,18 +34,19 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/SignInTitle" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_email"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/auth_title_bottom_padding"
             android:hint="@string/hint_email"
             app:layout_constraintEnd_toEndOf="@+id/text_enter_email"
             app:layout_constraintStart_toStartOf="@id/text_enter_email"
-            app:layout_constraintTop_toBottomOf="@id/text_enter_email">
+            app:layout_constraintTop_toBottomOf="@id/text_enter_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edittext_email"

@@ -18,19 +18,6 @@ public class AuthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        if (isSignedIn()) {
-            //goToMainActivity();
-        }
     }
 
-    private boolean isSignedIn() {
-        return FirebaseAuth.getInstance()
-                .getCurrentUser() != null;
-    }
-
-    private void goToMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
-    }
 }

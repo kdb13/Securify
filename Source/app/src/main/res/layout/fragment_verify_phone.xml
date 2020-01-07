@@ -7,7 +7,7 @@
     <data>
         <variable
             name="fragment"
-            type="com.lina.securify.views.auth.VerifyPhoneFragment" />
+            type="com.lina.securify.views.auth.PhoneFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

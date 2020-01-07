@@ -17,9 +17,7 @@ import com.lina.securify.R;
 
 
 /**
- * Home fragment displays the Splash Screen for Securify, from which the user
- * can register for a new account or continue using existing account. It serves
- * as an entry point into the main application.
+ * The entry point towards authentication.
  */
 public class HomeFragment extends Fragment {
 
@@ -35,6 +33,7 @@ public class HomeFragment extends Fragment {
 
         Button buttonGetStarted = view.findViewById(R.id.button_get_started);
 
+        // Navigate to the EmailFragment
         buttonGetStarted.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

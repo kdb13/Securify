@@ -1,4 +1,4 @@
-package com.lina.securify.viewmodels.auth.validators;
+package com.lina.securify.validators;
 
 import android.text.TextWatcher;
 import android.util.Log;
@@ -7,18 +7,14 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
+/**
+ * Validates the input from a TextInputLayout
+ */
 public abstract class TextInputValidator {
 
     private static final String TAG = TextInputValidator.class.getSimpleName();
 
-    /**
-     * The <code>TextInputLayout</code> which will be validated.
-     */
     protected TextInputLayout inputLayout;
-
-    /**
-     * Indicates whether the validation was successfull or not.
-     */
     protected boolean isValid;
 
     public TextInputValidator(TextInputLayout inputLayout) {

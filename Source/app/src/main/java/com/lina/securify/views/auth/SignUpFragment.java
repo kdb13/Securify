@@ -18,9 +18,11 @@ import java.util.Objects;
 
 
 /**
- * This fragment displays the UI to create a new account.
+ * It creates a new user account.
  */
 public class SignUpFragment extends Fragment {
+
+    // TODO: Check & implement me
 
     private FragmentSignUpBinding binding;
 
@@ -33,10 +35,16 @@ public class SignUpFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * Called when the Sign Up button is clicked.
+     */
     public void onSignUpClick(View view) {
 
     }
 
+    /**
+     * Navigate to MainActivity.
+     */
     private void goToMainActivity() {
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_global_mainActivity);
@@ -44,11 +52,17 @@ public class SignUpFragment extends Fragment {
         getActivity().finish();
     }
 
-    private void goToVerifyPhoneFragment() {
+    /**
+     * Navigate to PhoneFragment.
+     */
+    private void goToPhoneFragment() {
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_signUpFragment_to_verifyPhoneFragment);
     }
 
+    /**
+     * @return The email retrieved from Bundle
+     */
     private String getEmailFromBundle() {
 
         return Objects.requireNonNull(getArguments())

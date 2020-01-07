@@ -1,8 +1,11 @@
-package com.lina.securify.viewmodels.auth.validators;
+package com.lina.securify.validators;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.lina.securify.utils.Utils;
 
+/**
+ * Validates an password TextInputLayout
+ */
 public class PasswordValidator extends TextInputValidator {
 
     private String errorString;
@@ -16,10 +19,8 @@ public class PasswordValidator extends TextInputValidator {
     @Override
     public boolean validate() {
 
-        if (Utils.getTextInside(inputLayout).length() < 6)
-            isValid = false;
-        else
-            isValid = true;
+        // Check if password length is less than 6
+        isValid = !(Utils.getTextInside(inputLayout).length() < 6);
 
         setError();
 

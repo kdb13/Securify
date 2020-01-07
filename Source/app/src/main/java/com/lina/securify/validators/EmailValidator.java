@@ -1,10 +1,13 @@
-package com.lina.securify.viewmodels.auth.validators;
+package com.lina.securify.validators;
 
 import android.util.Patterns;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.lina.securify.utils.Utils;
 
+/**
+ * Validates an email TextInputLayout
+ */
 public class EmailValidator extends TextInputValidator {
 
     private String errorString;
@@ -19,13 +22,10 @@ public class EmailValidator extends TextInputValidator {
     @Override
     public boolean validate() {
 
-        // Check if the email is of valid format
         String email = Utils.getTextInside(inputLayout);
 
-        if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            isValid = true;
-        } else
-            isValid = false;
+        // Check if the email is of valid format
+        isValid = Patterns.EMAIL_ADDRESS.matcher(email).matches();
 
         setError();
 

@@ -1,6 +1,5 @@
 package com.lina.securify.views.auth;
 
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,11 +18,12 @@ import com.lina.securify.R;
 import com.lina.securify.databinding.FragmentPasswordBinding;
 import com.lina.securify.viewmodels.auth.Constants;
 import com.lina.securify.viewmodels.auth.PasswordViewModel;
+import com.lina.securify.views.auth.validations.PasswordValidation;
 
 import java.util.Objects;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Checks if the password is correct and signs in the user.
  */
 public class PasswordFragment extends Fragment implements Observer<Result> {
 
@@ -32,16 +32,13 @@ public class PasswordFragment extends Fragment implements Observer<Result> {
     private PasswordValidation validation;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         viewModel = ViewModelProviders.of(this).get(PasswordViewModel.class);
         viewModel.getModel().setEmail(getEmailFromBundle());
 
-
-        binding = FragmentPasswordBinding.inflate(
-                inflater, container, false
-        );
+        binding = FragmentPasswordBinding.inflate(inflater, container, false);
         binding.setFragment(this);
         binding.setViewModel(viewModel);
 
@@ -52,9 +49,13 @@ public class PasswordFragment extends Fragment implements Observer<Result> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Set the validation views
         validation = new PasswordValidation(binding);
     }
 
+    /**
+     * Called when the Sign In button is clicked
+     */
     public void onSignInClick(View view) {
 
         if (validation.validate()) {
@@ -64,6 +65,10 @@ public class PasswordFragment extends Fragment implements Observer<Result> {
 
     }
 
+    /**
+     * Called when the AuthRepository returns a auth result
+     * @param result The changed auth result
+     */
     @Override
     public void onChanged(Result result) {
 
@@ -82,6 +87,9 @@ public class PasswordFragment extends Fragment implements Observer<Result> {
 
     }
 
+    /**
+     * Navigate to MainActivity.
+     */
     private void goToMainActivity() {
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_global_mainActivity);
@@ -89,6 +97,9 @@ public class PasswordFragment extends Fragment implements Observer<Result> {
         getActivity().finish();
     }
 
+    /**
+     * @return The email retrieved from the Bundle
+     */
     private String getEmailFromBundle() {
 
         return Objects.requireNonNull(getArguments())
