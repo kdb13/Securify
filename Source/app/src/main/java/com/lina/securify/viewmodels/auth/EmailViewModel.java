@@ -2,7 +2,7 @@ package com.lina.securify.viewmodels.auth;
 
 import androidx.lifecycle.LiveData;
 
-import com.lina.securify.repositories.AuthRepository;
+import com.lina.securify.data.repositories.AuthRepository;
 
 /**
  * The ViewModel for EmailFragment

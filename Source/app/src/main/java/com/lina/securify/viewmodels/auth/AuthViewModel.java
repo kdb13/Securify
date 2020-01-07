@@ -6,7 +6,7 @@ import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableInt;
 import androidx.lifecycle.ViewModel;
 
-import com.lina.securify.repositories.AuthRepository;
+import com.lina.securify.data.repositories.AuthRepository;
 
 /**
  * The base view model for authentication.

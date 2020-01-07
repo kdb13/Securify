@@ -1,4 +1,4 @@
-package com.lina.securify.repositories;
+package com.lina.securify.data.repositories;
 
 import android.util.Log;
 

@@ -14,7 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.lina.securify.R;
 import com.lina.securify.databinding.FragmentEmailBinding;
-import com.lina.securify.repositories.AuthRepository.Result;
+import com.lina.securify.data.repositories.AuthRepository.Result;
 import com.lina.securify.viewmodels.auth.Constants;
 import com.lina.securify.viewmodels.auth.EmailViewModel;
 import com.lina.securify.views.auth.validations.EmailValidation;

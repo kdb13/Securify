@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.lina.securify.repositories.AuthRepository.Result;
+import com.lina.securify.data.repositories.AuthRepository.Result;
 import com.lina.securify.R;
 import com.lina.securify.databinding.FragmentPasswordBinding;
 import com.lina.securify.viewmodels.auth.Constants;
