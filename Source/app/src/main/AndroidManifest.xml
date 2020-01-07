@@ -30,7 +30,7 @@
 
         </activity>
 		
-		<service android:name=".services.ButtonService"
+		<service android:name=".ButtonService"
             	android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
 
             <intent-filter>

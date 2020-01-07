@@ -1,12 +1,10 @@
-package com.lina.securify.services;
+package com.lina.securify;
 
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.KeyEvent;
-
-import com.lina.securify.BaseListener;
 
 /**
  * It allows the client to perform a task when there is a long press KeyEvent
