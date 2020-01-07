@@ -122,64 +122,6 @@ public class AuthRepository {
     }
 
     /**
-     * Create a new user
-     *
-     */
-    /*public void signUp(final User user) {
-
-        final FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        // Create a new user
-        firebaseAuth
-                .createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(final AuthResult result) {
-
-                        if (result.getUser() != null) {
-
-                            Map<String, Object> newUser = new HashMap<>();
-
-                            newUser.put(User.Meta.FIRST_NAME, user.getFirstName());
-                            newUser.put(User.Meta.LAST_NAME, user.getLastName());
-
-                            db.collection("users")
-                                    .document(result.getUser().getUid())
-                                    .set(newUser)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-
-                                            authResult.setValue(Result.SIGNED_UP);
-
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-
-                                            authResult.setValue(Result.UNKNOWN_ERROR);
-
-                                            Log.e(TAG, "Error creating user document!", e);
-                                        }
-                                    });
-
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        authResult.setValue(Result.UNKNOWN_ERROR);
-
-                        Log.e(TAG, "Error creating user!", e);
-                    }
-                });
-
-        return authResult;
-    }*/
-
-    /**
      * Handle the Firebase exceptions
      * @param _e The Exception object
      * @param authResult The auth result to be set based on exception
