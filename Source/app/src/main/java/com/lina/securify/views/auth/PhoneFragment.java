@@ -47,5 +47,9 @@ public class PhoneFragment extends Fragment {
      */
     public void onVerifyClick(View view) {
 
+        if (validation.validate()) {
+
+        }
+
     }
 }

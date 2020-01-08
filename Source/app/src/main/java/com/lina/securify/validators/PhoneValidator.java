@@ -1,11 +1,14 @@
 package com.lina.securify.validators;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+
 import com.google.android.material.textfield.TextInputLayout;
 import com.lina.securify.utils.Utils;
 
 import java.util.regex.Pattern;
 
-public class PhoneValidator extends TextInputValidator{
+public class PhoneValidator extends TextInputValidator implements TextWatcher {
 
     private static final String PHONE_REG_EX = "\\d{10}";
     private String errorString;
@@ -15,7 +18,6 @@ public class PhoneValidator extends TextInputValidator{
 
         this.errorString = errorString;
 
-        addTextWatcher();
     }
 
     @Override
@@ -36,6 +38,21 @@ public class PhoneValidator extends TextInputValidator{
         } else {
             inputLayout.setError(errorString);
         }
+
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        validate();
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
 
     }
 }
