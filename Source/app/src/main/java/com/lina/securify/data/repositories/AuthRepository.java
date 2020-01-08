@@ -8,13 +8,20 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.lina.securify.data.meta.Collections;
+import com.lina.securify.data.meta.MetaUser;
+import com.lina.securify.data.models.NewUser;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -119,6 +126,61 @@ public class AuthRepository {
 
 
         return authResult;
+    }
+
+    /**
+     * Signs up a user with Securify.
+     * @param newUser The details about the new user
+     */
+    public LiveData<Result> signUp(final NewUser newUser) {
+
+        final MutableLiveData<Result> authResult = new MutableLiveData<>();
+
+        firebaseAuth
+                .createUserWithEmailAndPassword(newUser.getEmail(), newUser.getPassword())
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult _authResult) {
+
+                        // Create a new user document
+                        createNewUserDocument(newUser, authResult);
+
+                    }
+                });
+
+        return authResult;
+    }
+
+
+    private void createNewUserDocument(NewUser newUser, final MutableLiveData<Result> authResult) {
+
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
+        Map<String, String> user = new HashMap<>();
+        user.put(MetaUser.FIRST_NAME, newUser.getFirstName());
+        user.put(MetaUser.LAST_NAME, newUser.getLastName());
+
+        firestore
+                .collection(Collections.USER)
+                .document(firebaseAuth.getCurrentUser().getUid())
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        authResult.setValue(Result.SIGNED_UP);
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                        authResult.setValue(Result.UNKNOWN_ERROR);
+
+                        Log.e(TAG, "Error creating a user document!", e);
+                    }
+                });
     }
 
     /**

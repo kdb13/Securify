@@ -77,7 +77,7 @@ public class PasswordFragment extends Fragment implements Observer<Result> {
         switch (result) {
 
             case WRONG_PASSWORD:
-                viewModel.passwordErrorID.set(R.string.error_wrong_password);
+                viewModel.wrongPasswordErrorID.set(R.string.error_wrong_password);
                 break;
 
             case SIGNED_IN:

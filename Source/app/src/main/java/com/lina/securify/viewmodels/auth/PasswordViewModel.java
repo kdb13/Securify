@@ -13,15 +13,15 @@ public class PasswordViewModel extends AuthViewModel {
     private Model model;
 
     /**
-     * The error string ID for password TextInputLayout.
+     * String ID for wrong password error.
      */
-    public final ObservableInt passwordErrorID = new ObservableInt();
+    public final ObservableInt wrongPasswordErrorID = new ObservableInt();
 
     public PasswordViewModel() {
         super();
 
         model = new Model();
-        passwordErrorID.set(-1);
+        wrongPasswordErrorID.set(-1);
     }
 
     public Model getModel() {

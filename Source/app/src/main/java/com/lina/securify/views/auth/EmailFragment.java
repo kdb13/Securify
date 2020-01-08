@@ -65,7 +65,7 @@ public class EmailFragment extends Fragment implements Observer<Result> {
                 break;
 
             case NEW_EMAIL:
-                // TODO: Navigate to SignUpFragment
+                goToSignUpFragment();
                 break;
 
             default:
@@ -94,6 +94,14 @@ public class EmailFragment extends Fragment implements Observer<Result> {
     private void goToPasswordFragment() {
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_verifyEmailFragment_to_passwordFragment, getEmailBundle());
+    }
+
+    /**
+     * Navigate to SignUpFragment
+     */
+    private void goToSignUpFragment() {
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_verifyEmailFragment_to_signUpFragment, getEmailBundle());
     }
 
     /**

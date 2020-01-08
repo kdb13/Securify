@@ -70,7 +70,12 @@
             android:id="@+id/passwordFragment"
             android:name="com.lina.securify.views.auth.PasswordFragment"
             android:label="fragment_password"
-            tools:layout="@layout/fragment_password" />
+            tools:layout="@layout/fragment_password" >
+            <action
+                android:id="@+id/action_passwordFragment_to_verifyPhoneFragment"
+                app:destination="@id/verifyPhoneFragment" />
+
+        </fragment>
 
         <action
             android:id="@+id/action_global_mainActivity"

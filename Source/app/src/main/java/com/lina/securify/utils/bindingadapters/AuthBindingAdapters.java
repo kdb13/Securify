@@ -1,4 +1,4 @@
-package com.lina.securify.utils;
+package com.lina.securify.utils.bindingadapters;
 
 import androidx.databinding.BindingAdapter;
 
