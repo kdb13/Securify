@@ -36,7 +36,10 @@ public class PasswordFragment extends Fragment implements Observer<Result> {
                              Bundle savedInstanceState) {
 
         viewModel = ViewModelProviders.of(this).get(PasswordViewModel.class);
-        viewModel.getModel().setEmail(getEmailFromBundle());
+
+        viewModel.getModel().setEmail(
+                PasswordFragmentArgs.fromBundle(getArguments()).getEmail()
+        );
 
         binding = FragmentPasswordBinding.inflate(inflater, container, false);
         binding.setFragment(this);
@@ -81,29 +84,20 @@ public class PasswordFragment extends Fragment implements Observer<Result> {
                 break;
 
             case SIGNED_IN:
-                goToMainActivity();
+                goToPhoneFragment();
                 break;
         }
 
     }
 
     /**
-     * Navigate to MainActivity.
+     * Navigate to PhoneFragment
      */
-    private void goToMainActivity() {
-        NavHostFragment.findNavController(this)
-                .navigate(R.id.action_global_mainActivity);
+    private void goToPhoneFragment() {
 
-        getActivity().finish();
-    }
-
-    /**
-     * @return The email retrieved from the Bundle
-     */
-    private String getEmailFromBundle() {
-
-        return Objects.requireNonNull(getArguments())
-                .getString(Constants.BUNDLE_EMAIL);
+        NavHostFragment
+                .findNavController(this)
+                .navigate(PasswordFragmentDirections.actionVerifyPhone(false));
 
     }
 

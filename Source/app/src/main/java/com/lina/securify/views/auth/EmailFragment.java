@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.common.base.Verify;
 import com.lina.securify.R;
 import com.lina.securify.databinding.FragmentEmailBinding;
 import com.lina.securify.data.repositories.AuthRepository.Result;
@@ -92,25 +93,26 @@ public class EmailFragment extends Fragment implements Observer<Result> {
      * Navigate to PasswordFragment
      */
     private void goToPasswordFragment() {
-        NavHostFragment.findNavController(this)
-                .navigate(R.id.action_verifyEmailFragment_to_passwordFragment, getEmailBundle());
+
+        NavHostFragment
+                .findNavController(this)
+                .navigate(
+                        EmailFragmentDirections.actionSignIn(viewModel.getModel().getEmail())
+                );
+
     }
 
     /**
      * Navigate to SignUpFragment
      */
     private void goToSignUpFragment() {
-        NavHostFragment.findNavController(this)
-                .navigate(R.id.action_verifyEmailFragment_to_signUpFragment, getEmailBundle());
+
+        NavHostFragment
+                .findNavController(this)
+                .navigate(
+                        EmailFragmentDirections.actionSignUp(viewModel.getModel().getEmail())
+                );
+
     }
 
-    /**
-     * @return A Bundle holding the input email
-     */
-    private Bundle getEmailBundle() {
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_EMAIL, viewModel.getModel().getEmail());
-
-        return bundle;
-    }
 }

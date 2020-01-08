@@ -13,7 +13,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.lina.securify.data.meta.Collections;
 import com.lina.securify.data.meta.MetaUser;
@@ -151,36 +153,87 @@ public class AuthRepository {
         return authResult;
     }
 
+    public LiveData<Result> checkIfPhoneNoIsAdded() {
+
+        final MutableLiveData<Result> authResult = new MutableLiveData<>();
+
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+        if (currentUser != null) {
+
+            String userID = currentUser.getUid();
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
+            firestore
+                    .collection(Collections.USER)
+                    .document(userID)
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                            if (documentSnapshot.contains(MetaUser.PHONE)) {
+
+                                authResult.setValue(Result.PHONE_EXISTS);
+
+                            } else {
+
+                                authResult.setValue(Result.PHONE_NOT_FOUND);
+
+                            }
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "Error fetching user data!", e);
+                        }
+                    });
+
+        } else {
+            Log.e(TAG, "User not found!");
+        }
+
+        return authResult;
+    }
 
     private void createNewUserDocument(NewUser newUser, final MutableLiveData<Result> authResult) {
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-        Map<String, String> user = new HashMap<>();
-        user.put(MetaUser.FIRST_NAME, newUser.getFirstName());
-        user.put(MetaUser.LAST_NAME, newUser.getLastName());
+        if (firebaseAuth.getCurrentUser() != null) {
+            String userID = firebaseAuth.getCurrentUser().getUid();
 
-        firestore
-                .collection(Collections.USER)
-                .document(firebaseAuth.getCurrentUser().getUid())
-                .set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
+            Map<String, String> user = new HashMap<>();
+            user.put(MetaUser.FIRST_NAME, newUser.getFirstName());
+            user.put(MetaUser.LAST_NAME, newUser.getLastName());
 
-                        authResult.setValue(Result.SIGNED_UP);
+            firestore
+                    .collection(Collections.USER)
+                    .document(firebaseAuth.getCurrentUser().getUid())
+                    .set(user)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+                            authResult.setValue(Result.SIGNED_UP);
 
-                        authResult.setValue(Result.UNKNOWN_ERROR);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
 
-                        Log.e(TAG, "Error creating a user document!", e);
-                    }
-                });
+                            authResult.setValue(Result.UNKNOWN_ERROR);
+
+                            Log.e(TAG, "Error creating a user document!", e);
+                        }
+                    });
+
+        } else {
+            Log.e(TAG, "User not found!");
+        }
     }
 
     /**
@@ -244,7 +297,17 @@ public class AuthRepository {
         /**
          * When the entered email is not tied with an existing user
          */
-        NEW_EMAIL
+        NEW_EMAIL,
+
+        /**
+         * When the user document doesn't have a phone number
+         */
+        PHONE_NOT_FOUND,
+
+        /**
+         * When the use document has a phone number
+         */
+        PHONE_EXISTS
     }
 
 }

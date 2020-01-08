@@ -3,13 +3,16 @@ package com.lina.securify.views.auth;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.lina.securify.databinding.FragmentVerifyPhoneBinding;
+import com.lina.securify.databinding.FragmentPhoneBinding;
+import com.lina.securify.views.auth.validations.PhoneValidation;
 
 
 /**
@@ -17,16 +20,26 @@ import com.lina.securify.databinding.FragmentVerifyPhoneBinding;
  */
 public class PhoneFragment extends Fragment {
 
-    private FragmentVerifyPhoneBinding binding;
+    // TODO: Implement phone verification
+
+    private FragmentPhoneBinding binding;
+    private PhoneValidation validation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        binding = FragmentVerifyPhoneBinding.inflate(inflater, container, false);
+        binding = FragmentPhoneBinding.inflate(inflater, container, false);
         binding.setFragment(this);
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        validation = new PhoneValidation(binding);
     }
 
     /**

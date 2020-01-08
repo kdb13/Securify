@@ -1,10 +1,17 @@
 package com.lina.securify.views.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.navigation.NavGraph;
+import androidx.navigation.NavHost;
+import androidx.navigation.NavHostController;
+import androidx.navigation.Navigation;
 
 import android.os.Bundle;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.lina.securify.R;
+import com.lina.securify.data.repositories.AuthRepository;
 
 public class AuthActivity extends AppCompatActivity {
 
@@ -16,5 +23,4 @@ public class AuthActivity extends AppCompatActivity {
         setContentView(R.layout.activity_auth);
 
     }
-
 }

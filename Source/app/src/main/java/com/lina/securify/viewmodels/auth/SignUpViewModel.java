@@ -9,8 +9,6 @@ import com.lina.securify.data.repositories.AuthRepository;
 
 public class SignUpViewModel extends AuthViewModel {
 
-    // TODO: Check email exists
-
     // Represents the new user data
     private NewUser newUser;
 

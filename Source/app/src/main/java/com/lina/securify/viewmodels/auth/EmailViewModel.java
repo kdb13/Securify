@@ -9,8 +9,6 @@ import com.lina.securify.data.repositories.AuthRepository;
  */
 public class EmailViewModel extends AuthViewModel {
 
-    // TODO: Navigate to phone fragment if verification is not complete
-
     private static final String TAG = EmailViewModel.class.getSimpleName();
 
     private Model model;

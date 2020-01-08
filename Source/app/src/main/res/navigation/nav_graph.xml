@@ -7,21 +7,33 @@
 
     <navigation
         android:id="@+id/auth_nav_graph"
-        app:startDestination="@id/homeFragment">
+        app:startDestination="@id/splashScreenFragment">
 
         <fragment
-            android:id="@+id/homeFragment"
-            android:name="com.lina.securify.views.auth.HomeFragment"
+            android:id="@+id/splashScreenFragment"
+            android:name="com.lina.securify.views.auth.SplashScreenFragment"
             android:label="fragment_home"
-            tools:layout="@layout/fragment_home">
+            tools:layout="@layout/fragment_splash_screen">
 
             <action
-                android:id="@+id/action_homeFragment_to_verifyEmailFragment"
+                android:id="@+id/action_verifyEmail"
                 app:destination="@id/emailFragment"
                 app:enterAnim="@anim/nav_default_enter_anim"
                 app:exitAnim="@anim/nav_default_exit_anim"
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpTo="@+id/splashScreenFragment"
+                app:popUpToInclusive="true"/>
+
+            <action
+                android:id="@+id/action_verifyPhone"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:destination="@id/phoneFragment"
+                app:popUpTo="@+id/splashScreenFragment"
+                app:popUpToInclusive="true"/>
 
         </fragment>
 
@@ -32,7 +44,7 @@
             tools:layout="@layout/fragment_email" >
 
             <action
-                android:id="@+id/action_verifyEmailFragment_to_signUpFragment"
+                android:id="@+id/action_signUp"
                 app:destination="@id/signUpFragment"
                 app:enterAnim="@anim/nav_default_enter_anim"
                 app:exitAnim="@anim/nav_default_exit_anim"
@@ -40,7 +52,7 @@
                 app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
             <action
-                android:id="@+id/action_verifyEmailFragment_to_passwordFragment"
+                android:id="@+id/action_signIn"
                 app:destination="@id/passwordFragment"
                 app:enterAnim="@anim/nav_default_enter_anim"
                 app:exitAnim="@anim/nav_default_exit_anim"
@@ -55,14 +67,12 @@
             android:label="fragment_sign_up"
             tools:layout="@layout/fragment_sign_up" >
 
-            <argument
-                android:name="newEmail"
-                app:argType="string"
-                app:nullable="true"
-                android:defaultValue="@null" />
             <action
-                android:id="@+id/action_signUpFragment_to_verifyPhoneFragment"
-                app:destination="@id/verifyPhoneFragment" />
+                android:id="@+id/action_verifyPhone"
+                app:destination="@id/phoneFragment" />
+            <argument
+                android:name="email"
+                app:argType="string" />
 
         </fragment>
 
@@ -71,20 +81,32 @@
             android:name="com.lina.securify.views.auth.PasswordFragment"
             android:label="fragment_password"
             tools:layout="@layout/fragment_password" >
-            <action
-                android:id="@+id/action_passwordFragment_to_verifyPhoneFragment"
-                app:destination="@id/verifyPhoneFragment" />
 
+            <action
+                android:id="@+id/action_verifyPhone"
+                app:destination="@id/phoneFragment" />
+            <argument
+                android:name="email"
+                app:argType="string" />
         </fragment>
 
         <action
-            android:id="@+id/action_global_mainActivity"
+            android:id="@+id/action_MainApp"
+            app:popUpTo="@id/mainActivity"
             app:destination="@id/mainActivity" />
+
         <fragment
-            android:id="@+id/verifyPhoneFragment"
+            android:id="@+id/phoneFragment"
             android:name="com.lina.securify.views.auth.PhoneFragment"
             android:label="fragment_verify_phone"
-            tools:layout="@layout/fragment_verify_phone" />
+            tools:layout="@layout/fragment_phone">
+
+            <argument
+                android:name="addPhoneNo"
+                app:argType="boolean"
+                app:nullable="false" />
+
+        </fragment>
 
     </navigation>
 
@@ -93,5 +115,4 @@
         android:name="com.lina.securify.views.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
-
 </navigation>

@@ -37,18 +37,17 @@ public class SignUpFragment extends Fragment {
         @Override
         public void onChanged(AuthRepository.Result result) {
 
-            viewModel.toggleLoading(false);
-
             switch (result) {
 
                 case EXISTING_EMAIL:
                     viewModel.emailExistsErrorID.set(R.string.error_existing_email);
+                    viewModel.toggleLoading(false);
                     break;
 
                 case NEW_EMAIL:
                     signUp();
                     break;
-                    
+
             }
         }
     };
@@ -76,7 +75,10 @@ public class SignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         viewModel = ViewModelProviders.of(this).get(SignUpViewModel.class);
-        viewModel.getNewUser().setEmail(getEmailFromBundle());
+
+        viewModel.getNewUser().setEmail(
+                SignUpFragmentArgs.fromBundle(getArguments()).getEmail()
+        );
 
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
@@ -107,7 +109,6 @@ public class SignUpFragment extends Fragment {
 
     private void signUp() {
         viewModel.toggleLoading(true);
-
         viewModel.signUp().observe(this, signUpObserver);
     }
 
@@ -115,17 +116,10 @@ public class SignUpFragment extends Fragment {
      * Navigate to PhoneFragment.
      */
     private void goToPhoneFragment() {
-        NavHostFragment.findNavController(this)
-                .navigate(R.id.action_signUpFragment_to_verifyPhoneFragment);
-    }
 
-    /**
-     * @return The email retrieved from Bundle
-     */
-    private String getEmailFromBundle() {
-
-        return Objects.requireNonNull(getArguments())
-                .getString(Constants.BUNDLE_EMAIL);
+        NavHostFragment
+                .findNavController(this)
+                .navigate(SignUpFragmentDirections.actionVerifyPhone(true));
 
     }
 
