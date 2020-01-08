@@ -9,6 +9,8 @@ import com.lina.securify.data.repositories.AuthRepository;
 
 public class SignUpViewModel extends AuthViewModel {
 
+    // TODO: Check email exists
+
     // Represents the new user data
     private NewUser newUser;
 
@@ -36,6 +38,10 @@ public class SignUpViewModel extends AuthViewModel {
 
     public LiveData<AuthRepository.Result> signUp() {
         return authRepository.signUp(newUser);
+    }
+
+    public LiveData<AuthRepository.Result> checkEmailExists() {
+        return authRepository.checkEmailExists(newUser.getEmail());
     }
 
     public boolean checkIfPasswordsMatch() {

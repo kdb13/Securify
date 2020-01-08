@@ -27,11 +27,49 @@ import java.util.Objects;
 /**
  * It creates a new user account.
  */
-public class SignUpFragment extends Fragment implements Observer<AuthRepository.Result> {
+public class SignUpFragment extends Fragment {
 
     private FragmentSignUpBinding binding;
     private SignUpViewModel viewModel;
     private SignUpValidation validation;
+
+    private Observer<AuthRepository.Result> emailExistsObserver = new Observer<AuthRepository.Result>() {
+        @Override
+        public void onChanged(AuthRepository.Result result) {
+
+            viewModel.toggleLoading(false);
+
+            switch (result) {
+
+                case EXISTING_EMAIL:
+                    viewModel.emailExistsErrorID.set(R.string.error_existing_email);
+                    break;
+
+                case NEW_EMAIL:
+                    signUp();
+                    break;
+                    
+            }
+        }
+    };
+
+    private Observer<AuthRepository.Result> signUpObserver = new Observer<AuthRepository.Result>() {
+        @Override
+        public void onChanged(AuthRepository.Result result) {
+            viewModel.toggleLoading(false);
+
+            switch (result) {
+
+                case SIGNED_UP:
+                    goToPhoneFragment();
+                    break;
+
+                case UNKNOWN_ERROR:
+                    break;
+
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,31 +100,15 @@ public class SignUpFragment extends Fragment implements Observer<AuthRepository.
 
         if (validation.validate() && viewModel.checkIfPasswordsMatch()) {
             viewModel.toggleLoading(true);
-            viewModel.signUp().observe(this, this);
+            viewModel.checkEmailExists().observe(this, emailExistsObserver);
         }
 
     }
 
-    /**
-     * Called when the AuthRepository returns a auth result
-     * @param result The changed auth result
-     */
-    @Override
-    public void onChanged(AuthRepository.Result result) {
+    private void signUp() {
+        viewModel.toggleLoading(true);
 
-        viewModel.toggleLoading(false);
-
-        switch (result) {
-
-            case SIGNED_UP:
-                goToPhoneFragment();
-                break;
-
-            case UNKNOWN_ERROR:
-                break;
-
-        }
-
+        viewModel.signUp().observe(this, signUpObserver);
     }
 
     /**
