@@ -61,6 +61,9 @@ public class PasswordFragment extends Fragment implements Observer<Result> {
      */
     public void onSignInClick(View view) {
 
+        // Reset the error IDs
+        viewModel.wrongPasswordErrorID.set(-1);
+
         if (validation.validate()) {
             viewModel.toggleLoading(true);
             viewModel.signIn().observe(this, this);
@@ -76,6 +79,8 @@ public class PasswordFragment extends Fragment implements Observer<Result> {
     public void onChanged(Result result) {
 
         viewModel.toggleLoading(false);
+
+        // TODO: Handle the case when there are too many unsuccessful attemps
 
         switch (result) {
 

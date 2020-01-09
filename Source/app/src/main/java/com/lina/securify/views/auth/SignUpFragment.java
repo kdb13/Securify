@@ -100,6 +100,10 @@ public class SignUpFragment extends Fragment {
      */
     public void onSignUpClick(View view) {
 
+        // Reset the error IDs
+        viewModel.emailExistsErrorID.set(-1);
+        viewModel.passwordsMismatchErrorID.set(-1);
+        
         if (validation.validate() && viewModel.checkIfPasswordsMatch()) {
             viewModel.toggleLoading(true);
             viewModel.checkEmailExists().observe(this, emailExistsObserver);
