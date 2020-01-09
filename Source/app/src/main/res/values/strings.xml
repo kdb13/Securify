@@ -10,12 +10,14 @@
     <string name="hint_confirm_password">Confirm password</string>
     <string name="hint_last_name">Last Name</string>
     <string name="hint_phone">Phone</string>
+    <string name="hint_sms_code">Enter the code</string>
 
     <!-- Buttons -->
     <string name="button_continue">Continue</string>
     <string name="button_sign_up">Sign up</string>
     <string name="button_sign_in">Sign in</string>
     <string name="button_verify">Verify</string>
+    <string name="button_send_code">Send</string>
 
     <!-- TextViews -->
     <string name="enter_your_email">Enter your email</string>
@@ -29,6 +31,7 @@
     <string name="error_last_name_required">Enter last name</string>
     <string name="error_password_required">Enter password!</string>
     <string name="error_phone_required">Enter phone number!</string>
+    <string name="error_sms_code_required">Enter the code!</string>
 
     <!-- Other errors -->
     <string name="error_invalid_email">Invalid email!</string>
@@ -40,11 +43,13 @@
     <string name="error_password_mismatch">The passwords don\'t match</string>
     <string name="error_weak_password">The password is weak!</string>
     <string name="error_invalid_phone">The phone no. must be of 10 digits.</string>
+    <string name="error_invalid_sms_code">Invalid code!</string>
 
     <!-- Snackbar actions -->
     <string name="action_retry">Retry</string>
     <string name="error_conf_password_required">Re-enter password</string>
 
     <string name="button_service">Using it to listen to Volume button clicks.</string>
+    <string name="code_sent">A code was sent to this phone number.</string>
 
 </resources>

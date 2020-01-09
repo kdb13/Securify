@@ -12,11 +12,17 @@ import com.lina.securify.validators.RequiredFieldValidator;
  */
 public class PhoneValidation {
 
+    private RequiredFieldValidator smsCodeRequiredValidator;
     private RequiredFieldValidator phoneRequiredValidator;
     private PhoneValidator phoneValidator;
 
     public PhoneValidation(FragmentPhoneBinding binding) {
         Context context = binding.inputPhone.getContext();
+
+        smsCodeRequiredValidator = new RequiredFieldValidator(
+                binding.inputSmsCode,
+                context.getString(R.string.error_sms_code_required)
+        );
 
         phoneRequiredValidator = new RequiredFieldValidator(
                 binding.inputPhone,
@@ -31,5 +37,9 @@ public class PhoneValidation {
 
     public boolean validate() {
         return phoneRequiredValidator.validate() && phoneValidator.validate();
+    }
+
+    public boolean validateSmsCode() {
+        return smsCodeRequiredValidator.validate();
     }
 }

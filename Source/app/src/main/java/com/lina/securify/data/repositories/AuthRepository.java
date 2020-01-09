@@ -3,6 +3,7 @@ package com.lina.securify.data.repositories;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -10,10 +11,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskExecutors;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class connects with Firebase to perform various authentication tasks.
@@ -153,47 +159,77 @@ public class AuthRepository {
         return authResult;
     }
 
-    public LiveData<Result> checkIfPhoneNoIsAdded() {
+    public LiveData<String> sendVerificationCode(String phoneNo) {
 
-        final MutableLiveData<Result> authResult = new MutableLiveData<>();
+        final MutableLiveData<String> verificationId = new MutableLiveData<>();
 
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        PhoneAuthProvider
+                .getInstance(firebaseAuth)
+                .verifyPhoneNumber(
+                        phoneNo,
+                        30,
+                        TimeUnit.SECONDS,
+                        TaskExecutors.MAIN_THREAD,
+                        new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                            @Override
+                            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
 
-        if (currentUser != null) {
-
-            String userID = currentUser.getUid();
-            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-
-            firestore
-                    .collection(Collections.USER)
-                    .document(userID)
-                    .get()
-                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                            if (documentSnapshot.contains(MetaUser.PHONE)) {
-
-                                authResult.setValue(Result.PHONE_EXISTS);
-
-                            } else {
-
-                                authResult.setValue(Result.PHONE_NOT_FOUND);
+                                Log.d(TAG, "Phone verification complete!");
 
                             }
 
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e(TAG, "Error fetching user data!", e);
-                        }
-                    });
+                            @Override
+                            public void onVerificationFailed(@NonNull FirebaseException e) {
 
-        } else {
-            Log.e(TAG, "User not found!");
-        }
+                                Log.w(TAG, "Phone verification failed!", e);
+
+                                verificationId.setValue(null);
+                            }
+
+                            @Override
+                            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                                super.onCodeSent(s, forceResendingToken);
+
+                                Log.d(TAG, "SMS code sent!");
+
+                                verificationId.setValue(s);
+                            }
+                        }
+                );
+
+        return verificationId;
+
+    }
+
+    /**
+     * Verfies the verification code and adds the phone no. to user account
+     * @param smsCode The input code to verify
+     */
+    public LiveData<Result> verifySmsCode(String verificationCode, String smsCode) {
+
+        final MutableLiveData<Result> authResult = new MutableLiveData<>();
+
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(
+                verificationCode, smsCode
+        );
+
+        firebaseAuth
+                .getCurrentUser()
+                .updatePhoneNumber(credential)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        authResult.setValue(Result.PHONE_ADDED);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Error adding phone no.!", e);
+
+                        authResult.setValue(Result.INVALID_SMS_CODE);
+                    }
+                });
 
         return authResult;
     }
@@ -202,8 +238,9 @@ public class AuthRepository {
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-        if (firebaseAuth.getCurrentUser() != null) {
-            String userID = firebaseAuth.getCurrentUser().getUid();
+        String userID = getCurrentUserID();
+
+        if (userID != null) {
 
             Map<String, String> user = new HashMap<>();
             user.put(MetaUser.FIRST_NAME, newUser.getFirstName());
@@ -234,6 +271,14 @@ public class AuthRepository {
         } else {
             Log.e(TAG, "User not found!");
         }
+    }
+
+    @Nullable
+    private String getCurrentUserID() {
+        if (firebaseAuth.getCurrentUser() == null)
+            return null;
+        else
+            return firebaseAuth.getCurrentUser().getUid();
     }
 
     /**
@@ -307,7 +352,17 @@ public class AuthRepository {
         /**
          * When the use document has a phone number
          */
-        PHONE_EXISTS
+        PHONE_EXISTS,
+
+        /**
+         * When the phone no. is successfully added to the user account
+         */
+        PHONE_ADDED,
+
+        /**
+         * The SMS code didn't match
+         */
+        INVALID_SMS_CODE
     }
 
 }
