@@ -27,9 +27,6 @@ public class EmailViewModel extends AuthViewModel {
         return authRepository.checkEmailExists(model.getEmail());
     }
 
-    /**
-     * Holds the UI data.
-     */
     public static class Model {
         private String email;
 

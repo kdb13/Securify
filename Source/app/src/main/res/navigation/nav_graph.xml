@@ -70,6 +70,10 @@
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
                 app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
+            <argument
+                android:name="newUserEmail"
+                app:argType="string" />
+
         </fragment>
 
         <fragment
@@ -81,6 +85,10 @@
             <action
                 android:id="@+id/action_passwordFragment_to_pinFragment"
                 app:destination="@id/pinFragment" />
+
+            <argument
+                android:name="existingUserEmail"
+                app:argType="string" />
 
         </fragment>
 

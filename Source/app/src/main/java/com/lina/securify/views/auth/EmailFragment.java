@@ -12,18 +12,15 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.common.base.Verify;
-import com.lina.securify.R;
-import com.lina.securify.databinding.FragmentEmailBinding;
 import com.lina.securify.data.repositories.AuthRepository.Result;
-import com.lina.securify.viewmodels.auth.Constants;
+import com.lina.securify.databinding.FragmentEmailBinding;
 import com.lina.securify.viewmodels.auth.EmailViewModel;
 import com.lina.securify.views.auth.validations.EmailValidation;
 
 /**
- * It checks if the email is associated with an exisiting user or not.
+ * It checks if the email is associated with an existing user or not.
  */
-public class EmailFragment extends Fragment implements Observer<Result> {
+public class EmailFragment extends Fragment {
 
     private FragmentEmailBinding binding;
     private EmailValidation validation;
@@ -46,32 +43,7 @@ public class EmailFragment extends Fragment implements Observer<Result> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Set the validation views
         validation = new EmailValidation(binding);
-    }
-
-    /**
-     * Called when the AuthRepository returns a auth result
-     * @param result The changed auth result
-     */
-    @Override
-    public void onChanged(Result result) {
-
-        viewModel.toggleLoading(false);
-
-        switch (result) {
-
-            case EXISTING_EMAIL:
-                goToPasswordFragment();
-                break;
-
-            case NEW_EMAIL:
-                goToSignUpFragment();
-                break;
-
-            default:
-
-        }
     }
 
     /**
@@ -84,7 +56,28 @@ public class EmailFragment extends Fragment implements Observer<Result> {
 
             // Check if email exists
             viewModel.toggleLoading(true);
-            viewModel.checkEmailExists().observe(this, this);
+            viewModel.checkEmailExists().observe(this, new Observer<Result>() {
+                @Override
+                public void onChanged(Result result) {
+
+                    viewModel.toggleLoading(false);
+
+                    switch (result) {
+
+                        case EXISTING_EMAIL:
+                            goToPasswordFragment();
+                            break;
+
+                        case NEW_EMAIL:
+                            goToSignUpFragment();
+                            break;
+
+                        default:
+
+                    }
+
+                }
+            });
         }
 
     }
@@ -97,7 +90,7 @@ public class EmailFragment extends Fragment implements Observer<Result> {
         NavHostFragment
                 .findNavController(this)
                 .navigate(
-                        EmailFragmentDirections.actionSignIn(viewModel.getModel().getEmail())
+                        EmailFragmentDirections.actionVerifyPassword(viewModel.getModel().getEmail())
                 );
 
     }
@@ -110,7 +103,7 @@ public class EmailFragment extends Fragment implements Observer<Result> {
         NavHostFragment
                 .findNavController(this)
                 .navigate(
-                        EmailFragmentDirections.actionSignUp(viewModel.getModel().getEmail())
+                        EmailFragmentDirections.actionNewUser(viewModel.getModel().getEmail())
                 );
 
     }
