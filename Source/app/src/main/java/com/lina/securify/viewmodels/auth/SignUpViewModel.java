@@ -9,18 +9,8 @@ import com.lina.securify.data.repositories.AuthRepository;
 
 public class SignUpViewModel extends AuthViewModel {
 
-    // Represents the new user data
+    // Represents the new user's data
     private NewUser newUser;
-
-    /**
-     * String ID for email exists error.
-     */
-    public final ObservableInt emailExistsErrorID = new ObservableInt();
-
-    /**
-     * String ID for passwords mismatch error.
-     */
-    public final ObservableInt passwordsMismatchErrorID = new ObservableInt();
 
     public NewUser getNewUser() {
         return newUser;
@@ -30,8 +20,6 @@ public class SignUpViewModel extends AuthViewModel {
         super();
 
         newUser = new NewUser();
-        emailExistsErrorID.set(-1);
-        passwordsMismatchErrorID.set(-1);
     }
 
     public LiveData<AuthRepository.Result> signUp() {
@@ -42,15 +30,4 @@ public class SignUpViewModel extends AuthViewModel {
         return authRepository.checkEmailExists(newUser.getEmail());
     }
 
-    public boolean checkIfPasswordsMatch() {
-
-        if ( newUser.getPassword().equals(newUser.getConfPassword()) ) {
-            passwordsMismatchErrorID.set(-1);
-            return true;
-        } else {
-            passwordsMismatchErrorID.set(R.string.error_password_mismatch);
-            return false;
-        }
-
-    }
 }

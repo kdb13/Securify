@@ -8,9 +8,18 @@
         <variable
             name="fragment"
             type="com.lina.securify.views.auth.SignUpFragment" />
+
         <variable
             name="viewModel"
             type="com.lina.securify.viewmodels.auth.SignUpViewModel" />
+
+        <variable
+            name="existingEmailStringId"
+            type="int" />
+
+        <variable
+            name="passwordsMimatchStringId"
+            type="int" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/auth_title_bottom_padding"
             android:hint="@string/hint_email"
-            app:errorText="@{viewModel.emailExistsErrorID}"
+            app:errorText="@{existingEmailStringId}"
             app:layout_constraintEnd_toEndOf="@id/text_create_new_account"
             app:layout_constraintStart_toStartOf="@id/text_create_new_account"
             app:layout_constraintTop_toBottomOf="@id/text_create_new_account">
@@ -128,7 +137,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/input_spacing"
             android:hint="@string/hint_confirm_password"
-            app:errorText="@{viewModel.passwordsMismatchErrorID}"
+            app:errorText="@{passwordsMimatchStringId}"
             app:endIconMode="password_toggle"
             app:layout_constraintEnd_toEndOf="@id/input_email"
             app:layout_constraintStart_toStartOf="@+id/input_password"

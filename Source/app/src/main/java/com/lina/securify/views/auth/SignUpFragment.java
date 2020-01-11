@@ -2,6 +2,9 @@ package com.lina.securify.views.auth;
 
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,18 +13,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.lina.securify.R;
 import com.lina.securify.data.repositories.AuthRepository;
 import com.lina.securify.databinding.FragmentSignUpBinding;
-import com.lina.securify.viewmodels.auth.Constants;
 import com.lina.securify.viewmodels.auth.SignUpViewModel;
 import com.lina.securify.views.auth.validations.SignUpValidation;
-
-import java.util.Objects;
 
 
 /**
@@ -40,7 +36,7 @@ public class SignUpFragment extends Fragment {
             switch (result) {
 
                 case EXISTING_EMAIL:
-                    viewModel.emailExistsErrorID.set(R.string.error_existing_email);
+                    binding.setExistingEmailStringId(R.string.error_existing_email);
                     viewModel.toggleLoading(false);
                     break;
 
@@ -71,16 +67,18 @@ public class SignUpFragment extends Fragment {
     };
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         viewModel = ViewModelProviders.of(this).get(SignUpViewModel.class);
 
         viewModel.getNewUser().setEmail(
-                SignUpFragmentArgs.fromBundle(getArguments()).getEmail()
+                SignUpFragmentArgs.fromBundle(getArguments()).getNewUserEmail()
         );
 
         binding = FragmentSignUpBinding.inflate(inflater, container, false);
+        binding.setExistingEmailStringId(-1);
+        binding.setPasswordsMimatchStringId(-1);
         binding.setViewModel(viewModel);
         binding.setFragment(this);
 
@@ -100,14 +98,16 @@ public class SignUpFragment extends Fragment {
      */
     public void onSignUpClick(View view) {
 
-        // Reset the error IDs
-        viewModel.emailExistsErrorID.set(-1);
-        viewModel.passwordsMismatchErrorID.set(-1);
+        if (validation.validate() &&
+                validation.doPasswordsMatch(
+                        viewModel.getNewUser().getPassword(),
+                        viewModel.getNewUser().getConfPassword()) ) {
 
-        if (validation.validate() && viewModel.checkIfPasswordsMatch()) {
             viewModel.toggleLoading(true);
             viewModel.checkEmailExists().observe(this, emailExistsObserver);
-        }
+
+        } else
+            binding.setPasswordsMimatchStringId(R.string.error_password_mismatch);
 
     }
 
@@ -123,7 +123,7 @@ public class SignUpFragment extends Fragment {
 
         NavHostFragment
                 .findNavController(this)
-                .navigate(SignUpFragmentDirections.actionVerifyPhone(true));
+                .navigate(SignUpFragmentDirections.actionAddPhone());
 
     }
 
