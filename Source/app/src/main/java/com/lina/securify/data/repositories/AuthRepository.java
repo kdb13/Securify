@@ -16,11 +16,9 @@ import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.lina.securify.data.meta.Collections;
 import com.lina.securify.data.meta.MetaUser;
@@ -202,7 +200,7 @@ public class AuthRepository {
     }
 
     /**
-     * Verfies the verification code and adds the phone no. to user account
+     * Verifies the phone no. with the verification code.
      * @param smsCode The input code to verify
      */
     public LiveData<Result> verifySmsCode(String verificationCode, String smsCode) {
@@ -219,7 +217,7 @@ public class AuthRepository {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        authResult.setValue(Result.PHONE_ADDED);
+                        authResult.setValue(Result.PHONE_VERIFIED);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -345,19 +343,9 @@ public class AuthRepository {
         NEW_EMAIL,
 
         /**
-         * When the user document doesn't have a phone number
+         * When the phone no. is successfully verified
          */
-        PHONE_NOT_FOUND,
-
-        /**
-         * When the use document has a phone number
-         */
-        PHONE_EXISTS,
-
-        /**
-         * When the phone no. is successfully added to the user account
-         */
-        PHONE_ADDED,
+        PHONE_VERIFIED,
 
         /**
          * The SMS code didn't match

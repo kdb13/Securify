@@ -1,28 +1,15 @@
 package com.lina.securify.viewmodels.auth;
 
-import android.database.Observable;
-
-import androidx.databinding.ObservableBoolean;
-import androidx.databinding.ObservableInt;
 import androidx.lifecycle.LiveData;
 
-import com.lina.securify.R;
 import com.lina.securify.data.repositories.AuthRepository;
 
 public class PhoneViewModel extends AuthViewModel {
 
     private Model model;
 
-    public ObservableBoolean smsUiVisibility = new ObservableBoolean();
-    public ObservableInt buttonTextId = new ObservableInt();
-    public ObservableInt invalidCodeErrorId = new ObservableInt();
-
     public PhoneViewModel() {
         model = new Model();
-
-        smsUiVisibility.set(false);
-        buttonTextId.set(R.string.button_send_code);
-        invalidCodeErrorId.set(-1);
     }
 
     public Model getModel() {
@@ -39,6 +26,8 @@ public class PhoneViewModel extends AuthViewModel {
 
     public static class Model {
 
+        private static final String COUNTRY_CODE = "+91";
+
         private String phoneNo;
         private String smsCode;
 
@@ -47,7 +36,7 @@ public class PhoneViewModel extends AuthViewModel {
         }
 
         public String getPhoneNo() {
-            return phoneNo;
+            return formatPhone();
         }
 
         public void setSmsCode(String smsCode) {
@@ -56,6 +45,10 @@ public class PhoneViewModel extends AuthViewModel {
 
         public String getSmsCode() {
             return smsCode;
+        }
+
+        private String formatPhone() {
+            return COUNTRY_CODE + phoneNo;
         }
     }
 }

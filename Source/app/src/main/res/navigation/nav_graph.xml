@@ -99,7 +99,7 @@
             tools:layout="@layout/fragment_phone">
 
             <action
-                android:id="@+id/action_phoneFragment_to_pinFragment"
+                android:id="@+id/action_verifyPin"
                 app:destination="@id/pinFragment" />
 
         </fragment>

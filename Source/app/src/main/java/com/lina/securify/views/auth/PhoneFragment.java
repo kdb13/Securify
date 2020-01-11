@@ -5,15 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.lina.securify.R;
 import com.lina.securify.data.repositories.AuthRepository;
 import com.lina.securify.databinding.FragmentPhoneBinding;
@@ -26,9 +25,6 @@ import com.lina.securify.views.auth.validations.PhoneValidation;
  */
 public class PhoneFragment extends Fragment {
 
-    // TODO: Implement phone verification
-
-    private boolean addNewUser;
     private String verificationId;
 
     private FragmentPhoneBinding binding;
@@ -40,14 +36,13 @@ public class PhoneFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         viewModel = ViewModelProviders.of(this).get(PhoneViewModel.class);
-        addNewUser = PhoneFragmentArgs.fromBundle(getArguments()).getAddPhoneNo();
-
-        if (!addNewUser)
-            viewModel.getModel().setPhoneNo(getCurrentPhoneNo());
 
         binding = FragmentPhoneBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
         binding.setFragment(this);
+        binding.setCodeUiVisibility(false);
+        binding.setInvalidCodeStringId(-1);
+        binding.setPhoneButtonTextId(R.string.button_send_code);
 
         return binding.getRoot();
     }
@@ -61,39 +56,19 @@ public class PhoneFragment extends Fragment {
 
     public void onButtonClick(View view) {
 
+        viewModel.toggleLoading(true);
 
+        // Send the code
         if (verificationId == null) {
 
             if (validation.validate()) {
-                viewModel.toggleLoading(true);
-
-                viewModel.sendVerificationCode().observe(this, new Observer<String>() {
-                    @Override
-                    public void onChanged(String s) {
-
-                        viewModel.toggleLoading(false);
-
-                        if (s != null) {
-                            verificationId = s;
-                            viewModel.buttonTextId.set(R.string.button_verify);
-                            viewModel.smsUiVisibility.set(true);
-                        } else {
-                            // TODO: Handle if code not sent successfully
-                        }
-
-                    }
-                });
-
+                sendVerificationCode();
             }
 
         } else {
 
             if (validation.validateSmsCode()) {
-
-                viewModel.toggleLoading(true);
-
                 verifySmsCode();
-
             }
 
         }
@@ -103,8 +78,7 @@ public class PhoneFragment extends Fragment {
 
     private void verifySmsCode() {
 
-        viewModel.invalidCodeErrorId.set(-1);
-
+        // Verify the received code
         viewModel.verifySmsCode(verificationId).observe(this, new Observer<AuthRepository.Result>() {
             @Override
             public void onChanged(AuthRepository.Result result) {
@@ -113,15 +87,14 @@ public class PhoneFragment extends Fragment {
 
                 switch (result) {
 
-                    case PHONE_ADDED:
-                        Toast.makeText(getContext(), "Phone added successfully!", Toast.LENGTH_SHORT).show();
-
+                    case PHONE_VERIFIED:
+                        goToPinFragment();
                         break;
 
                     case INVALID_SMS_CODE:
-                        viewModel.invalidCodeErrorId.set(R.string.error_invalid_sms_code);
-
+                        binding.setInvalidCodeStringId(R.string.error_invalid_sms_code);
                         break;
+
                 }
 
             }
@@ -129,10 +102,32 @@ public class PhoneFragment extends Fragment {
 
     }
 
-    private String getCurrentPhoneNo() {
-        return FirebaseAuth
-                .getInstance()
-                .getCurrentUser()
-                .getPhoneNumber();
+    private void sendVerificationCode() {
+
+        viewModel.sendVerificationCode().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+
+                viewModel.toggleLoading(false);
+
+                if (s != null) {
+                    verificationId = s;
+
+                    binding.setCodeUiVisibility(true);
+                    binding.setPhoneButtonTextId(R.string.button_verify);
+                }
+
+            }
+        });
+
+    }
+
+    /**
+     * Navigate to PinFragment.
+     */
+    private void goToPinFragment() {
+        NavHostFragment
+                .findNavController(this)
+                .navigate(PhoneFragmentDirections.actionVerifyPin());
     }
 }
