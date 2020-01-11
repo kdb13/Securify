@@ -1,4 +1,4 @@
-package com.lina.securify.utils.bindingadapters;
+package com.lina.securify.utils;
 
 import android.widget.Button;
 
@@ -6,7 +6,7 @@ import androidx.databinding.BindingAdapter;
 
 import com.google.android.material.textfield.TextInputLayout;
 
-public class AuthBindingAdapters {
+public class DataBindingAdapters {
 
     @BindingAdapter("errorText")
     public static void setErrorText(TextInputLayout inputLayout, int errorID) {
