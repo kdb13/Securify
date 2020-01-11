@@ -18,7 +18,7 @@
             tools:layout="@layout/fragment_splash_screen">
 
             <action
-                android:id="@+id/action_splashScreenFragment_to_pinFragment"
+                android:id="@+id/action_verifyPin"
                 app:destination="@id/pinFragment"
                 app:enterAnim="@anim/nav_default_enter_anim"
                 app:popUpTo="@id/splashScreenFragment"
@@ -98,7 +98,7 @@
 
         <fragment
             android:id="@+id/pinFragment"
-            android:name="com.lina.securify.PinFragment"
+            android:name="com.lina.securify.views.auth.PinFragment"
             android:label="fragment_pin"
             tools:layout="@layout/fragment_pin" >
 
