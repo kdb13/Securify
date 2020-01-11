@@ -12,16 +12,10 @@ public class PasswordViewModel extends AuthViewModel {
 
     private Model model;
 
-    /**
-     * String ID for wrong password error.
-     */
-    public final ObservableInt wrongPasswordErrorID = new ObservableInt();
-
     public PasswordViewModel() {
         super();
 
         model = new Model();
-        wrongPasswordErrorID.set(-1);
     }
 
     public Model getModel() {
@@ -32,9 +26,6 @@ public class PasswordViewModel extends AuthViewModel {
         return authRepository.signIn(model.getEmail(), model.getPassword());
     }
 
-    /**
-     * Holds the UI data.
-     */
     public static class Model {
         private String email;
         private String password;

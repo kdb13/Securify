@@ -83,7 +83,7 @@
             tools:layout="@layout/fragment_password" >
 
             <action
-                android:id="@+id/action_passwordFragment_to_pinFragment"
+                android:id="@+id/action_verifyPin"
                 app:destination="@id/pinFragment" />
 
             <argument

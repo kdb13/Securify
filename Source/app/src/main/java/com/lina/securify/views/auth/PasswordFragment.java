@@ -1,6 +1,9 @@
 package com.lina.securify.views.auth;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,23 +12,16 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.lina.securify.data.repositories.AuthRepository.Result;
 import com.lina.securify.R;
+import com.lina.securify.data.repositories.AuthRepository.Result;
 import com.lina.securify.databinding.FragmentPasswordBinding;
-import com.lina.securify.viewmodels.auth.Constants;
 import com.lina.securify.viewmodels.auth.PasswordViewModel;
 import com.lina.securify.views.auth.validations.PasswordValidation;
-
-import java.util.Objects;
 
 /**
  * Checks if the password is correct and signs in the user.
  */
-public class PasswordFragment extends Fragment implements Observer<Result> {
+public class PasswordFragment extends Fragment {
 
     private FragmentPasswordBinding binding;
     private PasswordViewModel viewModel;
@@ -38,12 +34,13 @@ public class PasswordFragment extends Fragment implements Observer<Result> {
         viewModel = ViewModelProviders.of(this).get(PasswordViewModel.class);
 
         viewModel.getModel().setEmail(
-                PasswordFragmentArgs.fromBundle(getArguments()).getEmail()
+                PasswordFragmentArgs.fromBundle(getArguments()).getExistingUserEmail()
         );
 
         binding = FragmentPasswordBinding.inflate(inflater, container, false);
         binding.setFragment(this);
         binding.setViewModel(viewModel);
+        binding.setWrongPasswordStringId(-1);
 
         return binding.getRoot();
     }
@@ -61,48 +58,40 @@ public class PasswordFragment extends Fragment implements Observer<Result> {
      */
     public void onSignInClick(View view) {
 
-        // Reset the error IDs
-        viewModel.wrongPasswordErrorID.set(-1);
-
         if (validation.validate()) {
+
             viewModel.toggleLoading(true);
-            viewModel.signIn().observe(this, this);
+            viewModel.signIn().observe(this, new Observer<Result>() {
+                @Override
+                public void onChanged(Result result) {
+
+                    viewModel.toggleLoading(false);
+
+                    switch (result) {
+
+                        case WRONG_PASSWORD:
+                            binding.setWrongPasswordStringId(R.string.error_wrong_password);
+                            break;
+
+                        case SIGNED_IN:
+                            goToPinFragment();
+                            break;
+                    }
+
+                }
+            });
         }
 
     }
 
     /**
-     * Called when the AuthRepository returns a auth result
-     * @param result The changed auth result
+     * Navigate to PinFragment
      */
-    @Override
-    public void onChanged(Result result) {
-
-        viewModel.toggleLoading(false);
-
-        // TODO: Handle the case when there are too many unsuccessful attemps
-
-        switch (result) {
-
-            case WRONG_PASSWORD:
-                viewModel.wrongPasswordErrorID.set(R.string.error_wrong_password);
-                break;
-
-            case SIGNED_IN:
-                goToPhoneFragment();
-                break;
-        }
-
-    }
-
-    /**
-     * Navigate to PhoneFragment
-     */
-    private void goToPhoneFragment() {
+    private void goToPinFragment() {
 
         NavHostFragment
                 .findNavController(this)
-                .navigate(PasswordFragmentDirections.actionVerifyPhone(false));
+                .navigate(PasswordFragmentDirections.actionVerifyPin());
 
     }
 
