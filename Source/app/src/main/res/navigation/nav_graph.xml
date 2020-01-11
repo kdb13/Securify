@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- The application flow -->
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/auth_nav_graph">
 
+    <!-- Authentication flow -->
     <navigation
         android:id="@+id/auth_nav_graph"
         app:startDestination="@id/splashScreenFragment">
@@ -16,24 +18,18 @@
             tools:layout="@layout/fragment_splash_screen">
 
             <action
+                android:id="@+id/action_splashScreenFragment_to_pinFragment"
+                app:destination="@id/pinFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:popUpTo="@id/splashScreenFragment"
+                app:popUpToInclusive="true" />
+
+            <action
                 android:id="@+id/action_verifyEmail"
                 app:destination="@id/emailFragment"
                 app:enterAnim="@anim/nav_default_enter_anim"
-                app:exitAnim="@anim/nav_default_exit_anim"
-                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-                app:popExitAnim="@anim/nav_default_pop_exit_anim"
-                app:popUpTo="@+id/splashScreenFragment"
-                app:popUpToInclusive="true"/>
-
-            <action
-                android:id="@+id/action_verifyPhone"
-                app:enterAnim="@anim/nav_default_enter_anim"
-                app:exitAnim="@anim/nav_default_exit_anim"
-                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-                app:popExitAnim="@anim/nav_default_pop_exit_anim"
-                app:destination="@id/phoneFragment"
-                app:popUpTo="@+id/splashScreenFragment"
-                app:popUpToInclusive="true"/>
+                app:popUpTo="@id/splashScreenFragment"
+                app:popUpToInclusive="true" />
 
         </fragment>
 
@@ -44,21 +40,20 @@
             tools:layout="@layout/fragment_email" >
 
             <action
-                android:id="@+id/action_signUp"
-                app:destination="@id/signUpFragment"
-                app:enterAnim="@anim/nav_default_enter_anim"
-                app:exitAnim="@anim/nav_default_exit_anim"
-                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-
-            <action
-                android:id="@+id/action_signIn"
+                android:id="@+id/action_verifyPassword"
                 app:destination="@id/passwordFragment"
                 app:enterAnim="@anim/nav_default_enter_anim"
                 app:exitAnim="@anim/nav_default_exit_anim"
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
                 app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
+            <action
+                android:id="@+id/action_newUser"
+                app:destination="@id/signUpFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         </fragment>
 
         <fragment
@@ -68,11 +63,12 @@
             tools:layout="@layout/fragment_sign_up" >
 
             <action
-                android:id="@+id/action_verifyPhone"
-                app:destination="@id/phoneFragment" />
-            <argument
-                android:name="email"
-                app:argType="string" />
+                android:id="@+id/action_addPhone"
+                app:destination="@id/phoneFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
         </fragment>
 
@@ -83,17 +79,10 @@
             tools:layout="@layout/fragment_password" >
 
             <action
-                android:id="@+id/action_verifyPhone"
-                app:destination="@id/phoneFragment" />
-            <argument
-                android:name="email"
-                app:argType="string" />
-        </fragment>
+                android:id="@+id/action_passwordFragment_to_pinFragment"
+                app:destination="@id/pinFragment" />
 
-        <action
-            android:id="@+id/action_MainApp"
-            app:popUpTo="@id/mainActivity"
-            app:destination="@id/mainActivity" />
+        </fragment>
 
         <fragment
             android:id="@+id/phoneFragment"
@@ -101,10 +90,23 @@
             android:label="fragment_verify_phone"
             tools:layout="@layout/fragment_phone">
 
-            <argument
-                android:name="addPhoneNo"
-                app:argType="boolean"
-                app:nullable="false" />
+            <action
+                android:id="@+id/action_phoneFragment_to_pinFragment"
+                app:destination="@id/pinFragment" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/pinFragment"
+            android:name="com.lina.securify.PinFragment"
+            android:label="fragment_pin"
+            tools:layout="@layout/fragment_pin" >
+
+            <action
+                android:id="@+id/action_mainApp"
+                app:destination="@id/mainActivity"
+                app:popUpTo="@id/pinFragment"
+                app:popUpToInclusive="true" />
 
         </fragment>
 
@@ -115,4 +117,5 @@
         android:name="com.lina.securify.views.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
+
 </navigation>
