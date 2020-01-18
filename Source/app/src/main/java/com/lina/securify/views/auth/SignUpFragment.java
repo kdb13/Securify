@@ -98,16 +98,19 @@ public class SignUpFragment extends Fragment {
      */
     public void onSignUpClick(View view) {
 
-        if (validation.validate() &&
-                validation.doPasswordsMatch(
-                        viewModel.getNewUser().getPassword(),
-                        viewModel.getNewUser().getConfPassword()) ) {
+        if (validation.validate()) {
 
-            viewModel.toggleLoading(true);
-            viewModel.checkEmailExists().observe(this, emailExistsObserver);
+            if (validation.doPasswordsMatch(
+                    viewModel.getNewUser().getPassword(),
+                    viewModel.getNewUser().getConfPassword()) ) {
 
-        } else
-            binding.setPasswordsMimatchStringId(R.string.error_password_mismatch);
+                viewModel.toggleLoading(true);
+                viewModel.checkEmailExists().observe(this, emailExistsObserver);
+            }
+            else
+                binding.setPasswordsMimatchStringId(R.string.error_password_mismatch);
+
+        }
 
     }
 

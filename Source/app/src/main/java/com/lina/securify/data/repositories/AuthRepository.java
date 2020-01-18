@@ -19,10 +19,15 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
 import com.lina.securify.data.meta.Collections;
 import com.lina.securify.data.meta.MetaUser;
 import com.lina.securify.data.models.NewUser;
+
+import org.w3c.dom.Document;
 
 import java.util.HashMap;
 import java.util.List;
@@ -232,21 +237,98 @@ public class AuthRepository {
         return authResult;
     }
 
+    /**
+     * Adds a new PIN to the user.
+     * @param pin The new PIN to add
+     */
+    public LiveData<Result> addPin(String pin) {
+
+        MutableLiveData<Result> authResult = new MutableLiveData<>();
+
+        _addPin(pin, authResult);
+
+        return authResult;
+    }
+
+    /**
+     * Verifies the pin for entry
+     * @param pin The PIN to verify
+     */
+    public LiveData<Result> verifyPin(String pin) {
+
+        MutableLiveData<Result> authResult = new MutableLiveData<>();
+
+        _verifyPin(pin, authResult);
+
+        return authResult;
+    }
+
+    private void _addPin(String pin, final MutableLiveData<Result> authResult) {
+
+        DocumentReference document;
+
+        if((document = getCurrenUserDocument()) != null) {
+
+            Map<String, Object> data = new HashMap<>();
+            data.put(MetaUser.APP_PIN, pin);
+
+            document
+                    .update(data)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            authResult.setValue(Result.NEW_PIN_ADDED);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            authResult.setValue(Result.UNKNOWN_ERROR);
+
+                            Log.e(TAG, "Error adding pin to user!", e);
+                        }
+                    });
+
+        }
+
+    }
+
+    private void _verifyPin(final String pin, final MutableLiveData<Result> authResult) {
+
+        DocumentReference documentReference;
+
+        if ((documentReference = getCurrenUserDocument()) != null) {
+
+            documentReference
+                    .get(Source.CACHE)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                            String _pin = Objects.requireNonNull(documentSnapshot.getString(MetaUser.APP_PIN));
+
+                            if (_pin.equals(pin))
+                                authResult.setValue(Result.PIN_VERIFIED);
+                            else
+                                authResult.setValue(Result.INVALID_PIN);
+                        }
+                    });
+
+        }
+
+    }
+
     private void createNewUserDocument(NewUser newUser, final MutableLiveData<Result> authResult) {
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        DocumentReference document;
 
-        String userID = getCurrentUserID();
-
-        if (userID != null) {
+        if ((document = getCurrenUserDocument()) != null) {
 
             Map<String, String> user = new HashMap<>();
             user.put(MetaUser.FIRST_NAME, newUser.getFirstName());
             user.put(MetaUser.LAST_NAME, newUser.getLastName());
 
-            firestore
-                    .collection(Collections.USER)
-                    .document(firebaseAuth.getCurrentUser().getUid())
+            document
                     .set(user)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -272,6 +354,20 @@ public class AuthRepository {
     }
 
     @Nullable
+    private DocumentReference getCurrenUserDocument() {
+
+        String userId = getCurrentUserID();
+
+        if (userId != null)
+            return FirebaseFirestore
+            .getInstance()
+            .collection(Collections.USER)
+            .document(userId);
+        else
+            return null;
+    }
+
+    @Nullable
     private String getCurrentUserID() {
         if (firebaseAuth.getCurrentUser() == null)
             return null;
@@ -281,14 +377,12 @@ public class AuthRepository {
 
     /**
      * Handle the Firebase exceptions
-     * @param _e The Exception object
+     * @param e The Exception object
      * @param authResult The auth result to be set based on exception
      */
-    private void handleAuthException(Exception _e, MutableLiveData<Result> authResult) {
+    private void handleAuthException(Exception e, MutableLiveData<Result> authResult) {
 
-        try {
-            throw _e;
-        } catch (FirebaseAuthInvalidCredentialsException e) {
+        if (e instanceof FirebaseAuthInvalidCredentialsException) {
 
             /*
                 There will be no weak password exception as it is already validated inside the UI.
@@ -297,7 +391,7 @@ public class AuthRepository {
 
             authResult.setValue(Result.WRONG_PASSWORD);
 
-        } catch (Exception e) {
+        } else {
 
             authResult.setValue(Result.UNKNOWN_ERROR);
 
@@ -350,7 +444,22 @@ public class AuthRepository {
         /**
          * The SMS code didn't match
          */
-        INVALID_SMS_CODE
+        INVALID_SMS_CODE,
+
+        /**
+         * When a new PIN is successfully added to a user.
+         */
+        NEW_PIN_ADDED,
+
+        /**
+         * When the pin is verified
+         */
+        PIN_VERIFIED,
+
+        /**
+         * When the pin is invalid
+         */
+        INVALID_PIN
     }
 
 }

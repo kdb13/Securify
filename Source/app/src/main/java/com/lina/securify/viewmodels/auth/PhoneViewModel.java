@@ -17,7 +17,7 @@ public class PhoneViewModel extends AuthViewModel {
     }
 
     public LiveData<String> sendVerificationCode() {
-        return authRepository.sendVerificationCode("+91" + model.getPhoneNo());
+        return authRepository.sendVerificationCode(model.formatPhone());
     }
 
     public LiveData<AuthRepository.Result> verifySmsCode(String verificationId) {
@@ -36,7 +36,7 @@ public class PhoneViewModel extends AuthViewModel {
         }
 
         public String getPhoneNo() {
-            return formatPhone();
+            return phoneNo;
         }
 
         public void setSmsCode(String smsCode) {
@@ -47,7 +47,7 @@ public class PhoneViewModel extends AuthViewModel {
             return smsCode;
         }
 
-        private String formatPhone() {
+        public String formatPhone() {
             return COUNTRY_CODE + phoneNo;
         }
     }

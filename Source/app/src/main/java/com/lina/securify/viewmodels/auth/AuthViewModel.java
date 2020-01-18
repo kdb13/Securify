@@ -31,7 +31,7 @@ public abstract class AuthViewModel extends ViewModel {
      */
     public void toggleLoading(boolean isEnabled) {
         isButtonEnabled.set(!isEnabled);
-        progressVisibility.set(isEnabled ? View.VISIBLE : View.INVISIBLE);
+        progressVisibility.set(isEnabled ? View.VISIBLE : View.GONE);
     }
 
     /**

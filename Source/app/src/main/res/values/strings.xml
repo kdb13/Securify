@@ -11,6 +11,8 @@
     <string name="hint_last_name">Last Name</string>
     <string name="hint_phone">Phone</string>
     <string name="hint_sms_code">Enter the code</string>
+    <string name="hint_pin">PIN</string>
+    <string name="hint_reenter_pin">Re-enter PIN</string>
 
     <!-- Buttons -->
     <string name="button_continue">Continue</string>
@@ -24,32 +26,38 @@
     <string name="create_new_account">Create a new account</string>
     <string name="welcome_back">Welcome back!</string>
     <string name="enter_phone_number">Enter your phone number</string>
+    <string name="enter_pin">Enter PIN</string>
+    <string name="set_up_new_pin">Set up new PIN</string>
 
     <!-- Required field errors -->
     <string name="error_email_required">Enter email</string>
     <string name="error_first_name_required">Enter first name</string>
     <string name="error_last_name_required">Enter last name</string>
-    <string name="error_password_required">Enter password!</string>
-    <string name="error_phone_required">Enter phone number!</string>
-    <string name="error_sms_code_required">Enter the code!</string>
+    <string name="error_password_required">Enter password</string>
+    <string name="error_phone_required">Enter phone number</string>
+    <string name="error_sms_code_required">Enter the code</string>
+    <string name="error_conf_password_required">Re-enter password</string>
+    <string name="error_pin_required">Enter PIN</string>
+    <string name="error_conf_pin_required">Re-enter PIN</string>
 
     <!-- Other errors -->
     <string name="error_invalid_email">Invalid email!</string>
-    <string name="error_required">Required</string>
     <string name="error_wrong_password">Wrong password!</string>
     <string name="error_existing_email">An account already exists with this email!</string>
     <string name="error_unknown">An unknown error occurred!</string>
     <string name="error_no_internet_connection">No internet connection!</string>
-    <string name="error_password_mismatch">The passwords don\'t match</string>
+    <string name="error_password_mismatch">The passwords don\'t match!</string>
     <string name="error_weak_password">The password is weak!</string>
-    <string name="error_invalid_phone">The phone no. must be of 10 digits.</string>
+    <string name="error_invalid_phone">The phone no. must be of 10 digits!</string>
     <string name="error_invalid_sms_code">Invalid code!</string>
+    <string name="error_invalid_pin">The PIN must be of 4 digits!</string>
+    <string name="error_wrong_pin">The entered PIN is wrong!</string>
 
     <!-- Snackbar actions -->
     <string name="action_retry">Retry</string>
-    <string name="error_conf_password_required">Re-enter password</string>
 
     <string name="button_service">Using it to listen to Volume button clicks.</string>
     <string name="code_sent">A code was sent to this phone number.</string>
+    <string name="button_ok">Ok</string>
 
 </resources>

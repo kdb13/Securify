@@ -1,6 +1,7 @@
 package com.lina.securify.utils;
 
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
 
@@ -9,19 +10,19 @@ import com.google.android.material.textfield.TextInputLayout;
 public class DataBindingAdapters {
 
     @BindingAdapter("errorText")
-    public static void setErrorText(TextInputLayout inputLayout, int errorID) {
+    public static void setErrorText(TextInputLayout inputLayout, int errorId) {
 
         // Set empty error if errorID is -1
         String error = "";
 
-        if (errorID != -1)
-            error = inputLayout.getContext().getString(errorID);
+        if (errorId != -1)
+            error = inputLayout.getContext().getString(errorId);
 
         inputLayout.setError(error);
     }
 
     @BindingAdapter("buttonText")
-    public static void setErrorText(Button button, int buttonTextId) {
+    public static void setButtonText(Button button, int buttonTextId) {
 
         // Set empty error if errorID is -1
         String text = "";
@@ -32,4 +33,10 @@ public class DataBindingAdapters {
         button.setText(text);
     }
 
+    @BindingAdapter("text")
+    public static void setTextViewText(TextView textView, int textId) {
+
+        textView.setText(textId);
+
+    }
 }
