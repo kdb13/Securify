@@ -312,6 +312,12 @@ public class AuthRepository {
                             else
                                 authResult.setValue(Result.INVALID_PIN);
                         }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "Error verifying pin!", e);
+                        }
                     });
 
         }

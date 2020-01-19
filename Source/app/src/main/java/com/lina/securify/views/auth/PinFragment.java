@@ -1,6 +1,7 @@
 package com.lina.securify.views.auth;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import com.lina.securify.R;
 import com.lina.securify.data.repositories.AuthRepository;
 import com.lina.securify.databinding.FragmentPinBinding;
 import com.lina.securify.viewmodels.auth.PinViewModel;
+import com.lina.securify.views.MainActivity;
 import com.lina.securify.views.auth.validations.PinValidation;
 
 
@@ -137,9 +139,8 @@ public class PinFragment extends Fragment {
      */
     private void goToMainActivity() {
 
-        NavHostFragment
-                .findNavController(this)
-                .navigate(PinFragmentDirections.actionMainApp());
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
 
         getActivity().finish();
     }

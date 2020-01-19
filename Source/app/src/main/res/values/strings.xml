@@ -20,6 +20,7 @@
     <string name="button_sign_in">Sign in</string>
     <string name="button_verify">Verify</string>
     <string name="button_send_code">Send</string>
+    <string name="button_ok">OK</string>
 
     <!-- TextViews -->
     <string name="enter_your_email">Enter your email</string>
@@ -58,7 +59,8 @@
 
     <string name="button_service">Using it to listen to Volume button clicks.</string>
     <string name="code_sent">A code was sent to this phone number.</string>
-    <string name="button_ok">Ok</string>
-    <string name="action_log_out">Log out</string>
+
+    <!-- Menu items -->
+    <string name="item_log_out">Log out</string>
 
 </resources>
