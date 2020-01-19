@@ -11,5 +11,10 @@
         android:name="com.lina.securify.HomeFragment"
         android:label="@string/fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/alertsFragment"
+        android:name="com.lina.securify.AlertsFragment"
+        android:label="fragment_alerts"
+        tools:layout="@layout/fragment_alerts" />
 
 </navigation>

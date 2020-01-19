@@ -64,5 +64,6 @@
     <string name="item_log_out">Log out</string>
 
     <string name="fragment_home">Home</string>
+    <string name="fragment_alerts">Alerts</string>
 
 </resources>
