@@ -23,31 +23,10 @@ public class LongPressListener extends BaseListener implements BaseListener.Call
         this.durationInMillis = durationInMillis;
     }
 
-    /**
-     * This method must be called by the client to dispatch the event to LongPressListener so that
-     * it can be tracked for long press
-     *
-     * @param event
-     * The KeyEvent to be dispatched
-     */
-    public void dispatch(KeyEvent event) {
-        event.dispatch(this, new KeyEvent.DispatcherState(), this);
-    }
-
-    private void checkForSuccess() {
-
-        if (!isUpTriggered) {
-
-            onSucess();
-
-        }
-
-    }
 
     /* BASE LISTENER CALLBACKS */
-
     @Override
-    public void onSucess() {
+    public void onSuccess() {
 
         task.run();
 
@@ -55,6 +34,7 @@ public class LongPressListener extends BaseListener implements BaseListener.Call
 
     @Override
     public void onStartedListening() {
+
         isUpTriggered = false;
 
         if (isCounterExisting)
@@ -91,8 +71,8 @@ public class LongPressListener extends BaseListener implements BaseListener.Call
 
     }
 
-    /* KEYEVENT CALLBACKS */
 
+    /* KEYEVENT CALLBACKS */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -127,4 +107,14 @@ public class LongPressListener extends BaseListener implements BaseListener.Call
         return false;
     }
 
+
+    private void checkForSuccess() {
+
+        if (!isUpTriggered) {
+
+            onSuccess();
+
+        }
+
+    }
 }

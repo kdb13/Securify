@@ -4,22 +4,17 @@ import android.accessibilityservice.AccessibilityService;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
-import android.widget.Toast;
-
-/*
-    TODO: Control the volume changes
- */
 
 public class ButtonService extends AccessibilityService {
 
-    private static final String LOG_TAG = "ButtonService";
-
-    MultipleDownsListener multipleDownsListener;
+    private static final String TAG = "ButtonService";
 
     BaseListener listener;
 
     @Override
     protected void onServiceConnected() {
+
+        Log.d(TAG, "Service started.");
 
         listener = new VolumeLongPressListener(
                 getApplicationContext(),
@@ -28,7 +23,7 @@ public class ButtonService extends AccessibilityService {
                 new Runnable() {
                     @Override
                     public void run() {
-                        Log.d(LOG_TAG, "Sucess!");
+                        Log.d(TAG, "Success!");
                     }
                 }
         );
@@ -38,7 +33,7 @@ public class ButtonService extends AccessibilityService {
     @Override
     protected boolean onKeyEvent(KeyEvent event) {
 
-        if (isVolumeUp(event) || isVolumeDown(event)) {
+        if (isVolumeKey(event)) {
 
             listener.dispatch(event);
 
@@ -57,18 +52,10 @@ public class ButtonService extends AccessibilityService {
 
     }
 
-    private boolean isVolumeUp(KeyEvent event) {
+    private boolean isVolumeKey(KeyEvent event) {
 
-        return (event.getAction() == KeyEvent.ACTION_UP &&
+        return ((event.getAction() == KeyEvent.ACTION_DOWN || event.getAction() == KeyEvent.ACTION_UP) &&
                 event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP);
 
     }
-
-    private boolean isVolumeDown(KeyEvent event) {
-
-        return (event.getAction() == KeyEvent.ACTION_DOWN &&
-                event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP);
-
-    }
-
 }
