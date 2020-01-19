@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<button-service xmlns:android="http://schemas.android.com/apk/res/android"
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/button_service"
     android:packageNames="com.lina.securify"
+    android:settingsActivity="com.example.android.accessibility.ServiceSettingsActivity"
     android:accessibilityFlags="flagRequestFilterKeyEvents" />

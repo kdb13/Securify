@@ -1,4 +1,4 @@
-package com.lina.securify;
+package com.lina.securify.services;
 
 import android.accessibilityservice.AccessibilityService;
 import android.util.Log;

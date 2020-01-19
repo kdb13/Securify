@@ -1,12 +1,9 @@
-package com.lina.securify;
+package com.lina.securify.services;
 
 
-import android.content.Context;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.KeyEvent;
-
-import java.util.Timer;
 
 /**
  * It allows the client to perform a task when there are multiple KeyEvents with

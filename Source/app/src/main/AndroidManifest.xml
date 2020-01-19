@@ -31,8 +31,10 @@
 
         </activity>
 		
-		<service android:name=".ButtonService"
-            	android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+		<service
+            android:name=".services.ButtonService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:label="Button Service">
 
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />

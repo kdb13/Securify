@@ -1,7 +1,5 @@
-package com.lina.securify;
+package com.lina.securify.services;
 
-import android.content.Context;
-import android.media.AudioManager;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.KeyEvent;
