@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/alertsFragment"
         android:name="com.lina.securify.AlertsFragment"
-        android:label="fragment_alerts"
+        android:label="@string/fragment_alerts"
         tools:layout="@layout/fragment_alerts" />
 
 </navigation>

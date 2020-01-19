@@ -2,6 +2,7 @@ package com.lina.securify.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.NavHost;
@@ -18,21 +19,26 @@ import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lina.securify.R;
+import com.lina.securify.databinding.ActivityMainBinding;
 import com.lina.securify.views.auth.AuthActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "MainActivity";
 
+    private ActivityMainBinding binding;
     private AppBarConfiguration appBarConfiguration;
+
     private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
 
         setupNavigation();
@@ -70,13 +76,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupNavigation() {
 
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-
         NavController navController = Navigation.findNavController(this, R.id.nav_host);
 
         appBarConfiguration =
                 new AppBarConfiguration.Builder(navController.getGraph())
-                        .setDrawerLayout(drawerLayout)
+                        .setDrawerLayout(binding.drawerLayout)
                         .build();
 
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
