@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.WindowManager;
 
+import com.lina.securify.services.ButtonService;
+
 public class SendAlertDialog {
 
-    public static Dialog build(Context context) {
+    public static Dialog build(final Context context, final DialogListener listener) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
@@ -18,6 +20,12 @@ public class SendAlertDialog {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                    }
+                })
+                .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        listener.onPositive();
                     }
                 });
 

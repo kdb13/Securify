@@ -20,7 +20,7 @@ public class ButtonService extends AccessibilityService {
 
         Log.d(TAG, "Service started.");
 
-        sendAlertDialog = SendAlertDialog.build(getApplicationContext());
+        sendAlertDialog = SendAlertDialog.build(getApplicationContext(), new AlertSender(getApplicationContext()));
 
         listener = new VolumeLongPressListener(
                 getApplicationContext(),
@@ -66,4 +66,5 @@ public class ButtonService extends AccessibilityService {
                 event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP);
 
     }
+
 }
