@@ -23,15 +23,14 @@ public class SplashScreenFragment extends Fragment {
     private static final long SPLASH_DELAY = 500;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onStart() {
+        super.onStart();
 
         // Check if the user is signed in
         if (isSignedIn())
             goToPinFragment();
         else
             goToEmailFragment();
-
     }
 
     @Override
