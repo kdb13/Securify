@@ -5,14 +5,14 @@ import android.media.AudioManager;
 
 public class VolumeLongPressListener extends LongPressListener {
 
-    private VolumeResetter volumeResetter;
+    private VolumeReseter volumeReseter;
 
     private boolean isSuccess = false;
 
     public VolumeLongPressListener(Context context, int keyCode, int durationInMillis, Runnable task) {
         super(keyCode, durationInMillis, task);
 
-        volumeResetter = new VolumeResetter(context, AudioManager.STREAM_RING);
+        volumeReseter = new VolumeReseter(context, AudioManager.STREAM_RING);
     }
 
     @Override
@@ -20,12 +20,12 @@ public class VolumeLongPressListener extends LongPressListener {
         super.onStartedListening();
 
         // Set the initial volume
-        volumeResetter.setInitialVolume();
+        volumeReseter.setInitialVolume();
     }
 
     @Override
-    public void onSucess() {
-        super.onSucess();
+    public void onSuccess() {
+        super.onSuccess();
 
         isSuccess = true;
     }
@@ -35,7 +35,7 @@ public class VolumeLongPressListener extends LongPressListener {
         super.onCompletedListening();
 
         if (isSuccess) {
-            volumeResetter.reset();
+            volumeReseter.reset();
             isSuccess = false;
         }
     }

@@ -37,18 +37,18 @@ public abstract class BaseListener implements KeyEvent.Callback {
         /**
          * It is called when the listening is completed and is a success
          */
-        public void onSucess();
+        void onSuccess();
 
         /**
          * It is called when listening is started.
          */
-        public void onStartedListening();
+        void onStartedListening();
 
         /**
          * It is called when listening is completed. To check for success
-         * implement the onSucess() method instead.
+         * implement the onSuccess() method instead.
          */
-        public void onCompletedListening();
+        void onCompletedListening();
 
     }
 }
