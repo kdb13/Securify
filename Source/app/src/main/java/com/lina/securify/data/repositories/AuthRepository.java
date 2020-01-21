@@ -300,7 +300,7 @@ public class AuthRepository {
         if ((documentReference = getCurrenUserDocument()) != null) {
 
             documentReference
-                    .get(Source.CACHE)
+                    .get()
                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
