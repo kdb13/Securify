@@ -63,7 +63,11 @@
     <!-- Menu items -->
     <string name="item_log_out">Log out</string>
 
+    <!-- Fragments -->
     <string name="fragment_home">Home</string>
     <string name="fragment_alerts">Alerts</string>
+
+    <!-- Send alert dialog -->
+    <string name="send_alert">Send alert?</string>
 
 </resources>

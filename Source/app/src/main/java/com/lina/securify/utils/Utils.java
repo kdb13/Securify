@@ -3,6 +3,7 @@ package com.lina.securify.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -31,4 +32,7 @@ public class Utils {
                activeNetwork.isConnectedOrConnecting();
     }
 
+    public static void showToast(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
 }

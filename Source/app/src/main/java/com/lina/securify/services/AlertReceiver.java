@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.lina.securify.intents.Intents;
+import com.lina.securify.utils.Utils;
 
 public class AlertReceiver extends BroadcastReceiver {
 
@@ -24,6 +25,7 @@ public class AlertReceiver extends BroadcastReceiver {
 
                 case Intents.ACTION_ALERT_DELIVERED:
                     Log.d(TAG, "Alert delivered!");
+                    Utils.showToast(context, "Alert sent successfully!");
                     break;
 
             }

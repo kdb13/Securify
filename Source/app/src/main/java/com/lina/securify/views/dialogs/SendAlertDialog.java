@@ -4,8 +4,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.Layout;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.WindowManager;
 
+import com.lina.securify.R;
 import com.lina.securify.services.ButtonService;
 
 public class SendAlertDialog {
@@ -15,7 +19,7 @@ public class SendAlertDialog {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         builder
-                .setMessage("Send an alert")
+                .setTitle(R.string.send_alert)
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

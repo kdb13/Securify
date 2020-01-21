@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
 
+import com.lina.securify.R;
 import com.lina.securify.views.dialogs.SendAlertDialog;
 
 public class ButtonService extends AccessibilityService {
@@ -17,6 +18,8 @@ public class ButtonService extends AccessibilityService {
 
     @Override
     protected void onServiceConnected() {
+
+        getApplicationContext().setTheme(R.style.AppTheme);
 
         Log.d(TAG, "Service started.");
 
