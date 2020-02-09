@@ -59,4 +59,8 @@ public class NewUser {
     public void setConfPassword(String confPassword) {
         this.confPassword = confPassword;
     }
+
+    public static String fullName(String firstName, String lastName) {
+        return firstName + " " + lastName;
+    }
 }

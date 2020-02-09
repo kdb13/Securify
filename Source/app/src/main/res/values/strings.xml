@@ -80,7 +80,9 @@
     <string name="volunteer_limit_message">Only 5 volunteers can be added!</string>
 
     <!-- Alert message -->
-    <string name="alert_message">//SECURIFY//\n\n%1$s\n\nMy location: %2$s</string>
+    <string name="alert_message">
+        //SECURIFY\\\\\n\nThis person needs your help: %1$s (%2$s)\n\nLocation: %3$s
+    </string>
 
     <string name="help_message">I need help!</string>
     <string name="button_call">Call</string>

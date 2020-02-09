@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -114,6 +115,14 @@ public class FirestoreRepository {
         return firestore
                 .collection(Collections.USERS)
                 .whereEqualTo(MetaUser.PHONE, phone);
+
+    }
+
+    public DocumentReference getCurrentUserDocument() {
+
+        return firestore.document(
+                Collections.USERS + "/" +
+                        Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid());
 
     }
 

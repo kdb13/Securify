@@ -1,21 +1,24 @@
 package com.lina.securify.services;
 
-import android.app.Instrumentation;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.telephony.SmsManager;
 import android.util.Log;
 
-import androidx.databinding.Observable;
+import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Source;
 import com.lina.securify.data.FirestoreRepository;
+import com.lina.securify.data.models.Alert;
+import com.lina.securify.data.models.NewUser;
 import com.lina.securify.utils.Utils;
 import com.lina.securify.utils.constants.IntentActions;
+import com.lina.securify.utils.constants.MetaUser;
 import com.lina.securify.utils.constants.MetaVolunteer;
 import com.lina.securify.utils.constants.RequestCodes;
 import com.lina.securify.views.dialogs.DialogListener;
@@ -69,7 +72,36 @@ public class AlertSender implements DialogListener {
 
     }
 
-    private void sendAlert(List<String> phones) {
+    private void sendAlert(final List<String> phones) {
+
+        repository
+                .getCurrentUserDocument()
+                .get(Source.CACHE)
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                        Alert alert = new Alert(
+                                NewUser.fullName(
+                                        documentSnapshot.getString(MetaUser.FIRST_NAME),
+                                        documentSnapshot.getString(MetaUser.LAST_NAME)),
+                                documentSnapshot.getString(MetaUser.PHONE),
+                                "0:0", "", ""
+                        );
+
+                        sendAlertSms(alert, phones);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "onFailure: ", e);
+                    }
+                });
+
+    }
+
+    private void sendAlertSms(Alert alert, List<String> phones) {
 
         Intent sentIntent = new Intent(context, AlertReceiver.class);
         sentIntent.setAction(IntentActions.ACTION_ALERT_SENT);
@@ -96,11 +128,13 @@ public class AlertSender implements DialogListener {
             smsManager.sendTextMessage(
                     phone,
                     null,
-                    Utils.parseAlertMessage(context),
+                    Utils.makeAlertMessage(context, alert),
                     sentPendingIntent,
                     deliveredPendingIntent
             );
 
         }
+
     }
+
 }

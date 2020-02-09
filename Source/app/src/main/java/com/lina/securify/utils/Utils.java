@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.lina.securify.R;
+import com.lina.securify.data.models.Alert;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -50,12 +51,12 @@ public class Utils {
 
     }
 
-    public static String parseAlertMessage(Context context) {
+    public static String makeAlertMessage(Context context, Alert alert) {
 
-        return context.getString(
-                R.string.alert_message,
-                context.getString(R.string.help_message),
-                "0:0");
+        return context.getString(R.string.alert_message,
+                alert.getVictimName(),
+                alert.getVictimPhone(),
+                alert.getLocation());
 
     }
 
@@ -63,7 +64,7 @@ public class Utils {
 
         return
                 Pattern
-                        .compile("//SECURIFY//")
+                        .compile("//SECURIFY\\\\")
                         .matcher(messageBody)
                         .find();
 
