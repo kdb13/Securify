@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashScreenFragment"
-        android:name="com.lina.securify.views.auth.SplashScreenFragment"
+        android:name="com.lina.securify.views.fragments.SplashScreenFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_splash_screen">
 
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/emailFragment"
-        android:name="com.lina.securify.views.auth.EmailFragment"
+        android:name="com.lina.securify.views.fragments.EmailFragment"
         android:label="fragment_verify_email"
         tools:layout="@layout/fragment_email" >
 
@@ -57,7 +57,7 @@
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.lina.securify.views.auth.SignUpFragment"
+        android:name="com.lina.securify.views.fragments.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" >
 
@@ -79,7 +79,7 @@
 
     <fragment
         android:id="@+id/passwordFragment"
-        android:name="com.lina.securify.views.auth.PasswordFragment"
+        android:name="com.lina.securify.views.fragments.PasswordFragment"
         android:label="fragment_password"
         tools:layout="@layout/fragment_password" >
 
@@ -101,7 +101,7 @@
 
     <fragment
         android:id="@+id/phoneFragment"
-        android:name="com.lina.securify.views.auth.PhoneFragment"
+        android:name="com.lina.securify.views.fragments.PhoneFragment"
         android:label="fragment_verify_phone"
         tools:layout="@layout/fragment_phone">
 
@@ -119,7 +119,7 @@
 
     <fragment
         android:id="@+id/pinFragment"
-        android:name="com.lina.securify.views.auth.PinFragment"
+        android:name="com.lina.securify.views.fragments.PinFragment"
         android:label="fragment_pin"
         tools:layout="@layout/fragment_pin" >
 

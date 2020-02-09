@@ -8,16 +8,16 @@
 
         <variable
             name="viewModel"
-            type="com.lina.securify.viewmodels.auth.EmailViewModel" />
+            type="com.lina.securify.viewmodels.EmailViewModel" />
         <variable
             name="fragment"
-            type="com.lina.securify.views.auth.EmailFragment" />
+            type="com.lina.securify.views.fragments.EmailFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".views.auth.EmailFragment">
+        tools:context=".views.fragments.EmailFragment">
 
         <include
             android:id="@+id/progress_bar"

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="dialog"
+            type="com.lina.securify.views.dialogs.ReceiveAlertDialog" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/help_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="@dimen/global_padding"
+            android:text="@string/help_message"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_call"
+            style="@style/DialogButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{dialog::onButtonClick}"
+            android:text="@string/button_call"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/help_title" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_locate"
+            style="@style/DialogButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_locate"
+            android:onClick="@{dialog::onButtonClick}"
+            app:layout_constraintEnd_toStartOf="@+id/button_call"
+            app:layout_constraintTop_toBottomOf="@+id/help_title" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_reply"
+            android:text="@string/button_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/DialogButton"
+            android:onClick="@{dialog::onButtonClick}"
+            app:layout_constraintEnd_toStartOf="@+id/button_locate"
+            app:layout_constraintTop_toBottomOf="@+id/help_title" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
+

@@ -7,7 +7,7 @@ import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.lina.securify.R;
-import com.lina.securify.views.dialogs.SendAlertDialog;
+import com.lina.securify.views.dialogs.HelpAlertDialogBuilder;
 
 public class ButtonService extends AccessibilityService {
 
@@ -19,11 +19,11 @@ public class ButtonService extends AccessibilityService {
     @Override
     protected void onServiceConnected() {
 
-        getApplicationContext().setTheme(R.style.AppTheme);
-
         Log.d(TAG, "Service started.");
 
-        sendAlertDialog = SendAlertDialog.build(getApplicationContext(), new AlertSender(getApplicationContext()));
+        getApplicationContext().setTheme(R.style.AppTheme);
+
+        sendAlertDialog = HelpAlertDialogBuilder.buildSendAlert(getApplicationContext(), new AlertSender(getApplicationContext()));
 
         listener = new VolumeLongPressListener(
                 getApplicationContext(),
@@ -32,9 +32,7 @@ public class ButtonService extends AccessibilityService {
                 new Runnable() {
                     @Override
                     public void run() {
-
                         sendAlertDialog.show();
-
                     }
                 }
         );
@@ -52,6 +50,7 @@ public class ButtonService extends AccessibilityService {
         }
 
         return super.onKeyEvent(event);
+
     }
 
     public void onAccessibilityEvent(AccessibilityEvent event) {
@@ -65,7 +64,8 @@ public class ButtonService extends AccessibilityService {
 
     private boolean isVolumeKey(KeyEvent event) {
 
-        return ((event.getAction() == KeyEvent.ACTION_DOWN || event.getAction() == KeyEvent.ACTION_UP) &&
+        return ((event.getAction() == KeyEvent.ACTION_DOWN ||
+                event.getAction() == KeyEvent.ACTION_UP) &&
                 event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP);
 
     }

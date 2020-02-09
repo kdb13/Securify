@@ -23,18 +23,18 @@
 
         <variable
             name="fragment"
-            type="com.lina.securify.views.auth.PinFragment" />
+            type="com.lina.securify.views.fragments.PinFragment" />
 
         <variable
             name="viewModel"
-            type="com.lina.securify.viewmodels.auth.PinViewModel" />
+            type="com.lina.securify.viewmodels.PinViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".views.auth.PinFragment">
+        tools:context=".views.fragments.PinFragment">
 
         <include layout="@layout/progress_bar"
             android:id="@+id/progress_bar"

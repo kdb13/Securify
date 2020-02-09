@@ -7,11 +7,11 @@
     <data>
         <variable
             name="fragment"
-            type="com.lina.securify.views.auth.SignUpFragment" />
+            type="com.lina.securify.views.fragments.SignUpFragment" />
 
         <variable
             name="viewModel"
-            type="com.lina.securify.viewmodels.auth.SignUpViewModel" />
+            type="com.lina.securify.viewmodels.SignUpViewModel" />
 
         <variable
             name="existingEmailStringId"
@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".views.auth.SignUpFragment">
+        tools:context=".views.fragments.SignUpFragment">
 
         <include android:id="@+id/progress_bar"
             android:visibility="@{viewModel.progressVisibility}"

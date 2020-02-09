@@ -14,7 +14,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskExecutors;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -22,12 +21,9 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Source;
-import com.lina.securify.data.meta.Collections;
-import com.lina.securify.data.meta.MetaUser;
+import com.lina.securify.utils.constants.Collections;
+import com.lina.securify.utils.constants.MetaUser;
 import com.lina.securify.data.models.NewUser;
-
-import org.w3c.dom.Document;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,13 +34,11 @@ import java.util.concurrent.TimeUnit;
 /**
  * This class connects with Firebase to perform various authentication tasks.
  */
-public class AuthRepository {
+public class AuthRepository extends BaseRepository {
 
     private static final String TAG = AuthRepository.class.getSimpleName();
 
     private static AuthRepository instance;
-
-    private FirebaseAuth firebaseAuth;
 
     public static AuthRepository getInstance() {
         if (instance == null)
@@ -54,7 +48,7 @@ public class AuthRepository {
     }
 
     private AuthRepository() {
-        firebaseAuth = FirebaseAuth.getInstance();
+        super();
     }
 
     /**
@@ -128,7 +122,17 @@ public class AuthRepository {
 
                         } else {
 
-                            handleAuthException(task.getException(), authResult);
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+
+                                authResult.setValue(Result.WRONG_PASSWORD);
+
+                            } else {
+
+                                authResult.setValue(Result.UNKNOWN_ERROR);
+
+                                Log.e(TAG, "An unknown error occurred!", task.getException());
+
+                            }
 
                         }
 
@@ -263,6 +267,19 @@ public class AuthRepository {
         return authResult;
     }
 
+    private void addPhone(String phone) {
+
+        Objects.requireNonNull(getCurrenUserDocument())
+                .update(MetaUser.PHONE, phone)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Error adding phone to user!", e);
+                    }
+                });
+
+    }
+
     private void _addPin(String pin, final MutableLiveData<Result> authResult) {
 
         DocumentReference document;
@@ -367,44 +384,10 @@ public class AuthRepository {
         if (userId != null)
             return FirebaseFirestore
             .getInstance()
-            .collection(Collections.USER)
+            .collection(Collections.USERS)
             .document(userId);
         else
             return null;
-    }
-
-    @Nullable
-    private String getCurrentUserID() {
-        if (firebaseAuth.getCurrentUser() == null)
-            return null;
-        else
-            return firebaseAuth.getCurrentUser().getUid();
-    }
-
-    /**
-     * Handle the Firebase exceptions
-     * @param e The Exception object
-     * @param authResult The auth result to be set based on exception
-     */
-    private void handleAuthException(Exception e, MutableLiveData<Result> authResult) {
-
-        if (e instanceof FirebaseAuthInvalidCredentialsException) {
-
-            /*
-                There will be no weak password exception as it is already validated inside the UI.
-                So, this exception is about wrong password.
-             */
-
-            authResult.setValue(Result.WRONG_PASSWORD);
-
-        } else {
-
-            authResult.setValue(Result.UNKNOWN_ERROR);
-
-            Log.e(TAG, "An unknown error occurred!", e);
-
-        }
-
     }
 
     /**

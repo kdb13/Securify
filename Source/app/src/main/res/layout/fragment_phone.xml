@@ -10,10 +10,10 @@
 
         <variable
             name="fragment"
-            type="com.lina.securify.views.auth.PhoneFragment" />
+            type="com.lina.securify.views.fragments.PhoneFragment" />
         <variable
             name="viewModel"
-            type="com.lina.securify.viewmodels.auth.PhoneViewModel" />
+            type="com.lina.securify.viewmodels.PhoneViewModel" />
         <variable
             name="codeUiVisibility"
             type="boolean" />

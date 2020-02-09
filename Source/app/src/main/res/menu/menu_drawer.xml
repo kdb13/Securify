@@ -11,7 +11,9 @@
             android:id="@+id/alertsFragment"
             android:title="@string/fragment_alerts" />
 
-
+        <item
+            android:id="@+id/volunteersFragment"
+            android:title="@string/fragment_volunteers" />
     </group>
 
 

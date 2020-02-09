@@ -53,4 +53,9 @@ public abstract class TextInputValidator {
 
     }
 
+    public void removeTextWatcher() {
+        Objects.requireNonNull(inputLayout.getEditText())
+                .removeTextChangedListener((TextWatcher) this);
+    }
+
 }

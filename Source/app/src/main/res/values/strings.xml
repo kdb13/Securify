@@ -13,6 +13,7 @@
     <string name="hint_sms_code">Enter the code</string>
     <string name="hint_pin">PIN</string>
     <string name="hint_reenter_pin">Re-enter PIN</string>
+    <string name="hint_name">Name</string>
 
     <!-- Buttons -->
     <string name="button_continue">Continue</string>
@@ -40,6 +41,7 @@
     <string name="error_conf_password_required">Re-enter password</string>
     <string name="error_pin_required">Enter PIN</string>
     <string name="error_conf_pin_required">Re-enter PIN</string>
+    <string name="error_name_required">Enter name</string>
 
     <!-- Other errors -->
     <string name="error_invalid_email">Invalid email!</string>
@@ -62,12 +64,27 @@
 
     <!-- Menu items -->
     <string name="item_log_out">Log out</string>
+    <string name="item_add">Add</string>
+    <string name="item_delete">Delete</string>
 
     <!-- Fragments -->
     <string name="fragment_home">Home</string>
     <string name="fragment_alerts">Alerts</string>
+    <string name="fragment_volunteers">Volunteers</string>
 
     <!-- Send alert dialog -->
     <string name="send_alert">Send alert?</string>
+
+    <string name="dialog_add_volunteer">Add volunteer</string>
+
+    <string name="volunteer_limit_message">Only 5 volunteers can be added!</string>
+
+    <!-- Alert message -->
+    <string name="alert_message">//SECURIFY//\n\n%1$s\n\nMy location: %2$s</string>
+
+    <string name="help_message">I need help!</string>
+    <string name="button_call">Call</string>
+    <string name="button_locate">Locate</string>
+    <string name="button_reply">Reply</string>
 
 </resources>
