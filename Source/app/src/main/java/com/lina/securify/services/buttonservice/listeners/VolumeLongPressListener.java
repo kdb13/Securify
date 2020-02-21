@@ -1,12 +1,13 @@
-package com.lina.securify.services;
+package com.lina.securify.services.buttonservice.listeners;
 
 import android.content.Context;
 import android.media.AudioManager;
 
+import com.lina.securify.services.buttonservice.VolumeReseter;
+
 public class VolumeLongPressListener extends LongPressListener {
 
     private VolumeReseter volumeReseter;
-
     private boolean isSuccess = false;
 
     public VolumeLongPressListener(Context context, int keyCode, int durationInMillis, Runnable task) {

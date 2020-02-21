@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="dialog"
             type="com.lina.securify.views.dialogs.ReceiveAlertDialog" />
+
+        <variable
+            name="alert"
+            type="com.lina.securify.data.models.Alert" />
 
     </data>
 
@@ -23,10 +27,21 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="@dimen/global_padding"
             android:text="@string/help_message"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/victim_name"
+            android:text="@{alert.victimName}"
+            tools:text="John Doe"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:layout_constraintTop_toBottomOf="@id/help_title"
+            app:layout_constraintStart_toStartOf="@id/help_title"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_call"
@@ -36,7 +51,7 @@
             android:onClick="@{dialog::onButtonClick}"
             android:text="@string/button_call"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/help_title" />
+            app:layout_constraintTop_toBottomOf="@id/victim_name" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_locate"
@@ -46,7 +61,7 @@
             android:text="@string/button_locate"
             android:onClick="@{dialog::onButtonClick}"
             app:layout_constraintEnd_toStartOf="@+id/button_call"
-            app:layout_constraintTop_toBottomOf="@+id/help_title" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_reply"
@@ -56,7 +71,7 @@
             style="@style/DialogButton"
             android:onClick="@{dialog::onButtonClick}"
             app:layout_constraintEnd_toStartOf="@+id/button_locate"
-            app:layout_constraintTop_toBottomOf="@+id/help_title" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

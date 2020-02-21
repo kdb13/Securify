@@ -6,10 +6,13 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * This test verifies the trimming of various phone numbers.
+ */
 public class PhoneTrimTest {
 
     @Test
-    public void phoneTrim_isCorrect() {
+    public void givenAPhoneNumber_shouldTrimTheNumber() {
 
         assertEquals("8000046911", Utils.trimPhone("+918000046911"));
         assertEquals("8000046911", Utils.trimPhone("+91 80000 46911"));

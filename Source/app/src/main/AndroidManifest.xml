@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -39,7 +41,7 @@
         </activity>
 		
 		<service
-            android:name=".services.ButtonService"
+            android:name=".services.buttonservice.ButtonService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
             android:label="Button Service">
 
@@ -53,7 +55,7 @@
         </service>
 
         <receiver
-            android:name=".services.AlertReceiver"
+            android:name=".receivers.AlertReceiver"
             android:permission="android.permission.BROADCAST_SMS">
 
             <intent-filter>

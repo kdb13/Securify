@@ -20,8 +20,11 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.lina.securify.R;
+import com.lina.securify.data.models.Alert;
 import com.lina.securify.databinding.ActivityMainBinding;
+import com.lina.securify.utils.AlertVibrator;
 import com.lina.securify.utils.constants.RequestCodes;
+import com.lina.securify.views.dialogs.ReceiveAlertDialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +37,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        checkPermissions();
+
+        new ReceiveAlertDialog(this, new Alert(
+                "Ada Lovelace", "+918000046911", null
+        ));
+        requestPermissions();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.toolbar.setTitle(R.string.fragment_home);
@@ -62,23 +69,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode,
             @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        switch (requestCode) {
-
-            case RequestCodes.REQUEST_PERMISSION_RECEIVE_SMS:
-
-                if (grantResults.length > 0 &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    Log.d(TAG, "Permission granted!");
-
-                }
-
-                break;
-
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
     }
 
@@ -111,17 +102,20 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
-    private void checkPermissions() {
+    private void requestPermissions() {
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS)
-            != PackageManager.PERMISSION_GRANTED) {
+        String[] permissions = new String[] {
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.CALL_PHONE,
+                Manifest.permission.READ_SMS,
+                Manifest.permission.RECEIVE_SMS,
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.READ_CONTACTS
+        };
 
-            ActivityCompat.requestPermissions(this,
-                    new String[] {Manifest.permission.RECEIVE_SMS},
-                    RequestCodes.REQUEST_PERMISSION_RECEIVE_SMS
-            );
+        ActivityCompat.requestPermissions(this,
+                permissions, RequestCodes.REQUEST_APP_PERMISSIONS);
 
-        }
 
     }
 }

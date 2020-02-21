@@ -1,4 +1,4 @@
-package com.lina.securify.services;
+package com.lina.securify.services.buttonservice;
 
 import android.content.Context;
 import android.media.AudioManager;
@@ -19,10 +19,6 @@ public class VolumeReseter {
         this.streamType = streamType;
     }
 
-    public int getVolume() {
-        return audioManager.getStreamVolume(streamType);
-    }
-
     public void setInitialVolume() {
         Log.d(TAG, "Initial volume: " + getVolume());
 
@@ -35,4 +31,7 @@ public class VolumeReseter {
         Log.d(TAG, "New volume: " + getVolume());
     }
 
+    private int getVolume() {
+        return audioManager.getStreamVolume(streamType);
+    }
 }

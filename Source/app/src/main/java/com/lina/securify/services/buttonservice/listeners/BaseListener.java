@@ -1,4 +1,4 @@
-package com.lina.securify.services;
+package com.lina.securify.services.buttonservice.listeners;
 
 import android.view.KeyEvent;
 
@@ -8,9 +8,8 @@ import android.view.KeyEvent;
  */
 public abstract class BaseListener implements KeyEvent.Callback {
 
-    protected int keyCode;
-
-    protected Runnable task;
+    int keyCode;
+    Runnable task;
 
     /**
      * Must be used by the sub-classes to set the common parameters
@@ -32,7 +31,7 @@ public abstract class BaseListener implements KeyEvent.Callback {
         event.dispatch(this, new KeyEvent.DispatcherState(), this);
     }
 
-    public interface Callback {
+    interface Callback {
 
         /**
          * It is called when the listening is completed and is a success

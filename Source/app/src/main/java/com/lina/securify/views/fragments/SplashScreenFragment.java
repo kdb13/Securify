@@ -74,9 +74,8 @@ public class SplashScreenFragment extends Fragment {
     }
 
     private void goToMainActivity() {
-        Intent intent = new Intent(requireContext(), MainActivity.class);
+        Intent intent = new Intent(requireActivity(),MainActivity.class);
         startActivity(intent);
-
         requireActivity().finish();
     }
 }

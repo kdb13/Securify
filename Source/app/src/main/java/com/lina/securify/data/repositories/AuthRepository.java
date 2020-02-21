@@ -216,7 +216,7 @@ public class AuthRepository extends BaseRepository {
 
         final MutableLiveData<Result> authResult = new MutableLiveData<>();
 
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(
+        final PhoneAuthCredential credential = PhoneAuthProvider.getCredential(
                 verificationCode, smsCode
         );
 
@@ -226,7 +226,11 @@ public class AuthRepository extends BaseRepository {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+
                         authResult.setValue(Result.PHONE_VERIFIED);
+
+                        addPhone();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -267,10 +271,10 @@ public class AuthRepository extends BaseRepository {
         return authResult;
     }
 
-    private void addPhone(String phone) {
+    private void addPhone() {
 
         Objects.requireNonNull(getCurrenUserDocument())
-                .update(MetaUser.PHONE, phone)
+                .update(MetaUser.PHONE, firebaseAuth.getCurrentUser().getPhoneNumber())
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {

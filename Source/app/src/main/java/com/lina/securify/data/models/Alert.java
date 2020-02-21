@@ -2,24 +2,22 @@ package com.lina.securify.data.models;
 
 public class Alert {
 
+    private static final String TAG = Alert.class.getSimpleName();
+
+    private String location;
     private String victimName;
     private String victimPhone;
-    private String message;
-    private String location;
-    private String sendDateTime;
+
+    public Alert() { }
 
     public Alert(
             String victimName,
             String victimPhone,
-            String message,
-            String location,
-            String sendDateTime) {
+            String location) {
 
         this.victimName = victimName;
         this.victimPhone = victimPhone;
-        this.message = message;
         this.location = location;
-        this.sendDateTime = sendDateTime;
 
     }
 
@@ -31,15 +29,20 @@ public class Alert {
         return victimName;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
     public String getLocation() {
         return location;
     }
 
-    public String getSendDateTime() {
-        return sendDateTime;
+    public void setVictimName(String victimName) {
+        this.victimName = victimName;
     }
+
+    public void setVictimPhone(String victimPhone) {
+        this.victimPhone = victimPhone;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
 }

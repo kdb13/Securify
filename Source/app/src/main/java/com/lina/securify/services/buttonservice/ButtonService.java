@@ -1,40 +1,32 @@
-package com.lina.securify.services;
+package com.lina.securify.services.buttonservice;
 
 import android.accessibilityservice.AccessibilityService;
-import android.app.Dialog;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.lina.securify.R;
-import com.lina.securify.views.dialogs.HelpAlertDialogBuilder;
+import com.lina.securify.services.buttonservice.listeners.BaseListener;
+import com.lina.securify.services.buttonservice.listeners.VolumeLongPressListener;
+import com.lina.securify.views.dialogs.DialogListener;
+import com.lina.securify.views.dialogs.SendAlertDialog;
 
 public class ButtonService extends AccessibilityService {
 
     private static final String TAG = "ButtonService";
 
     private BaseListener listener;
-    private Dialog sendAlertDialog;
 
     @Override
     protected void onServiceConnected() {
 
-        Log.d(TAG, "Service started.");
-
+        // Set the application theme
         getApplicationContext().setTheme(R.style.AppTheme);
-
-        sendAlertDialog = HelpAlertDialogBuilder.buildSendAlert(getApplicationContext(), new AlertSender(getApplicationContext()));
 
         listener = new VolumeLongPressListener(
                 getApplicationContext(),
                 KeyEvent.KEYCODE_VOLUME_UP,
-                1500,
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        sendAlertDialog.show();
-                    }
-                }
+                3000,
+                () -> new SendAlertDialog(getApplicationContext())
         );
 
     }
@@ -57,7 +49,6 @@ public class ButtonService extends AccessibilityService {
 
     }
 
-    @Override
     public void onInterrupt() {
 
     }

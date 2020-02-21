@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.lina.securify.R;
-import com.lina.securify.views.dialogs.HelpAlertDialogBuilder;
-import com.lina.securify.views.dialogs.ReceiveAlertDialog;
 
 public class AuthActivity extends AppCompatActivity {
 
@@ -17,6 +15,5 @@ public class AuthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
-        new ReceiveAlertDialog(this);
     }
 }

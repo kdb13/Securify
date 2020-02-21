@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -12,25 +11,19 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.lina.securify.R;
-import com.lina.securify.databinding.DialogReceiveAlertBinding;
 
 import java.util.Objects;
 
 /**
  * It creates the dialog for sending & receiving the alert.
  */
-public class HelpAlertDialogBuilder {
+public class AlertDialogsBuilder {
 
     public static Dialog buildSendAlert(final Context context, final DialogListener listener) {
 
         AlertDialog dialog = new MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.send_alert)
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setNegativeButton("Cancel", null)
                 .setPositiveButton("Send", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

@@ -2,6 +2,7 @@ package com.lina.securify.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
@@ -48,15 +49,6 @@ public class Utils {
 
         activity.getWindow()
                 .setStatusBarColor(ContextCompat.getColor(activity, color));
-
-    }
-
-    public static String makeAlertMessage(Context context, Alert alert) {
-
-        return context.getString(R.string.alert_message,
-                alert.getVictimName(),
-                alert.getVictimPhone(),
-                alert.getLocation());
 
     }
 
