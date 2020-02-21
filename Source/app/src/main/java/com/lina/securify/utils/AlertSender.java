@@ -3,9 +3,20 @@ package com.lina.securify.utils;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.telephony.SmsManager;
 import android.util.Log;
 
+import androidx.core.content.ContextCompat;
+
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Source;
 import com.lina.securify.data.FirestoreRepository;
@@ -13,7 +24,6 @@ import com.lina.securify.data.models.Alert;
 import com.lina.securify.data.models.NewUser;
 import com.lina.securify.receivers.AlertReceiver;
 import com.lina.securify.utils.constants.IntentActions;
-import com.lina.securify.utils.constants.MetaUser;
 import com.lina.securify.utils.constants.MetaVolunteer;
 import com.lina.securify.utils.constants.RequestCodes;
 
@@ -29,29 +39,27 @@ public class AlertSender {
 
     private Context context;
     private AlertSmsBuilder builder;
+    private FusedLocationProviderClient fusedLocationClient;
 
     public AlertSender(Context context) {
         this.context = context;
         builder = new AlertSmsBuilder(context);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
     }
 
     public void send() {
 
         // Fetch the information necessary to build the Alert SMS
-        fetchData();
+        fetchPhones();
 
     }
 
-    /**
-     * It fetches the information necessary to build the SMS and then sends the SMS by
-     * calling the <code>sendSms</code> method.
-     */
-    private void fetchData() {
+    private void fetchPhones() {
 
         repository
                 .getVolunteers()
                 .get(Source.CACHE)
-                .addOnSuccessListener((querySnapshot -> {
+                .addOnSuccessListener(querySnapshot -> {
 
                     // #1 Get the phone numbers of victim's volunteers
                     final List<String> phones = new ArrayList<>();
@@ -60,36 +68,63 @@ public class AlertSender {
                         phones.add(documentSnapshot.getString(MetaVolunteer.PHONE));
                     }
 
-                    repository
-                            .getCurrentUserDocument()
-                            .get(Source.CACHE)
-                            .addOnSuccessListener((documentSnapshot -> {
+                    fetchUserInfo(phones);
 
-                                // #2 Get the victim's information and build the Alert
-                                NewUser user = documentSnapshot.toObject(NewUser.class);
+                });
 
-                                if (user != null) {
-                                    Alert alert = new Alert(
-                                            NewUser.fullName(user.getFirstName(), user.getLastName()),
-                                            user.getPhone(),
-                                            "0.0:0.0"
-                                    );
+    }
 
-                                    // #3 Build the Alert SMS and send it
-                                    sendSms(builder.buildSms(alert), phones);
+    private void fetchUserInfo(List<String> phones) {
 
-                                } else {
-                                    Log.e(TAG, "A null User returned!");
-                                }
+            repository
+                    .getCurrentUserDocument()
+                    .get(Source.CACHE)
+                    .addOnSuccessListener(documentSnapshot -> {
 
-                            }))
-                            .addOnFailureListener(e -> {
-                                Log.e(TAG, "Error fetching current user's document", e);
-                            });
+                        // #2 Get the victim's information
+                        NewUser user = documentSnapshot.toObject(NewUser.class);
 
-                }))
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "Error fetching volunteers!", e);
+                        if (user != null) {
+
+                            Alert alert = new Alert(
+                                    NewUser.fullName(user.getFirstName(), user.getLastName()),
+                                    user.getPhone(),
+                                    ""
+                            );
+
+                            Log.d(TAG, "Name: " + NewUser.fullName(user.getFirstName(), user.getLastName()));
+
+                            // #3 Get the victim's location
+                            fetchLocationAndSend(phones, alert);
+                        }
+
+                    })
+                    .addOnFailureListener(e ->
+                            Log.e(TAG, "Error fetching current user's document", e));
+
+    }
+
+    private void fetchLocationAndSend(List<String> phones, Alert alert) {
+
+        fusedLocationClient
+                .getLastLocation()
+                .addOnSuccessListener(location -> {
+
+                    if (location != null) {
+
+                        alert.setLocation(
+                                location.getLatitude() + "," + location.getLongitude()
+                        );
+
+                    } else {
+
+                        alert.setLocation("No location sent!");
+
+                    }
+
+                    // #4 Send the SMS
+                    sendSms(builder.buildSms(alert), phones);
+
                 });
 
     }

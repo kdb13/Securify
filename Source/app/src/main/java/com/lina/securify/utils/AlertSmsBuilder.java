@@ -51,7 +51,7 @@ public class AlertSmsBuilder {
         ALERT_SMS_PATTERN = Pattern.compile(
                 "//" + header + "\\\\\\\\\\n\\n" +
                 needsHelp + ":\\s[a-z|A-Z]+\\s[a-z|A-Z]+\\s\\(\\+91\\d{10}\\)\\n\\n" +
-                currentLocation + ":\\s\\d+.\\d+:\\d+.\\d+");
+                currentLocation + ":\\s\\d+.\\d+,\\d+.\\d+");
 
     }
 
@@ -163,6 +163,6 @@ public class AlertSmsBuilder {
 
         final Pattern NAME = Pattern.compile("[a-z|A-Z]+\\s[a-z|A-Z]+");
         final Pattern PHONE = Pattern.compile("\\(\\+91\\d{10}\\)");
-        final Pattern LOCATION = Pattern.compile("\\d+.\\d+:\\d+.\\d+");
+        final Pattern LOCATION = Pattern.compile("\\d+.\\d+,\\d+.\\d+");
     }
 }

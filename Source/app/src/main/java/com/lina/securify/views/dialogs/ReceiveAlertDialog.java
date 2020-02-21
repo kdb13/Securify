@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -17,6 +18,8 @@ import com.lina.securify.databinding.DialogReceiveAlertBinding;
 import com.lina.securify.utils.Utils;
 
 public class ReceiveAlertDialog {
+
+    private static final String TAG = ReceiveAlertDialog.class.getSimpleName();
 
     private Dialog dialog;
     private DialogReceiveAlertBinding binding;
@@ -42,6 +45,7 @@ public class ReceiveAlertDialog {
                 break;
 
             case R.id.button_locate:
+                locate(binding.getAlert().getLocation());
                 break;
 
             case R.id.button_reply:
@@ -67,5 +71,14 @@ public class ReceiveAlertDialog {
             dialog.getContext().startActivity(intent);
 
         }
+    }
+
+    private void locate(String location) {
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("geo:0,0?q=" + location));
+        intent.setPackage("com.google.android.apps.maps");
+
+        dialog.getContext().startActivity(intent);
     }
 }

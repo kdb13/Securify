@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lina.securify.R;
 import com.lina.securify.data.models.Alert;
@@ -37,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-        new ReceiveAlertDialog(this, new Alert(
+        /*new ReceiveAlertDialog(this, new Alert(
                 "Ada Lovelace", "+918000046911", null
-        ));
+        ));*/
+
         requestPermissions();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
@@ -49,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
 
         setupNavigation();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        checkForPlayServices();
     }
 
     @Override
@@ -110,12 +119,27 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.READ_SMS,
                 Manifest.permission.RECEIVE_SMS,
                 Manifest.permission.SEND_SMS,
-                Manifest.permission.READ_CONTACTS
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.ACCESS_FINE_LOCATION
         };
 
         ActivityCompat.requestPermissions(this,
                 permissions, RequestCodes.REQUEST_APP_PERMISSIONS);
 
+
+    }
+
+    private void checkForPlayServices() {
+
+        GoogleApiAvailability availability = GoogleApiAvailability.getInstance();
+        int code;
+
+        if ((code = availability.isGooglePlayServicesAvailable(this))
+                != ConnectionResult.SUCCESS) {
+
+            availability.getErrorDialog(this, code, -1).show();
+
+        }
 
     }
 }
