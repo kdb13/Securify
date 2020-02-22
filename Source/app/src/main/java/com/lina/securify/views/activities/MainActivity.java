@@ -19,8 +19,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lina.securify.R;
+import com.lina.securify.data.models.Alert;
 import com.lina.securify.databinding.ActivityMainBinding;
 import com.lina.securify.utils.constants.RequestCodes;
+import com.lina.securify.views.dialogs.ReceiveAlertDialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         /*new ReceiveAlertDialog(this, new Alert(
-                "Ada Lovelace", "+918000046911", null
+                "Ada Lovelace", "+918000046911", "45.232323,23.2323"
         ));*/
 
         requestPermissions();

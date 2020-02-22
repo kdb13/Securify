@@ -36,13 +36,10 @@ public class FirestoreRepository {
     private static final String TAG = FirestoreRepository.class.getSimpleName();
 
     private static FirestoreRepository instance;
-    private FirebaseFirestore firestore;
-    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-    private FirestoreRepository() {
-        firestore = FirebaseFirestore.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-    }
+    private FirestoreRepository() { }
 
     public static FirestoreRepository getInstance() {
         if (instance == null)

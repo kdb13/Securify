@@ -32,6 +32,8 @@ public class ReceiveAlertDialog {
         dialog.show();
 
         binding.setAlert(alert);
+        binding.setIsLocateVisible(alert.getLocation().equals(context.getString(R.string.no_location))
+                ? View.GONE : View.VISIBLE);
         binding.setDialog(this);
 
     }
@@ -46,9 +48,6 @@ public class ReceiveAlertDialog {
 
             case R.id.button_locate:
                 locate(binding.getAlert().getLocation());
-                break;
-
-            case R.id.button_reply:
                 break;
 
             default:

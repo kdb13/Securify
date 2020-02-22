@@ -14,6 +14,10 @@
             name="alert"
             type="com.lina.securify.data.models.Alert" />
 
+        <variable
+            name="isLocateVisible"
+            type="int" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,18 +63,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_locate"
+            android:visibility="@{isLocateVisible}"
             android:onClick="@{dialog::onButtonClick}"
             app:layout_constraintEnd_toStartOf="@+id/button_call"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_reply"
-            android:text="@string/button_reply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/DialogButton"
-            android:onClick="@{dialog::onButtonClick}"
-            app:layout_constraintEnd_toStartOf="@+id/button_locate"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

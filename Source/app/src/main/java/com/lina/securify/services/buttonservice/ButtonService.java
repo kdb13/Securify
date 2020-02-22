@@ -25,7 +25,7 @@ public class ButtonService extends AccessibilityService {
         listener = new VolumeLongPressListener(
                 getApplicationContext(),
                 KeyEvent.KEYCODE_VOLUME_UP,
-                3000,
+                2000,
                 () -> new SendAlertDialog(getApplicationContext())
         );
 

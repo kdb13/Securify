@@ -12,14 +12,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.lina.securify.R;
-import com.lina.securify.adapters.VolunteersAdapter;
 import com.lina.securify.data.models.Volunteer;
 import com.lina.securify.databinding.FragmentVolunteersBinding;
 import com.lina.securify.utils.Utils;
@@ -147,35 +145,27 @@ public class VolunteersFragment extends Fragment {
                 binding.volunteersList
         );
 
-        viewModel.getSelection().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer selection) {
+        viewModel.getSelection().observe(getViewLifecycleOwner(), (selection) -> {
 
-                if (selection > 0) {
+            if (selection > 0) {
 
-                    if (actionMode == null)
-                        startActionMode();
+                if (actionMode == null)
+                    actionMode =  ((AppCompatActivity) requireActivity())
+                            .startSupportActionMode(actionModeCallback);
 
-                    actionMode.setTitle(selection + " selected");
+                actionMode.setTitle(selection + " selected");
 
-                } else {
+            } else if (actionMode != null){
 
-                    if (actionMode != null) {
-                        actionMode.finish();
-                        actionMode = null;
-                    }
-
-                }
+                actionMode.finish();
+                actionMode = null;
 
             }
+
         });
 
-    }
 
-    private void startActionMode() {
-
-        actionMode =  ((AppCompatActivity) requireActivity())
-                .startSupportActionMode(actionModeCallback);
 
     }
+
 }
