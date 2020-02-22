@@ -7,7 +7,7 @@
 
     <string name="needs_help">This person needs your help</string>
     <string name="current_location">Current location</string>
-
     <string name="help_message">I need help!</string>
+    <string name="no_location">No location</string>
 
 </resources>

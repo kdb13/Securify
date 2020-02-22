@@ -1,24 +1,16 @@
-package com.lina.securify.utils;
+package com.lina.securify.utils.alert;
 
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.telephony.SmsManager;
 import android.util.Log;
 
-import androidx.core.content.ContextCompat;
-
-import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Source;
+import com.lina.securify.R;
 import com.lina.securify.data.FirestoreRepository;
 import com.lina.securify.data.models.Alert;
 import com.lina.securify.data.models.NewUser;
@@ -118,7 +110,7 @@ public class AlertSender {
 
                     } else {
 
-                        alert.setLocation("No location sent!");
+                        alert.setLocation(context.getString(R.string.no_location));
 
                     }
 

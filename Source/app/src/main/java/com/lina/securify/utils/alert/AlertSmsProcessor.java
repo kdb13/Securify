@@ -1,4 +1,4 @@
-package com.lina.securify.utils;
+package com.lina.securify.utils.alert;
 
 import android.content.Context;
 import android.telephony.SmsMessage;
@@ -30,12 +30,11 @@ public class AlertSmsProcessor {
                     // Check if the SMS's mobile number belongs to a valid user
                     if (!querySnapshot.isEmpty()) {
 
-                        processResult.onResult(builder.parseAlertFromSms(
-                                smsMessage.getMessageBody()
-                        ));
+                        Alert alert = builder.parseAlertFromSms(smsMessage.getMessageBody());
 
-                    } else
-                        processResult.onResult(null);
+                        if (alert != null)
+                            processResult.onResult(alert);
+                    }
 
                 }));
 

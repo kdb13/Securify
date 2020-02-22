@@ -3,21 +3,12 @@ package com.lina.securify.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.telephony.SmsMessage;
-import android.util.Log;
 import android.provider.Telephony;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.lina.securify.R;
-import com.lina.securify.data.FirestoreRepository;
-import com.lina.securify.utils.AlertSmsProcessor;
-import com.lina.securify.utils.AlertVibrator;
+import com.lina.securify.utils.alert.AlertSmsProcessor;
+import com.lina.securify.utils.alert.AlertVibrator;
 import com.lina.securify.utils.constants.IntentActions;
-import com.lina.securify.utils.Utils;
 import com.lina.securify.views.dialogs.ReceiveAlertDialog;
 
 public class AlertReceiver extends BroadcastReceiver {

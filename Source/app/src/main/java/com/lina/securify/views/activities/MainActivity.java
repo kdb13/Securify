@@ -3,7 +3,6 @@ package com.lina.securify.views.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -12,9 +11,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -22,11 +19,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lina.securify.R;
-import com.lina.securify.data.models.Alert;
 import com.lina.securify.databinding.ActivityMainBinding;
-import com.lina.securify.utils.AlertVibrator;
 import com.lina.securify.utils.constants.RequestCodes;
-import com.lina.securify.views.dialogs.ReceiveAlertDialog;
 
 public class MainActivity extends AppCompatActivity {
 

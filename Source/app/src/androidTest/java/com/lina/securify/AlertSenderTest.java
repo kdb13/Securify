@@ -3,7 +3,7 @@ package com.lina.securify;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.lina.securify.utils.AlertSender;
+import com.lina.securify.utils.alert.AlertSender;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
