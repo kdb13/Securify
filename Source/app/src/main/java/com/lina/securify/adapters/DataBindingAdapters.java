@@ -1,5 +1,6 @@
 package com.lina.securify.adapters;
 
+import android.text.Html;
 import android.widget.Button;
 import android.widget.TextView;
 

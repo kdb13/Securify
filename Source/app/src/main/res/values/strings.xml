@@ -81,6 +81,10 @@
 
     <string name="button_call">Call</string>
     <string name="button_locate">Locate</string>
-    <string name="button_reply">Reply</string>
+
+    <string name="empty_volunteers_list_message">Start adding volunteers.</string>
+
+    <!-- CAB title -->
+    <string name="cab_title">%1$d selected</string>
 
 </resources>

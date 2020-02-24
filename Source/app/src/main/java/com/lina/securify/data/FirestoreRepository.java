@@ -3,15 +3,10 @@ package com.lina.securify.data;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableField;
-import androidx.lifecycle.LiveData;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -24,7 +19,6 @@ import com.lina.securify.utils.constants.Collections;
 import com.lina.securify.utils.constants.MetaUser;
 import com.lina.securify.utils.constants.MetaVolunteer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,7 +31,7 @@ public class FirestoreRepository {
 
     private static FirestoreRepository instance;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     private FirestoreRepository() { }
 
@@ -52,9 +46,12 @@ public class FirestoreRepository {
      * Returns all the volunteers of the currently signed in user.
      * @return A Query for all volunteers
      */
-    public Query getVolunteers() {
+    public CollectionReference getVolunteers() {
 
-        return volunteersRef();
+        return firestore
+                .collection(Collections.USERS)
+                .document(Objects.requireNonNull(auth.getCurrentUser()).getUid())
+                .collection(Collections.VOLUNTEERS);
 
     }
 
@@ -64,7 +61,7 @@ public class FirestoreRepository {
      */
     public void addVolunteer(Volunteer volunteer) {
 
-        volunteersRef()
+        getVolunteers()
                 .add(volunteer)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -81,7 +78,7 @@ public class FirestoreRepository {
      */
     public void removeVolunteers(List<String> phones) {
 
-        volunteersRef()
+        getVolunteers()
                 .whereIn(MetaVolunteer.PHONE, phones)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -119,16 +116,8 @@ public class FirestoreRepository {
 
         return firestore.document(
                 Collections.USERS + "/" +
-                        Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid());
+                        Objects.requireNonNull(auth.getCurrentUser()).getUid());
 
     }
 
-    private CollectionReference volunteersRef() {
-
-        return firestore
-                .collection(Collections.USERS)
-                .document(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid())
-                .collection(Collections.VOLUNTEERS);
-
-    }
 }

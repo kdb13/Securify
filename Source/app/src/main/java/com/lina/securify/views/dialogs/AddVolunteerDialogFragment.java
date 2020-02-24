@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -39,28 +40,30 @@ public class AddVolunteerDialogFragment extends DialogFragment {
 
     private static final String TAG = AddVolunteerDialogFragment.class.getSimpleName();
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        viewModel = new ViewModelProvider(requireActivity()).get(VolunteersViewModel.class);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         binding = DialogAddVolunteerBinding.inflate(
                 inflater, container, false
         );
 
-        binding.inputPhone.setEndIconOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToContactPicker();
-            }
-        });
-
+        binding.inputPhone.setEndIconOnClickListener(view -> goToContactPicker());
         binding.setVolunteer(new Volunteer());
 
         validation = new AddVolunteerValidation(binding);
-        viewModel = ViewModelProviders.of(requireActivity()).get(VolunteersViewModel.class);
 
         setToolbar();
 
         return binding.getRoot();
+
     }
 
     @NonNull
@@ -75,7 +78,10 @@ public class AddVolunteerDialogFragment extends DialogFragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        // Clear the menu parent activity
         menu.clear();
+
+        // Inflate the new menu
         inflater.inflate(R.menu.menu_add_volunteer, menu);
     }
 
@@ -83,6 +89,7 @@ public class AddVolunteerDialogFragment extends DialogFragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         if (item.getItemId() == R.id.add) {
+
             if (validation.validate()) {
 
                 viewModel.addVolunteer(binding.getVolunteer());
@@ -90,9 +97,11 @@ public class AddVolunteerDialogFragment extends DialogFragment {
                 NavHostFragment
                         .findNavController(this)
                         .navigateUp();
+
             }
 
             return true;
+
         } else
             return false;
 
@@ -111,6 +120,9 @@ public class AddVolunteerDialogFragment extends DialogFragment {
 
     }
 
+    /**
+     * Navigate to the contact picker.
+     */
     private void goToContactPicker() {
 
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -122,6 +134,9 @@ public class AddVolunteerDialogFragment extends DialogFragment {
 
     }
 
+    /**
+     * Update the UI with the picked contact.
+     */
     private void setPickedVolunteer(Uri uri, Volunteer volunteer) {
 
         String[] projection = {
@@ -154,6 +169,9 @@ public class AddVolunteerDialogFragment extends DialogFragment {
 
     }
 
+    /**
+     * Set the dialog's toolbar.
+     */
     private void setToolbar() {
 
         setHasOptionsMenu(true);
@@ -163,6 +181,7 @@ public class AddVolunteerDialogFragment extends DialogFragment {
                         .findViewById(R.id.toolbar);
 
         toolbar.setNavigationIcon(R.drawable.ic_close);
+
     }
 
 }

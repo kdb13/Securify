@@ -3,6 +3,7 @@ package com.lina.securify.views.fragments;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +15,16 @@ import androidx.appcompat.view.ActionMode;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.selection.SelectionTracker;
+import androidx.recyclerview.selection.StorageStrategy;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.snackbar.Snackbar;
 import com.lina.securify.R;
+import com.lina.securify.adapters.VolunteersAdapter;
 import com.lina.securify.data.models.Volunteer;
 import com.lina.securify.databinding.FragmentVolunteersBinding;
 import com.lina.securify.utils.Utils;
+import com.lina.securify.utils.constants.Constants;
 import com.lina.securify.viewmodels.VolunteersViewModel;
 
 public class VolunteersFragment extends Fragment {
@@ -29,14 +33,17 @@ public class VolunteersFragment extends Fragment {
 
     private FragmentVolunteersBinding binding;
     private VolunteersViewModel viewModel;
-
-    private int volunteersLimit;
+    private VolunteersAdapter adapter;
+    private SelectionTracker<String> selectionTracker;
     private ActionMode actionMode;
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
+
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+
             // Inflate the menu
-            mode.getMenuInflater().inflate(R.menu.menu_volunteers_action_mode, menu);
+            MenuInflater menuInflater = mode.getMenuInflater();
+            menuInflater.inflate(R.menu.menu_volunteers_action_mode, menu);
 
             // Change the status bar color
             Utils.changeStatusBarColor(requireActivity(), android.R.color.black);
@@ -55,31 +62,45 @@ public class VolunteersFragment extends Fragment {
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 
-            if (item.getItemId() == R.id.delete) {
+            switch (item.getItemId()) {
 
-                viewModel.removeVolunteers();
-                actionMode.finish();
+                case R.id.delete:
 
-                return true;
+                    viewModel.removeVolunteers(adapter.getSelectedPhones());
+
+                    actionMode.finish();
+
+                    return true;
+
+                    default:
+                        return false;
             }
 
-            return false;
         }
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            // Change the status bar color
+
+            actionMode = null;
+
+            // Revert the status bar color
             Utils.changeStatusBarColor(requireActivity(), R.color.colorPrimaryDark);
+
+            // Clear the selection
+            selectionTracker.clearSelection();
 
             // Show the FAB
             binding.floatingActionButton.show();
-
-            // Clear the selection
-            viewModel.getAdapter().getTracker().clearSelection();
-
-            mode = null;
         }
+
     };
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        viewModel = new ViewModelProvider(requireActivity()).get(VolunteersViewModel.class);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -87,85 +108,65 @@ public class VolunteersFragment extends Fragment {
         binding = FragmentVolunteersBinding.inflate(inflater, container, false);
         binding.setFragment(this);
 
-        viewModel = new ViewModelProvider(requireActivity()).get(VolunteersViewModel.class);
-
-        setVolunteersList();
-
-        volunteersLimit = getResources().getInteger(R.integer.volunteer_limit);
+        setAdapter();
 
         return binding.getRoot();
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        viewModel.getAdapter().getTracker().onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-
-        viewModel.getAdapter().getTracker().onRestoreInstanceState(savedInstanceState);
-    }
-
-    public void onFabClick(View view) {
-
-        // Check if the limit is reached
-        if (viewModel.getAdapter().getSnapshots().size() == volunteersLimit) {
-
-            Snackbar
-                    .make(
-                            binding.volunteersList,
-                            R.string.volunteer_limit_message,
-                            Snackbar.LENGTH_SHORT)
-                    .show();
-
-            return;
-        }
-
-        goToAddVolunteerDialog();
-    }
-
-    private void goToAddVolunteerDialog() {
+    /**
+     * Navigate to Add Volunteers full-screen dialog.
+     */
+    public void goToAddVolunteerDialog() {
         NavHostFragment
                 .findNavController(this)
                 .navigate(VolunteersFragmentDirections.actionAddVolunteer(getId()));
-
     }
 
-    private void setVolunteersList() {
+    /**
+     * Build the VolunteersAdapter.
+     */
+    private void setAdapter() {
 
-        viewModel.setAdapter(
+        FirestoreRecyclerOptions<Volunteer> options =
                 new FirestoreRecyclerOptions.Builder<Volunteer>()
-                .setQuery(viewModel.getVolunteers(), Volunteer.class)
-                .setLifecycleOwner(this)
-                .build(),
-                binding.volunteersList
-        );
+                        .setQuery(viewModel.getVolunteers(), Volunteer.class)
+                        .setLifecycleOwner(this)
+                        .build();
 
-        viewModel.getSelection().observe(getViewLifecycleOwner(), (selection) -> {
+        adapter = new VolunteersAdapter(options);
 
-            if (selection > 0) {
+        binding.volunteersList.setAdapter(adapter);
 
-                if (actionMode == null)
-                    actionMode =  ((AppCompatActivity) requireActivity())
-                            .startSupportActionMode(actionModeCallback);
+        selectionTracker = new SelectionTracker.Builder<>(
+                Constants.VOLUNTEERS_SELECTION_ID,
+                binding.volunteersList,
+                new VolunteersAdapter.VolunteerKeyProvider(adapter),
+                new VolunteersAdapter.VolunteerDetailsLookup(binding.volunteersList),
+                StorageStrategy.createStringStorage())
+                .build();
 
-                actionMode.setTitle(selection + " selected");
+        selectionTracker.addObserver(new SelectionTracker.SelectionObserver() {
+            @Override
+            public void onSelectionChanged() {
+                super.onSelectionChanged();
 
-            } else if (actionMode != null){
+                if (selectionTracker.getSelection().size() > 0) {
 
-                actionMode.finish();
-                actionMode = null;
+                    if (actionMode == null) {
+
+                        actionMode = ((AppCompatActivity) requireActivity())
+                                .startSupportActionMode(actionModeCallback);
+
+                    }
+
+                    actionMode.setTitle(getString(R.string.cab_title, selectionTracker.getSelection().size()));
+
+                }
 
             }
-
         });
 
-
-
+        adapter.setSelectionTracker(selectionTracker);
     }
 
 }
