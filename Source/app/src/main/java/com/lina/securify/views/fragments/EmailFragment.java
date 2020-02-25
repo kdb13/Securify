@@ -8,13 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.lina.securify.data.repositories.AuthRepository.Result;
+import com.lina.securify.R;
+import com.lina.securify.data.repositories.AuthTaskListener;
 import com.lina.securify.databinding.FragmentEmailBinding;
-import com.lina.securify.viewmodels.EmailViewModel;
+import com.lina.securify.viewmodels.LoginViewModel;
 import com.lina.securify.views.validations.EmailValidation;
 
 /**
@@ -22,28 +22,30 @@ import com.lina.securify.views.validations.EmailValidation;
  */
 public class EmailFragment extends Fragment {
 
-    private FragmentEmailBinding binding;
     private EmailValidation validation;
-    private EmailViewModel viewModel;
+    private LoginViewModel viewModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        viewModel = new ViewModelProvider(
+                NavHostFragment.findNavController(this)
+                        .getBackStackEntry(R.id.emailFragment))
+                .get(LoginViewModel.class);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        viewModel = ViewModelProviders.of(this).get(EmailViewModel.class);
-
-        binding = FragmentEmailBinding.inflate(inflater, container, false);
+        FragmentEmailBinding binding = FragmentEmailBinding.inflate(inflater, container, false);
         binding.setFragment(this);
         binding.setViewModel(viewModel);
 
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
         validation = new EmailValidation(binding);
+
+        return binding.getRoot();
     }
 
     /**
@@ -55,29 +57,27 @@ public class EmailFragment extends Fragment {
         if (validation.validate()) {
 
             // Check if email exists
-            viewModel.toggleLoading(true);
-            viewModel.checkEmailExists().observe(this, new Observer<Result>() {
-                @Override
-                public void onChanged(Result result) {
+            viewModel.checkEmailExists(result -> {
 
-                    viewModel.toggleLoading(false);
+                switch(result) {
 
-                    switch (result) {
+                    case AuthTaskListener.NEW_EMAIL:
+                        goToSignUpFragment();
+                        break;
 
-                        case EXISTING_EMAIL:
-                            goToPasswordFragment();
-                            break;
+                    case AuthTaskListener.EXISTING_EMAIL:
+                        goToPasswordFragment();
+                        break;
 
-                        case NEW_EMAIL:
-                            goToSignUpFragment();
-                            break;
-
-                        default:
-
-                    }
-
+                    default:
+                        break;
                 }
+
+                viewModel.isLoading.set(false);
+
             });
+
+
         }
 
     }
@@ -87,11 +87,8 @@ public class EmailFragment extends Fragment {
      */
     private void goToPasswordFragment() {
 
-        NavHostFragment
-                .findNavController(this)
-                .navigate(
-                        EmailFragmentDirections.actionVerifyPassword(viewModel.getModel().getEmail())
-                );
+        NavHostFragment.findNavController(this)
+                .navigate(EmailFragmentDirections.actionLogin());
 
     }
 
@@ -100,10 +97,9 @@ public class EmailFragment extends Fragment {
      */
     private void goToSignUpFragment() {
 
-        NavHostFragment
-                .findNavController(this)
-                .navigate(
-                        EmailFragmentDirections.actionNewUser(viewModel.getModel().getEmail())
+        NavHostFragment.findNavController(this)
+                .navigate(EmailFragmentDirections
+                        .actionSignUp(viewModel.getCredentials().getEmail())
                 );
 
     }

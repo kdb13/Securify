@@ -1,7 +1,6 @@
 package com.lina.securify.views.fragments;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -13,8 +12,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.lina.securify.R;
-import com.lina.securify.views.activities.MainActivity;
-
 
 /**
  * The entry point towards authentication.
@@ -27,12 +24,11 @@ public class SplashScreenFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        // Check if the user is signed in
         if (isSignedIn())
-            //goToPinFragment();
             goToMainActivity();
         else
             goToEmailFragment();
+
     }
 
     @Override
@@ -44,28 +40,28 @@ public class SplashScreenFragment extends Fragment {
     private void goToEmailFragment() {
 
         new Handler()
-                .postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        NavHostFragment
-                                .findNavController(SplashScreenFragment.this)
-                                .navigate(SplashScreenFragmentDirections.actionVerifyEmail());
-                    }
+                .postDelayed(() -> {
+
+                    NavHostFragment
+                            .findNavController(this)
+                            .navigate(SplashScreenFragmentDirections.actionCheckEmail());
+
                 }, SPLASH_DELAY);
 
     }
 
-    private void goToPinFragment() {
+    private void goToMainActivity() {
 
         new Handler()
-                .postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        NavHostFragment
-                                .findNavController(SplashScreenFragment.this)
-                                .navigate(SplashScreenFragmentDirections.actionVerifyPin());
-                    }
+                .postDelayed(() -> {
+
+                    NavHostFragment.findNavController(this)
+                            .navigate(SplashScreenFragmentDirections.actionMainApp());
+
+                    requireActivity().finish();
+
                 }, SPLASH_DELAY);
+
 
     }
 
@@ -73,9 +69,4 @@ public class SplashScreenFragment extends Fragment {
         return FirebaseAuth.getInstance().getCurrentUser() != null;
     }
 
-    private void goToMainActivity() {
-        Intent intent = new Intent(requireActivity(),MainActivity.class);
-        startActivity(intent);
-        requireActivity().finish();
-    }
 }

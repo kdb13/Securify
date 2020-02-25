@@ -1,31 +1,47 @@
 package com.lina.securify.viewmodels;
 
-import androidx.lifecycle.LiveData;
+import androidx.databinding.ObservableBoolean;
 
-import com.lina.securify.data.models.NewUser;
-import com.lina.securify.data.repositories.AuthRepository;
+import com.lina.securify.data.models.SignUpCredentials;
+import com.lina.securify.data.repositories.AuthTaskListener;
+import com.lina.securify.data.repositories.PhoneVerificationListener;
 
 public class SignUpViewModel extends AuthViewModel {
 
-    // Represents the new user's data
-    private NewUser newUser;
+    private SignUpCredentials credentials;
 
-    public NewUser getNewUser() {
-        return newUser;
-    }
+    public ObservableBoolean showCodeUi = new ObservableBoolean();
 
     public SignUpViewModel() {
-        super();
-
-        newUser = new NewUser();
+        credentials = new SignUpCredentials();
+        showCodeUi.set(false);
     }
 
-    public LiveData<AuthRepository.Result> signUp() {
-        return authRepository.signUp(newUser);
+    public SignUpCredentials getCredentials() {
+        return credentials;
     }
 
-    public LiveData<AuthRepository.Result> checkEmailExists() {
-        return authRepository.checkEmailExists(newUser.getEmail());
+    public void checkEmailExists(AuthTaskListener listener ) {
+
+        // Start loading
+        isLoading.set(true);
+
+        repository.checkEmailExists(credentials.getEmail(), listener);
+
     }
 
+    public void verifyOtp(String verificationId, AuthTaskListener listener) {
+
+        // Start loading
+        isLoading.set(true);
+
+        repository.verifyOtp(credentials, verificationId, listener);
+    }
+
+    public void checkPhoneExists(AuthTaskListener listener) {
+
+        isLoading.set(true);
+
+        repository.checkPhoneExists(credentials.getPhone(), listener);
+    }
 }

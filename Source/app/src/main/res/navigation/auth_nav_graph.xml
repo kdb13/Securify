@@ -8,27 +8,18 @@
     <fragment
         android:id="@+id/splashScreenFragment"
         android:name="com.lina.securify.views.fragments.SplashScreenFragment"
-        android:label="fragment_home"
         tools:layout="@layout/fragment_splash_screen">
 
         <action
-            android:id="@+id/action_verifyPin"
-            app:destination="@id/pinFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:popUpTo="@id/splashScreenFragment"
-            app:popUpToInclusive="true" >
-
-            <argument
-                android:defaultValue="false"
-                android:name="isNewPin" />
-        </action>
-
-        <action
-            android:id="@+id/action_verifyEmail"
+            android:id="@+id/action_checkEmail"
             app:destination="@id/emailFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:popUpTo="@id/splashScreenFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mainApp"
+            app:destination="@id/mainActivity"
+            app:popUpToInclusive="false" />
 
     </fragment>
 
@@ -39,7 +30,7 @@
         tools:layout="@layout/fragment_email" >
 
         <action
-            android:id="@+id/action_verifyPassword"
+            android:id="@+id/action_login"
             app:destination="@id/passwordFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
@@ -47,7 +38,7 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
         <action
-            android:id="@+id/action_newUser"
+            android:id="@+id/action_signUp"
             app:destination="@id/signUpFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
@@ -68,8 +59,7 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/emailFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
 
         <argument
             android:name="newUserEmail"
@@ -82,21 +72,10 @@
         android:name="com.lina.securify.views.fragments.PasswordFragment"
         android:label="fragment_password"
         tools:layout="@layout/fragment_password" >
-
         <action
-            android:id="@+id/action_verifyPin"
-            app:destination="@id/pinFragment"
-            app:popUpTo="@+id/emailFragment"
-            app:popUpToInclusive="true">
-            <argument
-                android:name="isNewPin"
-                android:defaultValue="false" />
-        </action>
-
-        <argument
-            android:name="existingUserEmail"
-            app:argType="string" />
-
+            android:id="@+id/action_mainApp"
+            app:destination="@id/mainActivity"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
@@ -104,39 +83,15 @@
         android:name="com.lina.securify.views.fragments.PhoneFragment"
         android:label="fragment_verify_phone"
         tools:layout="@layout/fragment_phone">
-
         <action
-            android:id="@+id/action_verifyPin"
-            app:destination="@id/pinFragment"
-            app:popUpTo="@+id/phoneFragment"
-            app:popUpToInclusive="true">
-            <argument
-                android:name="isNewPin"
-                android:defaultValue="true" />
-        </action>
-
+            android:id="@+id/action_mainApp"
+            app:destination="@id/mainActivity"
+            app:popUpToInclusive="false" />
     </fragment>
-
-    <fragment
-        android:id="@+id/pinFragment"
-        android:name="com.lina.securify.views.fragments.PinFragment"
-        android:label="fragment_pin"
-        tools:layout="@layout/fragment_pin" >
-
-        <argument
-            android:name="isNewPin"
-            app:argType="boolean" />
-
-        <action
-            android:id="@+id/action_verifyPin"
-            app:destination="@id/pinFragment"
-            app:popUpTo="@+id/pinFragment"
-            app:popUpToInclusive="true">
-            <argument
-                android:name="isNewPin"
-                android:defaultValue="false" />
-        </action>
-
-    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.lina.securify.views.activities.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
 
 </navigation>

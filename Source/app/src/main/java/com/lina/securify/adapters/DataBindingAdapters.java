@@ -1,7 +1,9 @@
 package com.lina.securify.adapters;
 
 import android.text.Html;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
@@ -42,4 +44,13 @@ public class DataBindingAdapters {
 
     }
 
+    @BindingAdapter("visibility")
+    public static void setLoadingVisibility(View view, boolean isLoading) {
+
+        if (isLoading)
+            view.setVisibility(View.VISIBLE);
+        else
+            view.setVisibility(View.GONE);
+
+    }
 }

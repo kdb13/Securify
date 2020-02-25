@@ -1,6 +1,7 @@
 package com.lina.securify.views.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,14 +9,17 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStore;
+import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.lina.securify.R;
-import com.lina.securify.data.repositories.AuthRepository.Result;
+import com.lina.securify.data.repositories.AuthTaskListener;
 import com.lina.securify.databinding.FragmentPasswordBinding;
-import com.lina.securify.viewmodels.PasswordViewModel;
+import com.lina.securify.viewmodels.LoginViewModel;
 import com.lina.securify.views.validations.PasswordValidation;
 
 /**
@@ -23,34 +27,36 @@ import com.lina.securify.views.validations.PasswordValidation;
  */
 public class PasswordFragment extends Fragment {
 
+    private static final String TAG = PasswordFragment.class.getSimpleName();
+
     private FragmentPasswordBinding binding;
-    private PasswordViewModel viewModel;
     private PasswordValidation validation;
+    private LoginViewModel viewModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        viewModel = new ViewModelProvider(
+                NavHostFragment.findNavController(this)
+                        .getBackStackEntry(R.id.emailFragment))
+                .get(LoginViewModel.class);
+
+        Log.d(TAG, "Email: " + viewModel.getCredentials().getEmail());
+
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        viewModel = ViewModelProviders.of(this).get(PasswordViewModel.class);
-
-        viewModel.getModel().setEmail(
-                PasswordFragmentArgs.fromBundle(getArguments()).getExistingUserEmail()
-        );
-
         binding = FragmentPasswordBinding.inflate(inflater, container, false);
         binding.setFragment(this);
         binding.setViewModel(viewModel);
-        binding.setWrongPasswordStringId(-1);
+
+        validation = new PasswordValidation(binding);
 
         return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // Set the validation views
-        validation = new PasswordValidation(binding);
     }
 
     /**
@@ -60,39 +66,38 @@ public class PasswordFragment extends Fragment {
 
         if (validation.validate()) {
 
-            viewModel.toggleLoading(true);
-            viewModel.signIn().observe(this, new Observer<Result>() {
-                @Override
-                public void onChanged(Result result) {
+            viewModel.login(result -> {
 
-                    viewModel.toggleLoading(false);
+                switch (result) {
 
-                    switch (result) {
+                    case AuthTaskListener.SIGNED_IN:
+                        // Signed in
+                        goToMainActivity();
+                        break;
 
-                        case WRONG_PASSWORD:
-                            binding.setWrongPasswordStringId(R.string.error_wrong_password);
-                            break;
+                    case AuthTaskListener.INCORRECT_PASSWORD:
+                        // Show the error
+                        binding.inputPassword.setError(
+                                requireContext().getString(R.string.error_wrong_password));
 
-                        case SIGNED_IN:
-                            goToPinFragment();
-                            break;
-                    }
+                        default:
 
                 }
+
+                // Stop the loading
+                viewModel.isLoading.set(false);
             });
+
         }
 
     }
 
-    /**
-     * Navigate to PinFragment
-     */
-    private void goToPinFragment() {
+    private void goToMainActivity() {
 
-        NavHostFragment
-                .findNavController(this)
-                .navigate(PasswordFragmentDirections.actionVerifyPin());
+        NavHostFragment.findNavController(this)
+                .navigate(PasswordFragmentDirections.actionMainApp());
+
+        requireActivity().finish();
 
     }
-
 }

@@ -55,6 +55,7 @@
     <string name="error_invalid_sms_code">Invalid code!</string>
     <string name="error_invalid_pin">The PIN must be of 4 digits!</string>
     <string name="error_wrong_pin">The entered PIN is wrong!</string>
+    <string name="error_existing_phone">The phone number already exists!</string>
 
     <!-- Snackbar actions -->
     <string name="action_retry">Retry</string>
@@ -86,5 +87,6 @@
 
     <!-- CAB title -->
     <string name="cab_title">%1$d selected</string>
+    <string name="button_resend">Resend</string>
 
 </resources>

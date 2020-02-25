@@ -2,6 +2,7 @@ package com.lina.securify.views.fragments;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,15 +10,19 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.lina.securify.R;
-import com.lina.securify.data.repositories.AuthRepository;
+import com.lina.securify.data.repositories.AuthTaskListener;
 import com.lina.securify.databinding.FragmentPhoneBinding;
-import com.lina.securify.viewmodels.PhoneViewModel;
+import com.lina.securify.viewmodels.SignUpViewModel;
 import com.lina.securify.views.validations.PhoneValidation;
+
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -25,109 +30,139 @@ import com.lina.securify.views.validations.PhoneValidation;
  */
 public class PhoneFragment extends Fragment {
 
-    private String verificationId;
+    private static final String TAG = PhoneFragment.class.getSimpleName();
 
     private FragmentPhoneBinding binding;
     private PhoneValidation validation;
-    private PhoneViewModel viewModel;
+    private SignUpViewModel viewModel;
+
+    private String verificationId;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        viewModel = new ViewModelProvider(
+                NavHostFragment.findNavController(this)
+                        .getBackStackEntry(R.id.signUpFragment))
+                .get(SignUpViewModel.class);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        viewModel = ViewModelProviders.of(this).get(PhoneViewModel.class);
-
         binding = FragmentPhoneBinding.inflate(inflater, container, false);
         binding.setViewModel(viewModel);
         binding.setFragment(this);
-        binding.setCodeUiVisibility(false);
-        binding.setInvalidCodeStringId(-1);
-        binding.setPhoneButtonTextId(R.string.button_send_code);
+
+        validation = new PhoneValidation(binding);
 
         return binding.getRoot();
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void sendOtp(View view) {
 
-        validation = new PhoneValidation(binding);
-    }
+        if (validation.validate()) {
 
-    public void onButtonClick(View view) {
+            binding.buttonResend.setEnabled(false);
 
-        viewModel.toggleLoading(true);
+            PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks =
+                    new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                        @Override
+                        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                            // TODO: Handle auto verification
+                        }
 
-        // Send the code
-        if (verificationId == null) {
+                        @Override
+                        public void onVerificationFailed(@NonNull FirebaseException e) {
+                            Log.e(TAG, "onVerificationFailed: ", e);
 
-            if (validation.validate()) {
-                sendVerificationCode();
-            }
+                            viewModel.showCodeUi.set(false);
+                        }
 
-        } else {
+                        @Override
+                        public void onCodeSent(@NonNull String id,
+                                               @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                            super.onCodeSent(id, forceResendingToken);
 
-            if (validation.validateSmsCode()) {
-                verifySmsCode();
-            }
+                            // Save the verification ID
+                            verificationId = id;
+
+                            // Toggle the UI to get the OTP
+                            viewModel.isLoading.set(false);
+                            viewModel.showCodeUi.set(true);
+                        }
+
+                        @Override
+                        public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
+                            super.onCodeAutoRetrievalTimeOut(s);
+
+                            viewModel.isLoading.set(false);
+                            binding.buttonResend.setEnabled(true);
+                        }
+                    };
+
+            viewModel.checkPhoneExists(result -> {
+
+                if (result == AuthTaskListener.EXISTING_PHONE) {
+
+                    viewModel.isLoading.set(false);
+                    binding.inputPhone.setError(
+                            requireContext().getString(R.string.error_existing_phone)
+                    );
+
+                } else
+                    PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                            "+91" + viewModel.getCredentials().getPhone(),
+                            30,
+                            TimeUnit.SECONDS,
+                            requireActivity(),
+                            callbacks);
+            });
 
         }
 
-
     }
 
-    private void verifySmsCode() {
+    public void verifyOtp(View view) {
 
-        // Verify the received code
-        viewModel.verifySmsCode(verificationId).observe(this, new Observer<AuthRepository.Result>() {
-            @Override
-            public void onChanged(AuthRepository.Result result) {
+        if (validation.validateSmsCode()) {
 
-                viewModel.toggleLoading(false);
+            viewModel.verifyOtp(verificationId, result -> {
 
                 switch (result) {
 
-                    case PHONE_VERIFIED:
-                        goToPinFragment();
+                    case AuthTaskListener.INCORRECT_OTP:
+                        binding.inputSmsCode.setError(
+                                requireContext().getString(R.string.error_invalid_sms_code)
+                        );
                         break;
 
-                    case INVALID_SMS_CODE:
-                        binding.setInvalidCodeStringId(R.string.error_invalid_sms_code);
+                    case AuthTaskListener.SIGNED_UP:
+                        goToMainActivity();
                         break;
+
+                    default:
 
                 }
 
-            }
-        });
+                viewModel.isLoading.set(false);
 
-    }
+            });
 
-    private void sendVerificationCode() {
-
-        viewModel.sendVerificationCode().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-
-                viewModel.toggleLoading(false);
-
-                if (s != null) {
-                    verificationId = s;
-
-                    binding.setCodeUiVisibility(true);
-                    binding.setPhoneButtonTextId(R.string.button_verify);
-                }
-
-            }
-        });
+        }
 
     }
 
     /**
-     * Navigate to PinFragment.
+     * Go to MainActivity.
      */
-    private void goToPinFragment() {
-        NavHostFragment
-                .findNavController(this)
-                .navigate(PhoneFragmentDirections.actionVerifyPin());
+    public void goToMainActivity() {
+
+        NavHostFragment.findNavController(this)
+                .navigate(PhoneFragmentDirections.actionMainApp());
+
+        requireActivity().finish();
     }
 }
