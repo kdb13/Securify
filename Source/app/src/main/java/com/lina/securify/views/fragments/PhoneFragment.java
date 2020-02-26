@@ -185,7 +185,7 @@ public class PhoneFragment extends Fragment {
         requireActivity().finish();
     }
 
-    static class OtpWaitDialogFragment extends DialogFragment {
+    public static class OtpWaitDialogFragment extends DialogFragment {
 
         @NonNull
         @Override

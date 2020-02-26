@@ -11,8 +11,6 @@ import com.lina.securify.R;
 
 public class AuthActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = AuthActivity.class.getSimpleName();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,13 +22,13 @@ public class AuthActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
+        // Delete the anonymous user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
 
             if (user.getEmail() == null) {
                 FirebaseAuth.getInstance().getCurrentUser().delete()
-                        .addOnSuccessListener(elem -> Log.d("KDB", "Deleted"))
                         .addOnFailureListener(e -> Log.e("KDB", "Error: ", e));
             }
 
