@@ -55,18 +55,24 @@ public class FirestoreRepository {
 
     public void checkPhoneExists(String phone, AuthTaskListener listener) {
 
-        firestore.collection(Collections.USERS)
-                .whereEqualTo(MetaUser.PHONE, phone)
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
+        auth.signInAnonymously()
+                .addOnSuccessListener(authResult -> {
 
-                    if (!querySnapshot.isEmpty())
-                        listener.onComplete(AuthTaskListener.EXISTING_PHONE);
-                    else
-                        listener.onComplete(-1);
+                    firestore.collection(Collections.USERS)
+                            .whereEqualTo(MetaUser.PHONE, phone)
+                            .get()
+                            .addOnSuccessListener(querySnapshot -> {
+
+                                if (!querySnapshot.isEmpty())
+                                    listener.onComplete(AuthTaskListener.EXISTING_PHONE);
+                                else
+                                    listener.onComplete(-1);
+
+                            })
+                            .addOnFailureListener(e -> Log.e(TAG, "Error checking existing phone!", e));
 
                 })
-                .addOnFailureListener(e -> Log.e(TAG, "Error checking existing phone!", e));
+                .addOnFailureListener(e -> Log.e(TAG, "Error signing-in anonymously!", e));
 
     }
 
@@ -109,15 +115,14 @@ public class FirestoreRepository {
                 verificationId, credentials.getOtpCode()
         );
 
-        auth.signInWithCredential(phoneAuthCredential)
-                .addOnSuccessListener(signInResult -> {
+        // Verify the OTP
 
-                    FirebaseUser user = signInResult.getUser();
+        auth.getCurrentUser().updatePhoneNumber(phoneAuthCredential)
+                .addOnSuccessListener(authResult -> {
 
-                    // Attach email and password with user
-                    user.linkWithCredential(EmailAuthProvider.getCredential(
-                            credentials.getEmail(), credentials.getPassword()
-                    ))
+                    // Link email and password with account
+                    auth.getCurrentUser().linkWithCredential(EmailAuthProvider.getCredential(
+                            credentials.getEmail(), credentials.getPassword()))
                             .addOnSuccessListener(linkResult -> {
 
                                 // Create the user document
@@ -127,24 +132,28 @@ public class FirestoreRepository {
                                 newUser.put(MetaUser.PHONE, credentials.getPhone());
 
                                 firestore.collection(Collections.USERS)
-                                        .document(user.getUid())
+                                        .document(linkResult.getUser().getUid())
                                         .set(newUser)
-                                        .addOnSuccessListener(createUserResult -> listener.onComplete(AuthTaskListener.SIGNED_UP))
-                                        .addOnFailureListener(e -> Log.e(TAG, "Error adding user document!", e));
+                                        .addOnSuccessListener(createResult -> {
+
+                                            listener.onComplete(AuthTaskListener.SIGNED_UP);
+
+                                        })
+                                        .addOnFailureListener(e -> Log.e(TAG, "Error creating user document!", e));
 
                             })
-                            .addOnFailureListener(e -> Log.e(TAG, "Error linking email credentials!", e));
+                            .addOnFailureListener(e -> Log.e(TAG, "Error linking credentials!", e));
 
                 })
                 .addOnFailureListener(e -> {
 
-                    if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                    if (e instanceof FirebaseAuthInvalidCredentialsException)
                         listener.onComplete(AuthTaskListener.INCORRECT_OTP);
-                        Log.e(TAG, "Incorrect OTP!", e);
-                    } else
-                        Log.e(TAG, "Error signing in with phone!", e);
+                    else
+                        Log.e(TAG, "An unknown error verifying OTP!", e);
 
                 });
+
     }
 
     /**

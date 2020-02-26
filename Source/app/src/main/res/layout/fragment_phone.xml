@@ -66,47 +66,55 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/code_sent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/code_sent"
+            visibility="@{viewModel.showCodeUi}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            app:layout_constraintTop_toBottomOf="@id/input_phone"
+            app:layout_constraintStart_toStartOf="@id/enter_phone" />
 
-        <!-- UI for entering the SMS code -->
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_sms_code"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="@{viewModel.showCodeUi ? View.VISIBLE : View.GONE}"
-            app:layout_constraintEnd_toEndOf="@id/enter_phone"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="10dp"
+            visibility="@{viewModel.showCodeUi}"
+            android:hint="@string/hint_sms_code"
+            app:layout_constraintEnd_toStartOf="@+id/button_resend"
             app:layout_constraintStart_toStartOf="@id/enter_phone"
-            app:layout_constraintTop_toBottomOf="@id/input_phone">
+            app:layout_constraintTop_toBottomOf="@id/code_sent">
 
-            <TextView
-                android:id="@+id/code_sent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="@string/code_sent"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_sms_code"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edittext_sms_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:hint="@string/hint_sms_code">
+                android:inputType="numberDecimal"
+                android:enabled="@{!viewModel.isLoading}"
+                android:maxLength="@integer/sms_code_length"
+                android:text="@={viewModel.credentials.otpCode}">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edittext_sms_code"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:maxLength="@integer/sms_code_length"
-                    android:text="@={viewModel.credentials.otpCode}">
+            </com.google.android.material.textfield.TextInputEditText>
 
-                </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/button_resend"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="@string/button_resend"
+            android:enabled="@{!viewModel.isLoading}"
+            android:onClick="@{fragment::resendOtp}"
+            visibility="@{viewModel.showCodeUi}"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            app:layout_constraintTop_toTopOf="@id/input_sms_code"
+            app:layout_constraintBottom_toBottomOf="@id/input_sms_code"
+            app:layout_constraintEnd_toEndOf="@id/enter_phone"/>
 
         <Button
             android:id="@+id/button_verify"
@@ -121,16 +129,16 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <Button
-            android:id="@+id/button_resend"
-            style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+            android:id="@+id/button_change_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_resend"
+            android:enabled="@{!viewModel.isLoading}"
+            android:text="@string/button_change_phone"
+            android:onClick="@{fragment::changePhone}"
             visibility="@{viewModel.showCodeUi}"
-            android:onClick="@{fragment::sendOtp}"
-            android:enabled="false"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             app:layout_constraintBottom_toBottomOf="@+id/button_verify"
-            app:layout_constraintStart_toStartOf="@+id/linearLayout" />
+            app:layout_constraintStart_toStartOf="@+id/enter_phone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

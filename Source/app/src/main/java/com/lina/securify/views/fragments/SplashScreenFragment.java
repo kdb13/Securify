@@ -20,20 +20,17 @@ public class SplashScreenFragment extends Fragment {
 
     private static final long SPLASH_DELAY = 500;
 
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
+
     @Override
-    public void onStart() {
-        super.onStart();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
         if (isSignedIn())
             goToMainActivity();
         else
             goToEmailFragment();
 
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_splash_screen, container, false);
     }
 
@@ -66,7 +63,7 @@ public class SplashScreenFragment extends Fragment {
     }
 
     private boolean isSignedIn() {
-        return FirebaseAuth.getInstance().getCurrentUser() != null;
+        return auth.getCurrentUser() != null;
     }
 
 }

@@ -1,53 +1,15 @@
 package com.lina.securify.adapters;
 
-import android.text.Html;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.textfield.TextInputLayout;
 
 public class DataBindingAdapters {
 
-    @BindingAdapter("errorText")
-    public static void setErrorText(TextInputLayout inputLayout, int errorId) {
-
-        // Set empty error if errorID is -1
-        String error = "";
-
-        if (errorId != -1)
-            error = inputLayout.getContext().getString(errorId);
-
-        inputLayout.setError(error);
-    }
-
-    @BindingAdapter("buttonText")
-    public static void setButtonText(Button button, int buttonTextId) {
-
-        // Set empty error if errorID is -1
-        String text = "";
-
-        if (buttonTextId != -1)
-            text = button.getContext().getString(buttonTextId);
-
-        button.setText(text);
-    }
-
-    @BindingAdapter("text")
-    public static void setTextViewText(TextView textView, int textId) {
-
-        textView.setText(textId);
-
-    }
-
     @BindingAdapter("visibility")
-    public static void setLoadingVisibility(View view, boolean isLoading) {
+    public static void setVisibility(View view, boolean isTrue) {
 
-        if (isLoading)
+        if (isTrue)
             view.setVisibility(View.VISIBLE);
         else
             view.setVisibility(View.GONE);

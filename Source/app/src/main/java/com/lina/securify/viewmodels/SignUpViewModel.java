@@ -4,7 +4,6 @@ import androidx.databinding.ObservableBoolean;
 
 import com.lina.securify.data.models.SignUpCredentials;
 import com.lina.securify.data.repositories.AuthTaskListener;
-import com.lina.securify.data.repositories.PhoneVerificationListener;
 
 public class SignUpViewModel extends AuthViewModel {
 
@@ -39,7 +38,6 @@ public class SignUpViewModel extends AuthViewModel {
     }
 
     public void checkPhoneExists(AuthTaskListener listener) {
-
         isLoading.set(true);
 
         repository.checkPhoneExists(credentials.getPhone(), listener);

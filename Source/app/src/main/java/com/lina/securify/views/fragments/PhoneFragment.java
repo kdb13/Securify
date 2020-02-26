@@ -1,6 +1,7 @@
 package com.lina.securify.views.fragments;
 
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -37,6 +40,45 @@ public class PhoneFragment extends Fragment {
     private SignUpViewModel viewModel;
 
     private String verificationId;
+    private boolean isCodeTimeout = false;
+
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks =
+            new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                @Override
+                public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                    // TODO: Handle auto verification
+                }
+
+                @Override
+                public void onVerificationFailed(@NonNull FirebaseException e) {
+                    Log.e(TAG, "onVerificationFailed: ", e);
+
+                    viewModel.showCodeUi.set(false);
+                }
+
+                @Override
+                public void onCodeSent(@NonNull String id,
+                                       @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                    super.onCodeSent(id, forceResendingToken);
+
+                    // Save the verification ID
+                    verificationId = id;
+
+                    // Toggle the UI to get the OTP
+                    viewModel.isLoading.set(false);
+                    viewModel.showCodeUi.set(true);
+                }
+
+                @Override
+                public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
+                    super.onCodeAutoRetrievalTimeOut(s);
+
+                    isCodeTimeout = true;
+
+                    viewModel.isLoading.set(false);
+                    binding.buttonResend.setEnabled(true);
+                }
+            };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,42 +108,6 @@ public class PhoneFragment extends Fragment {
         if (validation.validate()) {
 
             binding.buttonResend.setEnabled(false);
-
-            PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks =
-                    new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                        @Override
-                        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                            // TODO: Handle auto verification
-                        }
-
-                        @Override
-                        public void onVerificationFailed(@NonNull FirebaseException e) {
-                            Log.e(TAG, "onVerificationFailed: ", e);
-
-                            viewModel.showCodeUi.set(false);
-                        }
-
-                        @Override
-                        public void onCodeSent(@NonNull String id,
-                                               @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                            super.onCodeSent(id, forceResendingToken);
-
-                            // Save the verification ID
-                            verificationId = id;
-
-                            // Toggle the UI to get the OTP
-                            viewModel.isLoading.set(false);
-                            viewModel.showCodeUi.set(true);
-                        }
-
-                        @Override
-                        public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
-                            super.onCodeAutoRetrievalTimeOut(s);
-
-                            viewModel.isLoading.set(false);
-                            binding.buttonResend.setEnabled(true);
-                        }
-                    };
 
             viewModel.checkPhoneExists(result -> {
 
@@ -155,14 +161,43 @@ public class PhoneFragment extends Fragment {
 
     }
 
+    public void resendOtp(View view) {
+
+        if (!isCodeTimeout)
+            new OtpWaitDialogFragment().show(getChildFragmentManager(), "OTP Wait Dialog");
+        else
+            sendOtp(null);
+
+    }
+
+    public void changePhone(View view) {
+        viewModel.showCodeUi.set(false);
+    }
+
     /**
      * Go to MainActivity.
      */
-    public void goToMainActivity() {
+    private void goToMainActivity() {
 
         NavHostFragment.findNavController(this)
                 .navigate(PhoneFragmentDirections.actionMainApp());
 
         requireActivity().finish();
+    }
+
+    static class OtpWaitDialogFragment extends DialogFragment {
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+
+            builder.setMessage(R.string.resend_message);
+            builder.setPositiveButton("Ok", null);
+
+            return builder.create();
+
+        }
     }
 }

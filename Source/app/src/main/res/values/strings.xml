@@ -88,5 +88,7 @@
     <!-- CAB title -->
     <string name="cab_title">%1$d selected</string>
     <string name="button_resend">Resend</string>
+    <string name="button_change_phone">Change phone</string>
+    <string name="resend_message">Wait for 30 seconds, then resend the OTP.</string>
 
 </resources>
