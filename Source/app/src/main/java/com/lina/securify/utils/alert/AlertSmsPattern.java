@@ -19,7 +19,9 @@ class AlertSmsPattern {
 
         pattern = Pattern.compile("//" + header + "\\\\\\\\\\n\\n" +
                 needsHelp + ":\\s([a-z|A-Z]+\\s[a-z|A-Z]+)\\s\\((\\+91\\d{10})\\)\\n\\n" +
-                currentLocation + ":\\s(\\d+.\\d+,\\d+.\\d+|" + noLocation + ")"
+                currentLocation +
+                ":\\s(https://www.google.com/maps/search/\\?api=1&query=([0-9-]+.\\d+,[0-9-]+.\\d+)|"
+                + noLocation + ")"
         );
 
     }

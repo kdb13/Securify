@@ -16,6 +16,7 @@ import java.util.regex.Matcher;
 public class AlertSmsBuilder {
 
     private static final String TAG = AlertSmsBuilder.class.getSimpleName();
+    private static final String MAPS_URL = "https://www.google.com/maps/search/?api=1&query=";
 
     private Context context;
     private AlertSmsPattern alertSmsPattern;
@@ -47,10 +48,18 @@ public class AlertSmsBuilder {
                 alert.getVictimName(),
                 alert.getVictimPhone());
 
+        // Set the location
+        String _location;
+
+        if (alert.getLocation().equals(context.getString(R.string.no_location)))
+            _location = alert.getLocation();
+        else
+            _location = MAPS_URL + alert.getLocation();
+
         String alertLocation = context.getString(
                 R.string.alert_location,
                 context.getString(R.string.current_location),
-                alert.getLocation());
+                _location);
 
         return context.getString(
                 R.string.alert_sms,
@@ -75,7 +84,12 @@ public class AlertSmsBuilder {
             Alert alert = new Alert();
             alert.setVictimName(matcher.group(1));
             alert.setVictimPhone(matcher.group(2));
-            alert.setLocation(matcher.group(3));
+
+            if (matcher.group(3).equals(context.getString(R.string.no_location))) {
+                alert.setLocation(matcher.group(3));
+            } else {
+                alert.setLocation(matcher.group(4));
+            }
 
             return alert;
 
