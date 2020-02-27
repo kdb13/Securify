@@ -17,7 +17,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lina.securify.R;
+import com.lina.securify.data.models.Alert;
 import com.lina.securify.databinding.ActivityMainBinding;
+import com.lina.securify.views.dialogs.ReceiveAlertDialog;
 import com.lina.securify.views.dialogs.SystemOverlayPermissionDialogFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        new ReceiveAlertDialog(this, new Alert("John Doe", "8000046911", "No location"));
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.toolbar.setTitle(R.string.fragment_home);

@@ -18,7 +18,7 @@ class AlertSmsPattern {
         String noLocation = context.getString(R.string.no_location);
 
         pattern = Pattern.compile("//" + header + "\\\\\\\\\\n\\n" +
-                needsHelp + ":\\s([a-z|A-Z]+\\s[a-z|A-Z]+)\\s\\((\\+91\\d{10})\\)\\n\\n" +
+                needsHelp + ":\\s([a-z|A-Z]+\\s[a-z|A-Z]+)\\s\\((\\d{10})\\)\\n\\n" +
                 currentLocation +
                 ":\\s(https://www.google.com/maps/search/\\?api=1&query=([0-9-]+.\\d+,[0-9-]+.\\d+)|"
                 + noLocation + ")"

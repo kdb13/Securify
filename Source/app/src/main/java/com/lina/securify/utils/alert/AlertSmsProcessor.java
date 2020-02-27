@@ -2,11 +2,15 @@ package com.lina.securify.utils.alert;
 
 import android.content.Context;
 import android.telephony.SmsMessage;
+import android.util.Log;
 
 import com.lina.securify.data.FirestoreRepository;
 import com.lina.securify.data.models.Alert;
+import com.lina.securify.utils.Utils;
 
 public class AlertSmsProcessor {
+
+    private static final String TAG = AlertSmsProcessor.class.getSimpleName();
 
     private FirestoreRepository repository = FirestoreRepository.getInstance();
     private AlertSmsBuilder builder;
@@ -23,7 +27,7 @@ public class AlertSmsProcessor {
     public void process(SmsMessage smsMessage, ProcessResult processResult) {
 
         repository
-                .userExistsWithPhone(smsMessage.getOriginatingAddress())
+                .userExistsWithPhone(Utils.trimPhone(smsMessage.getOriginatingAddress()))
                 .get()
                 .addOnSuccessListener((querySnapshot -> {
 
