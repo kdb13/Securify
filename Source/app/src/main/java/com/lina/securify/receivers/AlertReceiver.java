@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Telephony;
+import android.util.Log;
 
 import com.lina.securify.R;
 import com.lina.securify.utils.alert.AlertSmsProcessor;
@@ -29,7 +30,6 @@ public class AlertReceiver extends BroadcastReceiver {
                     new AlertSmsProcessor(context).process(
                             Telephony.Sms.Intents.getMessagesFromIntent(intent)[0],
                             alert -> {
-
                                 context.setTheme(R.style.AppTheme);
 
                                 // Show the dialog

@@ -50,7 +50,7 @@ public class AlertSender {
 
         repository
                 .getVolunteers()
-                .get(Source.CACHE)
+                .get()
                 .addOnSuccessListener(querySnapshot -> {
 
                     // #1 Get the phone numbers of victim's volunteers
@@ -70,7 +70,7 @@ public class AlertSender {
 
             repository
                     .getCurrentUserDocument()
-                    .get(Source.CACHE)
+                    .get()
                     .addOnSuccessListener(documentSnapshot -> {
 
                         // #2 Get the victim's information
