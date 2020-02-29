@@ -45,10 +45,6 @@ public class SignUpFragment extends Fragment {
                     SignUpFragmentArgs.fromBundle(getArguments()).getNewUserEmail()
             );
 
-        viewModel.getCredentials().setFirstName("John");
-        viewModel.getCredentials().setLastName("Doe");
-        viewModel.getCredentials().setPassword("123456");
-        viewModel.getCredentials().setConfPassword("123456");
     }
 
     @Override

@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         binding.toolbar.setTitle(R.string.fragment_home);
 
         setSupportActionBar(binding.toolbar);
-        new ReceiveAlertDialog(this, new Alert("John", "567", "No location"));
+
         // Setup the NavigationUI
         setupNavigationUi();
 
