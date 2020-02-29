@@ -1,18 +1,27 @@
 package com.lina.securify.utils;
 
+import android.accessibilityservice.AccessibilityServiceInfo;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.lina.securify.services.alertservice.AlertService;
 import com.lina.securify.utils.constants.IntentActions;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
@@ -85,4 +94,7 @@ public class Utils {
         return string.toString();
     }
 
+    public static boolean isM() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    }
 }

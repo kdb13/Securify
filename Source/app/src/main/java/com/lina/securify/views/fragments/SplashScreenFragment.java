@@ -26,10 +26,12 @@ public class SplashScreenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        if (isSignedIn())
+        /*if (isSignedIn())
             goToMainActivity();
         else
-            goToEmailFragment();
+            goToEmailFragment();*/
+
+        goToMainActivity();
 
         return inflater.inflate(R.layout.fragment_splash_screen, container, false);
     }

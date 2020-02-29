@@ -9,6 +9,10 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+
 import com.lina.securify.R;
 import com.lina.securify.services.alertservice.listeners.BaseListener;
 import com.lina.securify.services.alertservice.listeners.VolumeLongPressListener;
@@ -22,6 +26,7 @@ public class AlertService extends AccessibilityService {
 
     private BaseListener listener;
     private boolean isListening = true;
+
     private BroadcastReceiver stateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -103,5 +108,7 @@ public class AlertService extends AccessibilityService {
         intent.putExtra(Constants.EXTRA_ACCESSIBILITY_SERVICE_STATE, isEnabled);
 
         sendBroadcast(intent);
+
     }
+
 }

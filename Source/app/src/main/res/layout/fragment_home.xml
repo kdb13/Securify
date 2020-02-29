@@ -29,8 +29,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/global_padding"
             android:layout_marginEnd="@dimen/global_padding"
-            android:checked="true"
-            android:onCheckedChanged="@{fragment::toggleAlertService}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
