@@ -43,16 +43,16 @@
         </activity>
 		
 		<service
-            android:name=".services.buttonservice.ButtonService"
+            android:name=".services.alertservice.AlertService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-            android:label="Button Service">
+            android:label="@string/alert_service">
 
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
 
             <meta-data android:name="android.accessibilityservice"
-                android:resource="@xml/button_service_info" />
+                android:resource="@xml/alert_service_info" />
 
         </service>
 

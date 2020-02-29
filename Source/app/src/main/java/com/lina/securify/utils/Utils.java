@@ -2,7 +2,7 @@ package com.lina.securify.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
@@ -10,11 +10,9 @@ import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.lina.securify.R;
-import com.lina.securify.data.models.Alert;
+import com.lina.securify.utils.constants.IntentActions;
 
 import java.util.Objects;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {

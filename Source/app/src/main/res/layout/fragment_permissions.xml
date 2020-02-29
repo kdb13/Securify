@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.os.Build" />
+
+        <variable
+            name="showSystemOverlayPermission"
+            type="boolean" />
+
+        <variable
+            name="fragment"
+            type="com.lina.securify.PermissionsFragment" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/permissions_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/global_padding"
+            android:layout_marginTop="@dimen/global_padding"
+            android:text="@string/permissions_header"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/permission_accessibility_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/permission_accessibility_service"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toBottomOf="@+id/check_accessibility"
+            app:layout_constraintStart_toStartOf="@+id/permissions_header"
+            app:layout_constraintTop_toTopOf="@+id/check_accessibility" />
+
+        <TextView
+            android:id="@+id/permission_system_overlay"
+            visibility="@{showSystemOverlayPermission}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/permission_system_overlay"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toBottomOf="@+id/check_system_overlay"
+            app:layout_constraintStart_toStartOf="@+id/permission_accessibility_service"
+            app:layout_constraintTop_toBottomOf="@+id/check_accessibility" />
+
+        <CheckBox
+            android:id="@+id/check_accessibility"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/global_padding"
+            android:onClick="@{fragment::onCheckboxClick}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/permissions_header" />
+
+        <CheckBox
+            android:id="@+id/check_system_overlay"
+            visibility="@{showSystemOverlayPermission}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{fragment::onCheckboxClick}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/check_accessibility" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

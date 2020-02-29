@@ -15,4 +15,5 @@ public class DataBindingAdapters {
             view.setVisibility(View.GONE);
 
     }
+
 }

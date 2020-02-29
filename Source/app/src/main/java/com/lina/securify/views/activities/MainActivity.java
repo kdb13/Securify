@@ -3,15 +3,19 @@ package com.lina.securify.views.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
+import androidx.navigation.NavHost;
+import androidx.navigation.NavHostController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.app.UiAutomation;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -20,30 +24,25 @@ import com.lina.securify.R;
 import com.lina.securify.data.models.Alert;
 import com.lina.securify.databinding.ActivityMainBinding;
 import com.lina.securify.views.dialogs.ReceiveAlertDialog;
-import com.lina.securify.views.dialogs.SystemOverlayPermissionDialogFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private ActivityMainBinding binding;
-    private AppBarConfiguration appBarConfiguration;
-
-    private static final String SYSTEM_OVERLAY_PERMISSION_DIALOG =
-            "com.lina.securify.SYSTEM_OVERLAY_PERMISSION_DIALOG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new ReceiveAlertDialog(this, new Alert("John Doe", "8000046911", "No location"));
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.toolbar.setTitle(R.string.fragment_home);
 
         setSupportActionBar(binding.toolbar);
+        new ReceiveAlertDialog(this, new Alert("John", "567", "No location"));
+        // Setup the NavigationUI
+        setupNavigationUi();
 
-        setupNavigation();
     }
 
     @Override
@@ -57,14 +56,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host);
-
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
     }
 
     public void logOut(MenuItem menuItem) {
@@ -83,11 +74,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setupNavigation() {
+    private void setupNavigationUi() {
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host);
 
-        appBarConfiguration =
+        // Used to manage the Navigation button
+        AppBarConfiguration appBarConfiguration =
                 new AppBarConfiguration.Builder(navController.getGraph())
                         .setDrawerLayout(binding.drawerLayout)
                         .build();

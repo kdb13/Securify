@@ -90,8 +90,12 @@
     <string name="button_resend">Resend</string>
     <string name="button_change_phone">Change phone</string>
     <string name="resend_message">Wait for 30 seconds, then resend the OTP.</string>
-    <string name="display_over_other_apps_permission_message">This app requires \"Display over other apps\" permission to show the alert dialog when app is not open.</string>
+
+    <string name="alert_service">Alert Service</string>
+    <string name="fragment_permissions">Permissions</string>
+    <string name="permissions_header">Alert Service requires the following permissions:</string>
+    <string name="permission_accessibility_service">Start accessibility service</string>
+    <string name="permission_system_overlay">Display over other apps</string>
     <string name="button_cancel">Cancel</string>
-    <string name="button_grant">Grant</string>
 
 </resources>

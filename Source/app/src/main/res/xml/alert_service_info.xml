@@ -2,6 +2,6 @@
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/button_service"
     android:packageNames="com.lina.securify"
-    android:settingsActivity="com.example.android.accessibility.ServiceSettingsActivity"
     android:accessibilityFlags="flagRequestFilterKeyEvents"
+    android:accessibilityFeedbackType="feedbackGeneric"
     android:canRequestFilterKeyEvents="true"/>

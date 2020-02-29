@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/button_call"
             style="@style/DialogButton"
             android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/victim_name" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/button_locate"
             style="@style/DialogButton"
             android:layout_width="wrap_content"
@@ -67,6 +67,16 @@
             android:onClick="@{dialog::onButtonClick}"
             app:layout_constraintEnd_toStartOf="@+id/button_call"
             app:layout_constraintBottom_toBottomOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_cancel"
+            style="@style/DialogButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{dialog::onButtonClick}"
+            android:text="@string/button_cancel"
+            app:layout_constraintBottom_toBottomOf="@+id/button_locate"
+            app:layout_constraintEnd_toStartOf="@+id/button_locate" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
