@@ -57,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         if (!Utils.arePermissionsGranted(this, Utils.appPermissions)) {
-            Navigation.findNavController(this, R.id.nav_host)
-                    .navigate(PermissionsActivityDirections.actionRequestPermissions());
+            startActivity(new Intent(this, RequestPermissionsActivity.class));
 
             finish();
         }

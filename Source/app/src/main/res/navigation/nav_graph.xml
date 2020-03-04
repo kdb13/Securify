@@ -49,14 +49,4 @@
         android:label="@string/activity_permissions"
         tools:layout="@layout/activity_permissions"/>
 
-    <activity
-        android:id="@+id/requestPermissionsActivity"
-        android:name="com.lina.securify.views.activities.RequestPermissionsActivity"
-        android:label="RequestPermissionsActivity"
-        tools:layout="@layout/activity_request_permissions"/>
-
-    <action
-        android:id="@+id/action_requestPermissions"
-        app:destination="@id/requestPermissionsActivity" />
-
 </navigation>
