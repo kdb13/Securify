@@ -97,5 +97,8 @@
     <string name="permission_accessibility_service">Start accessibility service</string>
     <string name="permission_system_overlay">Display over other apps</string>
     <string name="button_cancel">Cancel</string>
+    <string name="activity_permissions">Permissions</string>
+    <string name="permissions_request">Please grant permissions!</string>
+    <string name="action_grant">Grant</string>
 
 </resources>

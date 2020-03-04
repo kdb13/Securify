@@ -1,29 +1,26 @@
 package com.lina.securify.views.fragments;
 
-import android.accessibilityservice.AccessibilityServiceInfo;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavHostController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.lina.securify.R;
 import com.lina.securify.databinding.FragmentHomeBinding;
-import com.lina.securify.services.alertservice.AlertService;
 import com.lina.securify.utils.AccessibilityUtils;
 import com.lina.securify.utils.Utils;
-
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.lina.securify.utils.constants.Constants;
+import com.lina.securify.utils.constants.IntentActions;
+import com.lina.securify.views.activities.PermissionsActivity;
 
 public class HomeFragment extends Fragment {
 
@@ -36,6 +33,9 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         binding.setFragment(this);
+
+        binding.switchAlertService.setOnCheckedChangeListener((button, isChecked) ->
+                sendAlertServiceBroadcast(isChecked));
 
         return binding.getRoot();
     }
@@ -51,42 +51,38 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        checkPermissions();
-    }
-
-    /**
-     * Checks the "System Overlay" permission and state of Accessibility Service.
-     */
-    private void checkPermissions() {
-
-        boolean canDrawOverlays = true;
-
-        // Check for System Overlay permission
-        if (Utils.isM())
-            canDrawOverlays = Settings.canDrawOverlays(requireContext());
-
-        if (canDrawOverlays && AccessibilityUtils.isEnabled(requireContext())) {
-            binding.switchAlertService.setChecked(true);
+        // Check for permissions
+        if (Utils.canDrawOverlays(requireContext()) &&
+                AccessibilityUtils.isEnabled(requireContext())) {
 
             if (permissionsSnackbar.isShown())
                 permissionsSnackbar.dismiss();
-        }
-        else {
+            binding.switchAlertService.setEnabled(true);
+        } else {
+            binding.switchAlertService.setEnabled(false);
             binding.switchAlertService.setChecked(false);
             permissionsSnackbar.show();
         }
     }
 
-    /**
-     * Creates the Snackbar to ask for permissions.
-     */
     private void createPermissionsSnackbar() {
 
         permissionsSnackbar =
-                Snackbar.make(binding.getRoot(), "Please grant permissions!", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Grant", view -> {
+                Snackbar.make(binding.getRoot(), R.string.permissions_request, Snackbar.LENGTH_INDEFINITE)
+                        .setAction(R.string.action_grant, view -> {
+
+                            NavHostFragment.findNavController(this)
+                                    .navigate(R.id.action_askForPermissions);
+
                         });
 
     }
 
+    private void sendAlertServiceBroadcast(boolean isEnabled) {
+
+        Intent intent = new Intent(IntentActions.ACTION_ALERT_SERVICE_STATE_CHANGED);
+        intent.putExtra(Constants.EXTRA_ALERT_SERVICE_STATE, isEnabled);
+
+        requireContext().sendBroadcast(intent);
+    }
 }

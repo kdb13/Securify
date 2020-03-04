@@ -21,8 +21,10 @@ public class AccessibilityUtils {
                 AccessibilityServiceInfo.FEEDBACK_GENERIC
         );
 
+        String serviceString = buildServiceString(context);
+
         for (AccessibilityServiceInfo info : services) {
-            if (info.getId().equals(buildServiceString(context)))
+            if (info.getId().equals(serviceString))
                 return true;
         }
 

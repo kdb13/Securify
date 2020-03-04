@@ -13,12 +13,9 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_askForPermissions"
-            app:destination="@id/permissionsFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:destination="@id/permissionsActivity" />
     </fragment>
+
     <fragment
         android:id="@+id/alertsFragment"
         android:name="com.lina.securify.views.fragments.AlertsFragment"
@@ -46,10 +43,10 @@
         tools:layout="@layout/dialog_add_volunteer">
     </fragment>
 
-    <fragment
-        android:id="@+id/permissionsFragment"
-        android:name="com.lina.securify.PermissionsFragment"
-        android:label="@string/fragment_permissions"
-        tools:layout="@layout/fragment_permissions" />
+    <activity
+        android:id="@+id/permissionsActivity"
+        android:name="com.lina.securify.views.activities.PermissionsActivity"
+        android:label="@string/activity_permissions"
+        tools:layout="@layout/activity_permissions"/>
 
 </navigation>
