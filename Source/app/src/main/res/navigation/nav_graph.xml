@@ -36,22 +36,27 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
-    <fragment
+    <dialog
         android:id="@+id/addVolunteerDialogFragment"
         android:name="com.lina.securify.views.dialogs.AddVolunteerDialogFragment"
         android:label="@string/dialog_add_volunteer"
         tools:layout="@layout/dialog_add_volunteer">
-    </fragment>
+    </dialog>
 
     <activity
         android:id="@+id/permissionsActivity"
         android:name="com.lina.securify.views.activities.PermissionsActivity"
         android:label="@string/activity_permissions"
         tools:layout="@layout/activity_permissions"/>
-    <fragment
-        android:id="@+id/requestPermissionsFragment"
-        android:name="com.lina.securify.RequestPermissionsFragment"
-        android:label="fragment_request_permissions"
-        tools:layout="@layout/fragment_request_permissions" />
+
+    <activity
+        android:id="@+id/requestPermissionsActivity"
+        android:name="com.lina.securify.views.activities.RequestPermissionsActivity"
+        android:label="RequestPermissionsActivity"
+        tools:layout="@layout/activity_request_permissions"/>
+
+    <action
+        android:id="@+id/action_requestPermissions"
+        app:destination="@id/requestPermissionsActivity" />
 
 </navigation>

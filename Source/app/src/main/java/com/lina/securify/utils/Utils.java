@@ -1,7 +1,9 @@
 package com.lina.securify.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -17,26 +19,19 @@ import java.util.regex.Pattern;
 
 public class Utils {
 
+    public static final String[] appPermissions = new String[] {
+            Manifest.permission.READ_SMS,
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.RECEIVE_SMS,
+            Manifest.permission.CALL_PHONE,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
+
     public static String getTextInside(TextInputLayout inputLayout) {
         return Objects.requireNonNull(inputLayout.getEditText())
                 .getText()
                 .toString();
-    }
-
-    /**
-     * Gets the connectivity status of Internet.
-     * @return <code>true</code> if internet is connected, else <code>false</code>
-     */
-    public static boolean isConnected(Context context) {
-
-        ConnectivityManager cm =
-                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-        return activeNetwork != null &&
-               activeNetwork.isConnectedOrConnecting();
-
     }
 
     public static void showToast(Context context, String message) {
@@ -84,5 +79,18 @@ public class Utils {
             return true;
         else
             return Settings.canDrawOverlays(context);
+    }
+
+    public static boolean arePermissionsGranted(Context context, String[] permissions) {
+
+        for (String permission : permissions) {
+
+            if (ContextCompat.checkSelfPermission(context, permission) ==
+                PackageManager.PERMISSION_DENIED)
+                return false;
+
+        }
+
+        return true;
     }
 }
