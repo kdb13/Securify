@@ -1,4 +1,4 @@
-package com.lina.securify.services.buttonservice;
+package com.lina.securify.services.alertservice;
 
 import android.content.Context;
 import android.media.AudioManager;

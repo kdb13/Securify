@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lina.securify">
-
     <!-- "Display over other apps" required for showing dialog outside the app -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
@@ -21,51 +19,50 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".views.activities.PermissionsActivity"
+            android:label="@string/activity_permissions"
+            android:parentActivityName=".views.activities.MainActivity" >
+
+        </activity>
+
         <activity
             android:name=".views.activities.AuthActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
+        </activity>
+        <activity android:name=".views.activities.MainActivity"
+            android:launchMode="singleTop">
 
         </activity>
 
-        <activity
-            android:name=".views.activities.MainActivity">
-
-        </activity>
-		
-		<service
-            android:name=".services.buttonservice.ButtonService"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-            android:label="Button Service">
-
+        <service
+            android:name=".services.alertservice.AlertService"
+            android:label="@string/alert_service"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
 
-            <meta-data android:name="android.accessibilityservice"
-                android:resource="@xml/button_service_info" />
-
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/alert_service_info" />
         </service>
 
         <receiver
             android:name=".receivers.AlertReceiver"
             android:permission="android.permission.BROADCAST_SMS">
-
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
-
         </receiver>
-
     </application>
 
 </manifest>

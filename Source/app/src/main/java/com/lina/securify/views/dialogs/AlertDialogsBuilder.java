@@ -39,6 +39,7 @@ public class AlertDialogsBuilder {
 
         AlertDialog dialog = new MaterialAlertDialogBuilder(context)
                 .setView(root)
+                .setCancelable(false)
                 .create();
 
         return setWindowType(dialog);

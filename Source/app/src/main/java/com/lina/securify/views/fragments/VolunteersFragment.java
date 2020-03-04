@@ -119,7 +119,7 @@ public class VolunteersFragment extends Fragment {
     public void goToAddVolunteerDialog() {
         NavHostFragment
                 .findNavController(this)
-                .navigate(VolunteersFragmentDirections.actionAddVolunteer(getId()));
+                .navigate(VolunteersFragmentDirections.actionAddVolunteer());
     }
 
     /**
