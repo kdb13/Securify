@@ -37,4 +37,8 @@
         <item name="android:layout_marginTop">8dp</item>
     </style>
 
+    <!-- Request permissions -->
+    <style name="PermissionTitle" parent="TextAppearance.MaterialComponents.Subtitle1">
+    </style>
+
 </resources>

@@ -100,5 +100,14 @@
     <string name="activity_permissions">Permissions</string>
     <string name="permissions_request">Please grant permissions!</string>
     <string name="action_grant">Grant</string>
+    <string name="request_permissions_message">In order to provide Instant Alert service, we need access to the following permissions: </string>
+    <string name="phone">Phone</string>
+    <string name="phone_info">To immediately call the victim from the dialog when alert is received.</string>
+    <string name="sms">SMS</string>
+    <string name="sms_info">To send the alert and display it to volunteers.</string>
+    <string name="location">Location</string>
+    <string name="location_info">To send the location of victim with alert.</string>
+    <string name="button_exit">Exit</string>
+    <string name="button_grant">Grant</string>
 
 </resources>

@@ -48,5 +48,10 @@
         android:name="com.lina.securify.views.activities.PermissionsActivity"
         android:label="@string/activity_permissions"
         tools:layout="@layout/activity_permissions"/>
+    <fragment
+        android:id="@+id/requestPermissionsFragment"
+        android:name="com.lina.securify.RequestPermissionsFragment"
+        android:label="fragment_request_permissions"
+        tools:layout="@layout/fragment_request_permissions" />
 
 </navigation>
