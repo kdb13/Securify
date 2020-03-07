@@ -10,23 +10,20 @@ import android.os.Build;
 import android.provider.Settings;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Utils {
 
-    public static final String[] appPermissions = new String[] {
-            Manifest.permission.READ_SMS,
-            Manifest.permission.SEND_SMS,
-            Manifest.permission.RECEIVE_SMS,
-            Manifest.permission.CALL_PHONE,
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.ACCESS_FINE_LOCATION
-    };
+    public static final List<String> appPermissions = getAppPermissions();
 
     public static String getTextInside(TextInputLayout inputLayout) {
         return Objects.requireNonNull(inputLayout.getEditText())
@@ -81,9 +78,9 @@ public class Utils {
             return Settings.canDrawOverlays(context);
     }
 
-    public static boolean arePermissionsGranted(Context context, String[] permissions) {
+    public static boolean arePermissionsGranted(Context context) {
 
-        for (String permission : permissions) {
+        for (String permission : appPermissions) {
 
             if (ContextCompat.checkSelfPermission(context, permission) ==
                 PackageManager.PERMISSION_DENIED)
@@ -92,5 +89,25 @@ public class Utils {
         }
 
         return true;
+    }
+
+    private static List<String> getAppPermissions() {
+
+        String[] appPermissions = new String[] {
+                Manifest.permission.READ_SMS,
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.RECEIVE_SMS,
+                Manifest.permission.CALL_PHONE,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        };
+
+        List<String> permissions = ArrayUtils.toArrayList(appPermissions);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+            permissions.add(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
+
+        return permissions;
+
     }
 }

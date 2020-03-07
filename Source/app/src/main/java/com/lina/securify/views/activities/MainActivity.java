@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if (!Utils.arePermissionsGranted(this, Utils.appPermissions)) {
+        // TODO: Fix the delay in permission check
+        if (!Utils.arePermissionsGranted(this)) {
             startActivity(new Intent(this, RequestPermissionsActivity.class));
 
             finish();

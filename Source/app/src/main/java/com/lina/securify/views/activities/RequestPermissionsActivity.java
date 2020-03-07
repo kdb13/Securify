@@ -54,6 +54,7 @@ public class RequestPermissionsActivity extends AppCompatActivity {
 
     public void onGrantClick(View view) {
         ActivityCompat.requestPermissions(this,
-                Utils.appPermissions, REQUEST_GRANT_PERMISSIONS);
+                Utils.appPermissions.toArray(new String[0]),
+                REQUEST_GRANT_PERMISSIONS);
     }
 }
