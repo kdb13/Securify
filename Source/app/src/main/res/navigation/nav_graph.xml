@@ -36,12 +36,12 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
-    <dialog
+    <fragment
         android:id="@+id/addVolunteerDialogFragment"
         android:name="com.lina.securify.views.dialogs.AddVolunteerDialogFragment"
         android:label="@string/dialog_add_volunteer"
         tools:layout="@layout/dialog_add_volunteer">
-    </dialog>
+    </fragment>
 
     <activity
         android:id="@+id/permissionsActivity"

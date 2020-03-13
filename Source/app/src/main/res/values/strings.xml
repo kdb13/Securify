@@ -110,4 +110,7 @@
     <string name="button_exit">Exit</string>
     <string name="button_grant">Grant</string>
 
+    <string name="google_maps_url">https://www.google.com/maps/search/?api=1&amp;query=</string>
+    <string name="button_send">Send</string>
+
 </resources>

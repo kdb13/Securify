@@ -1,4 +1,4 @@
-package com.lina.securify.utils.alert;
+package com.lina.securify.sendalert;
 
 import android.content.Context;
 import android.os.Build;

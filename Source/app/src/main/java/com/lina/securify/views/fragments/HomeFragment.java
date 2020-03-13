@@ -2,7 +2,6 @@ package com.lina.securify.views.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavHostController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -20,13 +18,17 @@ import com.lina.securify.utils.AccessibilityUtils;
 import com.lina.securify.utils.Utils;
 import com.lina.securify.utils.constants.Constants;
 import com.lina.securify.utils.constants.IntentActions;
-import com.lina.securify.views.activities.PermissionsActivity;
 
 public class HomeFragment extends Fragment {
 
     private static final String TAG = HomeFragment.class.getSimpleName();
     private FragmentHomeBinding binding;
     private Snackbar permissionsSnackbar;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -36,6 +38,8 @@ public class HomeFragment extends Fragment {
 
         binding.switchAlertService.setOnCheckedChangeListener((button, isChecked) ->
                 sendAlertServiceBroadcast(isChecked));
+
+        sendAlertServiceBroadcast(binding.switchAlertService.isChecked());
 
         return binding.getRoot();
     }
@@ -85,4 +89,5 @@ public class HomeFragment extends Fragment {
 
         requireContext().sendBroadcast(intent);
     }
+
 }

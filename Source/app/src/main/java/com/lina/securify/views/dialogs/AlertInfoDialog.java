@@ -6,33 +6,41 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.lina.securify.R;
 import com.lina.securify.data.models.Alert;
 import com.lina.securify.databinding.DialogReceiveAlertBinding;
 import com.lina.securify.utils.Utils;
 
-public class ReceiveAlertDialog {
+public class AlertInfoDialog {
 
-    private static final String TAG = ReceiveAlertDialog.class.getSimpleName();
+    private static final String TAG = AlertInfoDialog.class.getSimpleName();
 
     private Dialog dialog;
     private DialogReceiveAlertBinding binding;
 
-    public ReceiveAlertDialog(Context context, Alert alert) {
+    public AlertInfoDialog(Context context, Alert alert) {
+
+        context.setTheme(R.style.AppTheme);
 
         binding = DialogReceiveAlertBinding.inflate(LayoutInflater.from(context));
 
-        dialog = AlertDialogsBuilder.buildReceiveAlert(context, binding.getRoot());
+        dialog = new MaterialAlertDialogBuilder(context)
+                .setView(binding.getRoot())
+                .setCancelable(false)
+                .create();
+
+        Utils.setWindowType(dialog);
+
         dialog.show();
 
         binding.setAlert(alert);
-        binding.setIsLocateVisible(alert.getLocation().equals(context.getString(R.string.no_location))
+        binding.setIsLocateVisible(alert.getLocation().equals(context.getString(R.string.alert_no_location))
                 ? View.GONE : View.VISIBLE);
         binding.setDialog(this);
 

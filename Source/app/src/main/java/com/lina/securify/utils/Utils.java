@@ -2,12 +2,14 @@ package com.lina.securify.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -15,6 +17,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.material.textfield.TextInputLayout;
+import com.lina.securify.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,16 +51,16 @@ public class Utils {
 
         int index;
 
-        while ( (index = string.indexOf(" ")) != -1 )
+        while ((index = string.indexOf(" ")) != -1)
             string.delete(index, index + 1);
 
         if (string.length() > 10) {
 
-            if ( (index = string.indexOf("+91")) == 0 ) {
+            if ((index = string.indexOf("+91")) == 0) {
 
                 string.delete(index, index + 3);
 
-            } else if ( (index = string.indexOf("91")) == 0 ) {
+            } else if ((index = string.indexOf("91")) == 0) {
 
                 string.delete(index, index + 2);
 
@@ -83,7 +86,7 @@ public class Utils {
         for (String permission : appPermissions) {
 
             if (ContextCompat.checkSelfPermission(context, permission) ==
-                PackageManager.PERMISSION_DENIED)
+                    PackageManager.PERMISSION_DENIED)
                 return false;
 
         }
@@ -93,7 +96,7 @@ public class Utils {
 
     private static List<String> getAppPermissions() {
 
-        String[] appPermissions = new String[] {
+        String[] appPermissions = new String[]{
                 Manifest.permission.READ_SMS,
                 Manifest.permission.SEND_SMS,
                 Manifest.permission.RECEIVE_SMS,
@@ -110,4 +113,16 @@ public class Utils {
         return permissions;
 
     }
+
+    public static void setWindowType(Dialog dialog) {
+
+        if (Build.VERSION.SDK_INT >= 26)
+            Objects.requireNonNull(dialog.getWindow())
+                    .setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+        else
+            Objects.requireNonNull(dialog.getWindow())
+                    .setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+
+    }
+
 }

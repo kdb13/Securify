@@ -8,7 +8,7 @@
 
         <variable
             name="dialog"
-            type="com.lina.securify.views.dialogs.ReceiveAlertDialog" />
+            type="com.lina.securify.views.dialogs.AlertInfoDialog" />
 
         <variable
             name="alert"

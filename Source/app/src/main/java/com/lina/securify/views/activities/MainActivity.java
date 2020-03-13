@@ -1,35 +1,23 @@
 package com.lina.securify.views.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
-import androidx.navigation.NavHost;
-import androidx.navigation.NavHostController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.Manifest;
-import android.app.UiAutomation;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lina.securify.R;
-import com.lina.securify.data.models.Alert;
 import com.lina.securify.databinding.ActivityMainBinding;
 import com.lina.securify.utils.Utils;
-import com.lina.securify.views.dialogs.ReceiveAlertDialog;
-import com.lina.securify.views.fragments.HomeFragmentDirections;
 
 public class MainActivity extends AppCompatActivity {
 

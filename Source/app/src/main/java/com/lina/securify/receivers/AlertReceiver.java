@@ -4,13 +4,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Telephony;
+import android.telephony.SmsMessage;
 import android.util.Log;
 
-import com.lina.securify.R;
-import com.lina.securify.utils.alert.AlertSmsProcessor;
-import com.lina.securify.utils.alert.AlertVibrator;
-import com.lina.securify.utils.constants.IntentActions;
-import com.lina.securify.views.dialogs.ReceiveAlertDialog;
+import com.lina.securify.data.FirestoreRepository;
+import com.lina.securify.data.models.Alert;
+import com.lina.securify.sendalert.AlertSmsParser;
+import com.lina.securify.utils.Utils;
+import com.lina.securify.sendalert.AlertVibrator;
+import com.lina.securify.views.dialogs.AlertInfoDialog;
 
 public class AlertReceiver extends BroadcastReceiver {
 
@@ -23,28 +25,48 @@ public class AlertReceiver extends BroadcastReceiver {
 
             switch (intent.getAction()) {
 
-                case IntentActions.ACTION_ALERT_DELIVERED:
-                    break;
-
                 case Telephony.Sms.Intents.SMS_RECEIVED_ACTION:
-                    new AlertSmsProcessor(context).process(
-                            Telephony.Sms.Intents.getMessagesFromIntent(intent)[0],
-                            alert -> {
-                                context.setTheme(R.style.AppTheme);
 
-                                // Show the dialog
-                                new ReceiveAlertDialog(context, alert);
+                    SmsMessage[] messages = Telephony.Sms.Intents.getMessagesFromIntent(intent);
 
-                                // Provide haptic feedback
-                                new AlertVibrator(context).vibrate();
-
-                            });
+                    if (messages.length == 1)
+                        processSms(messages[0], context);
+                    else
+                        Log.w(TAG, "More than 1 SmsMessage objects found!");
 
                     break;
 
             }
 
         }
+
+    }
+
+    private void processSms(SmsMessage message, Context context) {
+        Log.d(TAG, "Originating number: " + message.getOriginatingAddress());
+        // Check if the message is from a valid user
+        FirestoreRepository.getInstance()
+                .userExistsWithPhone(Utils.trimPhone(message.getOriginatingAddress()))
+                .get()
+                .addOnSuccessListener(documentSnapshots -> {
+
+                    if (!documentSnapshots.isEmpty()) {
+
+                        Log.i(TAG, "Originating number is valid.");
+
+                        Alert alert = new AlertSmsParser(context)
+                                .parse(message.getMessageBody());
+
+                        if (alert != null) {
+
+                            Log.i(TAG, "SMS is valid.");
+
+                            new AlertInfoDialog(context, alert);
+                            new AlertVibrator(context).vibrate();
+                        }
+                    }
+
+                });
 
     }
 }
