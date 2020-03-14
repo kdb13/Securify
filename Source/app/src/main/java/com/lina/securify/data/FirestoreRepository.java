@@ -229,6 +229,12 @@ public class FirestoreRepository {
 
     }
 
+    public Query isExistingVolunteer(String phone) {
+        return getCurrentUserDocument()
+                .collection(Collections.VOLUNTEERS)
+                .whereEqualTo(MetaVolunteer.PHONE, phone);
+    }
+
     public DocumentReference getCurrentUserDocument() {
 
         return firestore.document(

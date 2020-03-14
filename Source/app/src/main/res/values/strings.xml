@@ -112,5 +112,6 @@
 
     <string name="google_maps_url">https://www.google.com/maps/search/?api=1&amp;query=</string>
     <string name="button_send">Send</string>
+    <string name="existing_volunteer_message">Already added!</string>
 
 </resources>

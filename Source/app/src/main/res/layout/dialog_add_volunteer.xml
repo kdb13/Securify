@@ -10,11 +10,19 @@
             name="volunteer"
             type="com.lina.securify.data.models.Volunteer" />
 
+        <variable
+            name="isLoading"
+            type="boolean" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
+
+        <include layout="@layout/progress_bar"
+            android:id="@+id/progress_bar"
+            visibility="@{isLoading}"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_phone"
@@ -23,9 +31,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:endIconMode="custom"
             app:endIconDrawable="@drawable/ic_contacts"
+            android:enabled="@{!isLoading}"
             android:layout_marginStart="@dimen/global_padding"
             android:layout_marginEnd="@dimen/global_padding"
-            android:layout_marginTop="@dimen/global_padding"
+            android:layout_marginTop="20dp"
             android:hint="@string/hint_phone"
             android:layout_width="0dp"
             android:layout_height="wrap_content">
@@ -45,6 +54,7 @@
             app:layout_constraintEnd_toEndOf="@id/input_phone"
             android:layout_marginTop="@dimen/global_padding"
             android:hint="@string/hint_name"
+            android:enabled="@{!isLoading}"
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 

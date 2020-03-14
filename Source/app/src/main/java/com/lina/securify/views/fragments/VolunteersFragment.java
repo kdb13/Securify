@@ -19,6 +19,7 @@ import androidx.recyclerview.selection.SelectionTracker;
 import androidx.recyclerview.selection.StorageStrategy;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.lina.securify.R;
 import com.lina.securify.adapters.VolunteersAdapter;
 import com.lina.securify.data.models.Volunteer;
@@ -67,13 +68,11 @@ public class VolunteersFragment extends Fragment {
                 case R.id.delete:
 
                     viewModel.removeVolunteers(adapter.getSelectedPhones());
-
                     actionMode.finish();
-
                     return true;
 
-                    default:
-                        return false;
+                default:
+                    return false;
             }
 
         }
@@ -113,10 +112,19 @@ public class VolunteersFragment extends Fragment {
         return binding.getRoot();
     }
 
-    /**
-     * Navigate to Add Volunteers full-screen dialog.
-     */
-    public void goToAddVolunteerDialog() {
+
+    public void onFabClick(View view) {
+
+        if (adapter.getSnapshots().size() ==
+                getResources().getInteger(R.integer.volunteer_limit)) {
+
+            Snackbar.make(binding.getRoot(),
+                    R.string.volunteer_limit_message, Snackbar.LENGTH_SHORT)
+                    .show();
+
+            return;
+        }
+
         NavHostFragment
                 .findNavController(this)
                 .navigate(VolunteersFragmentDirections.actionAddVolunteer());
@@ -150,7 +158,7 @@ public class VolunteersFragment extends Fragment {
             public void onSelectionChanged() {
                 super.onSelectionChanged();
 
-                if (selectionTracker.getSelection().size() > 0) {
+                if (selectionTracker.hasSelection()) {
 
                     if (actionMode == null) {
 
@@ -161,6 +169,9 @@ public class VolunteersFragment extends Fragment {
 
                     actionMode.setTitle(getString(R.string.cab_title, selectionTracker.getSelection().size()));
 
+                } else {
+                    if (actionMode != null)
+                        actionMode.finish();
                 }
 
             }

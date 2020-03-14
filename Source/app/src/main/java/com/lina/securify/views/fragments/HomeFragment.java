@@ -23,7 +23,7 @@ public class HomeFragment extends Fragment {
 
     private static final String TAG = HomeFragment.class.getSimpleName();
     private FragmentHomeBinding binding;
-    private Snackbar permissionsSnackbar;
+    private boolean arePermissionsGranted;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,19 +36,19 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         binding.setFragment(this);
 
-        binding.switchAlertService.setOnCheckedChangeListener((button, isChecked) ->
-                sendAlertServiceBroadcast(isChecked));
+        binding.switchAlertService.setOnClickListener((view) -> {
+
+            if (arePermissionsGranted)
+                sendAlertServiceBroadcast(binding.switchAlertService.isChecked());
+            else
+                NavHostFragment.findNavController(this)
+                        .navigate(R.id.action_askForPermissions);
+
+        });
 
         sendAlertServiceBroadcast(binding.switchAlertService.isChecked());
 
         return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        createPermissionsSnackbar();
     }
 
     @Override
@@ -59,27 +59,13 @@ public class HomeFragment extends Fragment {
         if (Utils.canDrawOverlays(requireContext()) &&
                 AccessibilityUtils.isEnabled(requireContext())) {
 
-            if (permissionsSnackbar.isShown())
-                permissionsSnackbar.dismiss();
             binding.switchAlertService.setEnabled(true);
+            arePermissionsGranted = true;
+
         } else {
-            binding.switchAlertService.setEnabled(false);
             binding.switchAlertService.setChecked(false);
-            permissionsSnackbar.show();
+            arePermissionsGranted = false;
         }
-    }
-
-    private void createPermissionsSnackbar() {
-
-        permissionsSnackbar =
-                Snackbar.make(binding.getRoot(), R.string.permissions_request, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(R.string.action_grant, view -> {
-
-                            NavHostFragment.findNavController(this)
-                                    .navigate(R.id.action_askForPermissions);
-
-                        });
-
     }
 
     private void sendAlertServiceBroadcast(boolean isEnabled) {

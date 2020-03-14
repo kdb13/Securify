@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -54,9 +55,9 @@ public class AddVolunteerDialogFragment extends DialogFragment {
         binding = DialogAddVolunteerBinding.inflate(
                 inflater, container, false
         );
-
         binding.inputPhone.setEndIconOnClickListener(view -> goToContactPicker());
         binding.setVolunteer(new Volunteer());
+        binding.setIsLoading(false);
 
         validation = new AddVolunteerValidation(binding);
 
@@ -91,13 +92,7 @@ public class AddVolunteerDialogFragment extends DialogFragment {
         if (item.getItemId() == R.id.add) {
 
             if (validation.validate()) {
-
-                viewModel.addVolunteer(binding.getVolunteer());
-
-                NavHostFragment
-                        .findNavController(this)
-                        .navigateUp();
-
+                addVolunteer();
             }
 
             return true;
@@ -181,6 +176,31 @@ public class AddVolunteerDialogFragment extends DialogFragment {
                         .findViewById(R.id.toolbar);
 
         toolbar.setNavigationIcon(R.drawable.ic_close);
+
+    }
+
+    private void addVolunteer() {
+
+        binding.setIsLoading(true);
+
+        viewModel.isExistingVolunteer(binding.getVolunteer().getPhone())
+                .get()
+                .addOnSuccessListener(documentSnapshots -> {
+
+                    if (documentSnapshots.isEmpty()) {
+                        viewModel.addVolunteer(binding.getVolunteer());
+
+                        NavHostFragment.findNavController(this)
+                                .navigateUp();
+                    }
+                    else {
+                        binding.inputPhone
+                                .setError(getString(R.string.existing_volunteer_message));
+
+                        binding.setIsLoading(false);
+                    }
+
+                });
 
     }
 

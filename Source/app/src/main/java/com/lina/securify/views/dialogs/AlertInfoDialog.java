@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.lina.securify.R;
 import com.lina.securify.data.models.Alert;
-import com.lina.securify.databinding.DialogReceiveAlertBinding;
+import com.lina.securify.databinding.DialogAlertInfoBinding;
 import com.lina.securify.utils.Utils;
 
 public class AlertInfoDialog {
@@ -22,13 +22,13 @@ public class AlertInfoDialog {
     private static final String TAG = AlertInfoDialog.class.getSimpleName();
 
     private Dialog dialog;
-    private DialogReceiveAlertBinding binding;
+    private DialogAlertInfoBinding binding;
 
     public AlertInfoDialog(Context context, Alert alert) {
 
         context.setTheme(R.style.AppTheme);
 
-        binding = DialogReceiveAlertBinding.inflate(LayoutInflater.from(context));
+        binding = DialogAlertInfoBinding.inflate(LayoutInflater.from(context));
 
         dialog = new MaterialAlertDialogBuilder(context)
                 .setView(binding.getRoot())

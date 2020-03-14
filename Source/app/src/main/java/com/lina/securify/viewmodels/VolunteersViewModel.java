@@ -26,4 +26,8 @@ public class VolunteersViewModel extends ViewModel {
     public void removeVolunteers(List<String> phones) {
         repository.removeVolunteers(phones);
     }
+
+    public Query isExistingVolunteer(String phone) {
+        return repository.isExistingVolunteer(phone);
+    }
 }
