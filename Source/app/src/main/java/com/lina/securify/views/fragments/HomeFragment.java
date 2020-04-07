@@ -1,6 +1,7 @@
 package com.lina.securify.views.fragments;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ public class HomeFragment extends Fragment {
     private static final String TAG = HomeFragment.class.getSimpleName();
     private FragmentHomeBinding binding;
     private boolean arePermissionsGranted;
+    private MediaPlayer mediaPlayer;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +45,19 @@ public class HomeFragment extends Fragment {
             else
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_askForPermissions);
+
+        });
+
+        binding.buttonAlert.setOnClickListener(view -> {
+
+            if (mediaPlayer != null) {
+                mediaPlayer.release();
+                mediaPlayer = null;
+                return;
+            }
+
+            mediaPlayer = MediaPlayer.create(requireContext(), R.raw.alert_tone);
+            mediaPlayer.start();
 
         });
 

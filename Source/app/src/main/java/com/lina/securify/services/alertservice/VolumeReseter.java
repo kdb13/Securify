@@ -34,4 +34,5 @@ public class VolumeReseter {
     private int getVolume() {
         return audioManager.getStreamVolume(streamType);
     }
+
 }

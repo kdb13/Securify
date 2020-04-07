@@ -60,7 +60,8 @@
     <!-- Snackbar actions -->
     <string name="action_retry">Retry</string>
 
-    <string name="button_service">Using it to listen to Volume button clicks.</string>
+    <!-- Alert Service description -->
+    <string name="button_service">Securify is using this service to listen to Volume button clicks to send the alert instantly. If you disable this service, you won\'t be able to do so\n\nNo personal data is collected.</string>
     <string name="code_sent">A code was sent to this phone number.</string>
 
     <!-- Menu items -->

@@ -21,6 +21,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".AlertActivity"
+            android:showWhenLocked="true">
+
+        </activity>
+
         <activity android:name=".views.activities.RequestPermissionsActivity" />
         <activity
             android:name=".views.activities.PermissionsActivity"
@@ -54,6 +59,7 @@
             <meta-data
                 android:name="android.accessibilityservice"
                 android:resource="@xml/alert_service_info" />
+
         </service>
 
         <receiver
@@ -63,7 +69,6 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>
