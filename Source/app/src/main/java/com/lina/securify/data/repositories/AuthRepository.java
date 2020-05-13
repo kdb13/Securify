@@ -21,8 +21,8 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.lina.securify.utils.constants.Collections;
-import com.lina.securify.utils.constants.MetaUser;
+import com.lina.securify.contracts.Collections;
+import com.lina.securify.contracts.UsersContract;
 import com.lina.securify.data.models.NewUser;
 
 import java.util.HashMap;
@@ -245,103 +245,16 @@ public class AuthRepository extends BaseRepository {
         return authResult;
     }
 
-    /**
-     * Adds a new PIN to the user.
-     * @param pin The new PIN to add
-     */
-    public LiveData<Result> addPin(String pin) {
-
-        MutableLiveData<Result> authResult = new MutableLiveData<>();
-
-        _addPin(pin, authResult);
-
-        return authResult;
-    }
-
-    /**
-     * Verifies the pin for entry
-     * @param pin The PIN to verify
-     */
-    public LiveData<Result> verifyPin(String pin) {
-
-        MutableLiveData<Result> authResult = new MutableLiveData<>();
-
-        _verifyPin(pin, authResult);
-
-        return authResult;
-    }
-
     private void addPhone() {
 
         Objects.requireNonNull(getCurrenUserDocument())
-                .update(MetaUser.PHONE, firebaseAuth.getCurrentUser().getPhoneNumber())
+                .update(UsersContract.PHONE, firebaseAuth.getCurrentUser().getPhoneNumber())
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.e(TAG, "Error adding phone to user!", e);
                     }
                 });
-
-    }
-
-    private void _addPin(String pin, final MutableLiveData<Result> authResult) {
-
-        DocumentReference document;
-
-        if((document = getCurrenUserDocument()) != null) {
-
-            Map<String, Object> data = new HashMap<>();
-            data.put(MetaUser.APP_PIN, pin);
-
-            document
-                    .update(data)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            authResult.setValue(Result.NEW_PIN_ADDED);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            authResult.setValue(Result.UNKNOWN_ERROR);
-
-                            Log.e(TAG, "Error adding pin to user!", e);
-                        }
-                    });
-
-        }
-
-    }
-
-    private void _verifyPin(final String pin, final MutableLiveData<Result> authResult) {
-
-        DocumentReference documentReference;
-
-        if ((documentReference = getCurrenUserDocument()) != null) {
-
-            documentReference
-                    .get()
-                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                            String _pin = Objects.requireNonNull(documentSnapshot.getString(MetaUser.APP_PIN));
-
-                            if (_pin.equals(pin))
-                                authResult.setValue(Result.PIN_VERIFIED);
-                            else
-                                authResult.setValue(Result.INVALID_PIN);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e(TAG, "Error verifying pin!", e);
-                        }
-                    });
-
-        }
 
     }
 
@@ -352,8 +265,8 @@ public class AuthRepository extends BaseRepository {
         if ((document = getCurrenUserDocument()) != null) {
 
             Map<String, String> user = new HashMap<>();
-            user.put(MetaUser.FIRST_NAME, newUser.getFirstName());
-            user.put(MetaUser.LAST_NAME, newUser.getLastName());
+            user.put(UsersContract.FIRST_NAME, newUser.getFirstName());
+            user.put(UsersContract.LAST_NAME, newUser.getLastName());
 
             document
                     .set(user)

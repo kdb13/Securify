@@ -66,7 +66,6 @@
 
     <!-- Menu items -->
     <string name="item_log_out">Log out</string>
-    <string name="item_add">Add</string>
     <string name="item_delete">Delete</string>
 
     <!-- Fragments -->
@@ -74,8 +73,7 @@
     <string name="fragment_alerts">Alerts</string>
     <string name="fragment_volunteers">Volunteers</string>
 
-    <!-- Send alert dialog -->
-    <string name="send_alert">Send alert?</string>
+    <string name="button_send_alert">Send alert</string>
 
     <string name="dialog_add_volunteer">Add volunteer</string>
 
@@ -114,5 +112,19 @@
     <string name="google_maps_url">https://www.google.com/maps/search/?api=1&amp;query=</string>
     <string name="button_send">Send</string>
     <string name="existing_volunteer_message">Already added!</string>
+    <string name="alert_volunteers">Alert the volunteers?</string>
+    <string name="display_over_other_apps">Display over other apps</string>
+    <string name="display_over_other_apps_description">In order to show the dialog for sending alert, from anywhere within you phone, the app requires access to the Display over other apps permission.</string>
+    <string name="accessibility_service">Accessibility Service</string>
+    <string name="accessibility_service_description">An accessibility service named \"Alert Service\" needs to be running to send alert on long pressing the Volume Up button. </string>
+    <string name="button_start_service">Start service</string>
+    <string name="button_grant_access">Grant access</string>
+    <string name="special_permissions">Special permissions</string>
+    <string name="started">Started</string>
+    <string name="granted">Granted</string>
+    <string name="item_save">Save</string>
+    <string name="required">Required</string>
+    <string name="pick_from_contacts">Pick from contacts</string>
+    <string name="country_code">+91</string>
 
 </resources>

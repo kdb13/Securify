@@ -2,6 +2,7 @@ package com.lina.securify.views.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -13,8 +14,15 @@ public class AuthActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            // Go to MainActivity
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
 
     }
 

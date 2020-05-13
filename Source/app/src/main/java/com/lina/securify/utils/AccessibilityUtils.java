@@ -4,7 +4,7 @@ import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Context;
 import android.view.accessibility.AccessibilityManager;
 
-import com.lina.securify.services.alertservice.AlertService;
+import com.lina.securify.services.AlertService;
 
 import java.util.List;
 import java.util.regex.Matcher;

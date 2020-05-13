@@ -52,12 +52,6 @@ public class AlertReceiver extends BroadcastReceiver {
     private void processSms(SmsMessage message, Context context) {
         Log.d(TAG, "Originating number: " + message.getOriginatingAddress());
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Securify")
-                .setSmallIcon(R.drawable.ic_contacts)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        NotificationManagerCompat.from(context).notify(12, builder.build());
-
         // Check if the message is from a valid user
         FirestoreRepository.getInstance()
                 .userExistsWithPhone(Utils.trimPhone(message.getOriginatingAddress()))

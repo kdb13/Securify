@@ -26,8 +26,6 @@ import java.util.regex.Pattern;
 
 public class Utils {
 
-    public static final List<String> appPermissions = getAppPermissions();
-
     public static String getTextInside(TextInputLayout inputLayout) {
         return Objects.requireNonNull(inputLayout.getEditText())
                 .getText()
@@ -70,51 +68,28 @@ public class Utils {
         return string.toString();
     }
 
+    /**
+     * @return true if the device is running Android M (6.0) or above, else false
+     */
     public static boolean isM() {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M;
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
+    /**
+     * @return true if the app is allowed to <b>Display over other apps</b>, else false
+     */
     public static boolean canDrawOverlays(Context context) {
-        if (isM())
+        if (!isM())
             return true;
         else
             return Settings.canDrawOverlays(context);
     }
 
-    public static boolean arePermissionsGranted(Context context) {
 
-        for (String permission : appPermissions) {
-
-            if (ContextCompat.checkSelfPermission(context, permission) ==
-                    PackageManager.PERMISSION_DENIED)
-                return false;
-
-        }
-
-        return true;
-    }
-
-    private static List<String> getAppPermissions() {
-
-        String[] appPermissions = new String[]{
-                Manifest.permission.READ_SMS,
-                Manifest.permission.SEND_SMS,
-                Manifest.permission.RECEIVE_SMS,
-                Manifest.permission.CALL_PHONE,
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.ACCESS_FINE_LOCATION
-        };
-
-        List<String> permissions = ArrayUtils.toArrayList(appPermissions);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-            permissions.add(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
-
-        return permissions;
-
-    }
-
-    public static void setWindowType(Dialog dialog) {
+    /**
+     * Sets the window type for the specified dialog to System Overlay.
+     */
+    public static void setWindowToOverlay(Dialog dialog) {
 
         if (Build.VERSION.SDK_INT >= 26)
             Objects.requireNonNull(dialog.getWindow())
@@ -125,4 +100,28 @@ public class Utils {
 
     }
 
+    public static String formatLocation(double latitude, double longitude) {
+        return latitude + "," + longitude;
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    public static boolean checkPermissions(Context context, String ... permissions) {
+
+        for (String permission : permissions) {
+            if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_DENIED)
+                return false;
+        }
+
+        return true;
+
+    }
+
+    /**
+     * Wraps up the special access checks.
+     * @return true if granted, else false
+     */
+    public static boolean isSpecialAccessGranted(Context context) {
+        return Utils.canDrawOverlays(context) &&
+                AccessibilityUtils.isEnabled(context);
+    }
 }

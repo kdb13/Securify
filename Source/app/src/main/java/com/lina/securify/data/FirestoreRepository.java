@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -19,14 +18,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
-import com.google.firebase.auth.FirebaseUser;
 import com.lina.securify.data.models.LoginCredentials;
 import com.lina.securify.data.models.SignUpCredentials;
 import com.lina.securify.data.models.Volunteer;
 import com.lina.securify.data.repositories.AuthTaskListener;
-import com.lina.securify.utils.constants.Collections;
-import com.lina.securify.utils.constants.MetaUser;
-import com.lina.securify.utils.constants.MetaVolunteer;
+import com.lina.securify.contracts.Collections;
+import com.lina.securify.contracts.UsersContract;
+import com.lina.securify.contracts.VolunteersContract;
 
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +57,7 @@ public class FirestoreRepository {
                 .addOnSuccessListener(authResult -> {
 
                     firestore.collection(Collections.USERS)
-                            .whereEqualTo(MetaUser.PHONE, phone)
+                            .whereEqualTo(UsersContract.PHONE, phone)
                             .get()
                             .addOnSuccessListener(querySnapshot -> {
 
@@ -127,9 +125,9 @@ public class FirestoreRepository {
 
                                 // Create the user document
                                 HashMap<String, String> newUser = new HashMap<>();
-                                newUser.put(MetaUser.FIRST_NAME, credentials.getFirstName());
-                                newUser.put(MetaUser.LAST_NAME, credentials.getLastName());
-                                newUser.put(MetaUser.PHONE, credentials.getPhone());
+                                newUser.put(UsersContract.FIRST_NAME, credentials.getFirstName());
+                                newUser.put(UsersContract.LAST_NAME, credentials.getLastName());
+                                newUser.put(UsersContract.PHONE, credentials.getPhone());
 
                                 firestore.collection(Collections.USERS)
                                         .document(linkResult.getUser().getUid())
@@ -196,7 +194,7 @@ public class FirestoreRepository {
     public void removeVolunteers(List<String> phones) {
 
         getVolunteers()
-                .whereIn(MetaVolunteer.PHONE, phones)
+                .whereIn(VolunteersContract.PHONE, phones)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 
@@ -225,14 +223,14 @@ public class FirestoreRepository {
 
         return firestore
                 .collection(Collections.USERS)
-                .whereEqualTo(MetaUser.PHONE, phone);
+                .whereEqualTo(UsersContract.PHONE, phone);
 
     }
 
     public Query isExistingVolunteer(String phone) {
         return getCurrentUserDocument()
                 .collection(Collections.VOLUNTEERS)
-                .whereEqualTo(MetaVolunteer.PHONE, phone);
+                .whereEqualTo(VolunteersContract.PHONE, phone);
     }
 
     public DocumentReference getCurrentUserDocument() {

@@ -1,4 +1,4 @@
-package com.lina.securify.utils.constants;
+package com.lina.securify.contracts;
 
 /**
  * Firestore collections

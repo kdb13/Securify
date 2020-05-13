@@ -22,7 +22,6 @@ public class AlertDialogsBuilder {
     public static Dialog buildSendAlert(Context context, DialogInterface.OnClickListener listener) {
 
         AlertDialog dialog = new MaterialAlertDialogBuilder(context)
-                .setTitle(R.string.send_alert)
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Send", listener)
                 .create();

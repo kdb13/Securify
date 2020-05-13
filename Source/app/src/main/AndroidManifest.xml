@@ -34,7 +34,8 @@
         <activity
             android:name=".views.activities.AuthActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme.Startup">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,7 +50,7 @@
             android:launchMode="singleTop" />
 
         <service
-            android:name=".services.alertservice.AlertService"
+            android:name=".services.AlertService"
             android:label="@string/alert_service"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>

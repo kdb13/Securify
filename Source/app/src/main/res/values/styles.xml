@@ -1,12 +1,17 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">@
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeStyle">@style/ActionMode</item>
         <item name="actionModeCloseDrawable">@drawable/ic_close</item>
     </style>
-
+    
+    <!-- Theme during app startup to display logo -->
+    <style name="AppTheme.Startup">
+        <item name="android:windowBackground">@drawable/startup_screen</item>
+    </style>
+    
     <!-- Sign In -> TITLE -->
     <style name="SignInTitle_textAppearance" parent="TextAppearance.MaterialComponents.Headline5">
         <item name="android:textColor">?android:colorPrimaryDark</item>
@@ -24,7 +29,7 @@
         <item name="android:elevation">4dp</item>
         <item name="android:layout_height">?android:actionBarSize</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:background">?android:colorPrimary</item>
+        <item name="android:background">?colorPrimary</item>
     </style>
 
     <style name="ActionMode" parent="@style/Widget.AppCompat.ActionMode">
@@ -39,6 +44,11 @@
 
     <!-- Request permissions -->
     <style name="PermissionTitle" parent="TextAppearance.MaterialComponents.Subtitle1">
+    </style>
+
+    <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
 </resources>

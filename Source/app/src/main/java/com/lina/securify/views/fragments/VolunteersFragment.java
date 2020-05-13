@@ -25,7 +25,7 @@ import com.lina.securify.adapters.VolunteersAdapter;
 import com.lina.securify.data.models.Volunteer;
 import com.lina.securify.databinding.FragmentVolunteersBinding;
 import com.lina.securify.utils.Utils;
-import com.lina.securify.utils.constants.Constants;
+import com.lina.securify.contracts.Constants;
 import com.lina.securify.viewmodels.VolunteersViewModel;
 
 public class VolunteersFragment extends Fragment {

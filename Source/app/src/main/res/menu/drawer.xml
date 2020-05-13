@@ -2,19 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-
         <item
-            android:id="@+id/homeFragment"
+            android:id="@+id/fragment_home"
             android:title="@string/fragment_home" />
 
         <item
-            android:id="@+id/alertsFragment"
-            android:title="@string/fragment_alerts" />
-
-        <item
-            android:id="@+id/volunteersFragment"
+            android:id="@+id/fragment_volunteers"
             android:title="@string/fragment_volunteers" />
     </group>
-
-
 </menu>

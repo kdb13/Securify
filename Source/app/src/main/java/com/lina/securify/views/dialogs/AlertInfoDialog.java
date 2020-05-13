@@ -35,7 +35,7 @@ public class AlertInfoDialog {
                 .setCancelable(false)
                 .create();
 
-        Utils.setWindowType(dialog);
+        Utils.setWindowToOverlay(dialog);
 
         dialog.show();
 

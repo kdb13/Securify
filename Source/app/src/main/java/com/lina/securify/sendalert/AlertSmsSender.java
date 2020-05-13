@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.telephony.SmsManager;
 
 import com.lina.securify.receivers.AlertReceiver;
-import com.lina.securify.utils.constants.IntentActions;
-import com.lina.securify.utils.constants.RequestCodes;
+import com.lina.securify.contracts.IntentActions;
+import com.lina.securify.contracts.RequestCodes;
 
 import java.util.List;
 
-public class AlertSmsSender {
+class AlertSmsSender {
 
     private static final String TAG = AlertSmsSender.class.getSimpleName();
 
@@ -19,13 +19,13 @@ public class AlertSmsSender {
     private SmsManager smsManager;
     private List<String> phones;
 
-    public AlertSmsSender(String alertSms, List<String> phones) {
+    AlertSmsSender(String alertSms, List<String> phones) {
         this.alertSms = alertSms;
         this.phones = phones;
         smsManager = SmsManager.getDefault();
     }
 
-    public void send(Context context) {
+    void send(Context context) {
 
         Intent intent = new Intent(context, AlertReceiver.class);
         intent.setAction(IntentActions.ACTION_ALERT_SENT);

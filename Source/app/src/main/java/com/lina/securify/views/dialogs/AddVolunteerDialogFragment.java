@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,20 +21,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.lina.securify.R;
 import com.lina.securify.data.models.Volunteer;
 import com.lina.securify.databinding.DialogAddVolunteerBinding;
 import com.lina.securify.utils.Utils;
-import com.lina.securify.utils.constants.RequestCodes;
+import com.lina.securify.contracts.RequestCodes;
 import com.lina.securify.viewmodels.VolunteersViewModel;
 import com.lina.securify.views.validations.AddVolunteerValidation;
 
 public class AddVolunteerDialogFragment extends DialogFragment {
 
-    private DialogAddVolunteerBinding binding;
+    /*private DialogAddVolunteerBinding binding;
     private VolunteersViewModel viewModel;
     private AddVolunteerValidation validation;
 
@@ -83,13 +81,13 @@ public class AddVolunteerDialogFragment extends DialogFragment {
         menu.clear();
 
         // Inflate the new menu
-        inflater.inflate(R.menu.menu_add_volunteer, menu);
+        inflater.inflate(R.menu.add_volunteer, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if (item.getItemId() == R.id.add) {
+        if (item.getItemId() == R.id.save) {
 
             if (validation.validate()) {
                 addVolunteer();
@@ -115,9 +113,9 @@ public class AddVolunteerDialogFragment extends DialogFragment {
 
     }
 
-    /**
+    *//**
      * Navigate to the contact picker.
-     */
+     *//*
     private void goToContactPicker() {
 
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -129,9 +127,9 @@ public class AddVolunteerDialogFragment extends DialogFragment {
 
     }
 
-    /**
+    *//**
      * Update the UI with the picked contact.
-     */
+     *//*
     private void setPickedVolunteer(Uri uri, Volunteer volunteer) {
 
         String[] projection = {
@@ -164,9 +162,9 @@ public class AddVolunteerDialogFragment extends DialogFragment {
 
     }
 
-    /**
+    *//**
      * Set the dialog's toolbar.
-     */
+     *//*
     private void setToolbar() {
 
         setHasOptionsMenu(true);
@@ -202,6 +200,6 @@ public class AddVolunteerDialogFragment extends DialogFragment {
 
                 });
 
-    }
+    }*/
 
 }

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="dialog"
+            type="com.lina.securify.views.dialogs.SpecialPermissionsDialogFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/accessibility_service"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/accessibility_service"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/accessibility_service_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/accessibility_service_description"
+            app:layout_constraintEnd_toEndOf="@+id/accessibility_service"
+            app:layout_constraintStart_toStartOf="@+id/accessibility_service"
+            app:layout_constraintTop_toBottomOf="@+id/accessibility_service" />
+
+        <TextView
+            android:id="@+id/display_over_other_apps"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/display_over_other_apps"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintEnd_toEndOf="@+id/accessibility_service"
+            app:layout_constraintStart_toStartOf="@+id/accessibility_service"
+            app:layout_constraintTop_toBottomOf="@+id/button_start_service" />
+
+        <TextView
+            android:id="@+id/display_over_other_apps_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/display_over_other_apps_description"
+            app:layout_constraintEnd_toEndOf="@+id/accessibility_service"
+            app:layout_constraintStart_toStartOf="@+id/accessibility_service"
+            app:layout_constraintTop_toBottomOf="@+id/display_over_other_apps" />
+
+        <Button
+            android:id="@+id/button_start_service"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/button_start_service"
+            android:onClick="@{dialog::goToAccessibilitySettings}"
+            app:layout_constraintEnd_toEndOf="@+id/accessibility_service"
+            app:layout_constraintStart_toStartOf="@+id/accessibility_service"
+            app:layout_constraintTop_toBottomOf="@+id/accessibility_service_description" />
+
+        <Button
+            android:id="@+id/button_grant_access"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/button_grant_access"
+            android:onClick="@{dialog::goToSystemOverlaySettings}"
+            app:layout_constraintEnd_toEndOf="@+id/accessibility_service"
+            app:layout_constraintStart_toStartOf="@+id/accessibility_service"
+            app:layout_constraintTop_toBottomOf="@+id/display_over_other_apps_description" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

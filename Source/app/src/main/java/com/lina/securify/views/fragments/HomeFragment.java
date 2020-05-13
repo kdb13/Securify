@@ -1,94 +1,73 @@
 package com.lina.securify.views.fragments;
 
-import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.lina.securify.R;
 import com.lina.securify.databinding.FragmentHomeBinding;
+import com.lina.securify.services.AlertService;
 import com.lina.securify.utils.AccessibilityUtils;
 import com.lina.securify.utils.Utils;
-import com.lina.securify.utils.constants.Constants;
-import com.lina.securify.utils.constants.IntentActions;
 
 public class HomeFragment extends Fragment {
 
     private static final String TAG = HomeFragment.class.getSimpleName();
-    private FragmentHomeBinding binding;
-    private boolean arePermissionsGranted;
-    private MediaPlayer mediaPlayer;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private FragmentHomeBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        binding.setFragment(this);
 
-        binding.switchAlertService.setOnClickListener((view) -> {
-
-            if (arePermissionsGranted)
-                sendAlertServiceBroadcast(binding.switchAlertService.isChecked());
-            else
-                NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_askForPermissions);
-
-        });
-
-        binding.buttonAlert.setOnClickListener(view -> {
-
-            if (mediaPlayer != null) {
-                mediaPlayer.release();
-                mediaPlayer = null;
-                return;
-            }
-
-            mediaPlayer = MediaPlayer.create(requireContext(), R.raw.alert_tone);
-            mediaPlayer.start();
-
-        });
-
-        sendAlertServiceBroadcast(binding.switchAlertService.isChecked());
+        binding.switchAlertService.setOnClickListener(this::toggleAlertService);
 
         return binding.getRoot();
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        // Check for permissions
-        if (Utils.canDrawOverlays(requireContext()) &&
-                AccessibilityUtils.isEnabled(requireContext())) {
-
-            binding.switchAlertService.setEnabled(true);
-            arePermissionsGranted = true;
-
-        } else {
+        // If any of the special permissions is missing, stop the Alert Service
+        if (!AccessibilityUtils.isEnabled(requireContext()) ||
+                (Utils.isM() && !Utils.canDrawOverlays(requireContext())) ) {
             binding.switchAlertService.setChecked(false);
-            arePermissionsGranted = false;
+            AlertService.isListening = false;
         }
+
     }
 
-    private void sendAlertServiceBroadcast(boolean isEnabled) {
+    /**
+     * Used to toggle the state of Alert Service when the switch is clicked.
+     */
+    private void toggleAlertService(View view) {
 
-        Intent intent = new Intent(IntentActions.ACTION_ALERT_SERVICE_STATE_CHANGED);
-        intent.putExtra(Constants.EXTRA_ALERT_SERVICE_STATE, isEnabled);
+        if (binding.switchAlertService.isChecked()) {
 
-        requireContext().sendBroadcast(intent);
+            if (!Utils.isSpecialAccessGranted(requireContext())) {
+
+                // Show the dialog to grant these special access permissions
+                NavHostFragment
+                        .findNavController(this)
+                        .navigate(HomeFragmentDirections.showSpecialPermissionsDialog());
+
+                binding.switchAlertService.setChecked(false);
+
+            } else
+                AlertService.isListening = true;
+
+        } else
+            AlertService.isListening = false;
+
+
     }
 
 }

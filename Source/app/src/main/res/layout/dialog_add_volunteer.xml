@@ -1,72 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/add_volunteer"
+        app:navigationIcon="@drawable/ic_close"
+        app:title="@string/dialog_add_volunteer" />
 
-    <data>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/global_padding"
+        android:hint="@string/hint_name"
+        app:startIconDrawable="@drawable/ic_contacts"
+        app:startIconCheckable="false"
+        app:startIconContentDescription="@string/pick_from_contacts"
+        app:helperText="@string/required"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <variable
-            name="volunteer"
-            type="com.lina.securify.data.models.Volunteer" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName" />
 
-        <variable
-            name="isLoading"
-            type="boolean" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    </data>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/global_padding"
+        android:hint="@string/hint_phone"
+        app:helperText="@string/required"
+        app:prefixText="@string/country_code"
+        app:layout_constraintEnd_toEndOf="@+id/input_name"
+        app:layout_constraintStart_toStartOf="@+id/input_name"
+        app:layout_constraintTop_toBottomOf="@+id/input_name">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone" />
 
-        <include layout="@layout/progress_bar"
-            android:id="@+id/progress_bar"
-            visibility="@{isLoading}"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_phone"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:endIconMode="custom"
-            app:endIconDrawable="@drawable/ic_contacts"
-            android:enabled="@{!isLoading}"
-            android:layout_marginStart="@dimen/global_padding"
-            android:layout_marginEnd="@dimen/global_padding"
-            android:layout_marginTop="20dp"
-            android:hint="@string/hint_phone"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@={volunteer.phone}"
-                android:inputType="phone"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_name"
-            app:layout_constraintTop_toBottomOf="@id/input_phone"
-            app:layout_constraintStart_toStartOf="@id/input_phone"
-            app:layout_constraintEnd_toEndOf="@id/input_phone"
-            android:layout_marginTop="@dimen/global_padding"
-            android:hint="@string/hint_name"
-            android:enabled="@{!isLoading}"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@={volunteer.name}"
-                android:inputType="textPersonName"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
