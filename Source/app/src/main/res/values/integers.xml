@@ -3,4 +3,5 @@
     <integer name="sms_code_length">6</integer>
     <integer name="pin_length">4</integer>
     <integer name="volunteer_limit">5</integer>
+    <integer name="phone_digits">10</integer>
 </resources>

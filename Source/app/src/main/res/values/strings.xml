@@ -9,7 +9,7 @@
     <string name="hint_password">Password</string>
     <string name="hint_confirm_password">Confirm password</string>
     <string name="hint_last_name">Last Name</string>
-    <string name="hint_phone">Phone</string>
+    <string name="hint_phone">Phone number</string>
     <string name="hint_sms_code">Enter the code</string>
     <string name="hint_pin">PIN</string>
     <string name="hint_reenter_pin">Re-enter PIN</string>
@@ -51,7 +51,7 @@
     <string name="error_no_internet_connection">No internet connection!</string>
     <string name="error_password_mismatch">The passwords don\'t match!</string>
     <string name="error_weak_password">The password is weak!</string>
-    <string name="error_invalid_phone">The phone no. must be of 10 digits!</string>
+    <string name="error_invalid_phone">Phone no. must be of 10 digits.</string>
     <string name="error_invalid_sms_code">Invalid code!</string>
     <string name="error_invalid_pin">The PIN must be of 4 digits!</string>
     <string name="error_wrong_pin">The entered PIN is wrong!</string>
@@ -66,7 +66,7 @@
 
     <!-- Menu items -->
     <string name="item_log_out">Log out</string>
-    <string name="item_delete">Delete</string>
+    <string name="action_delete">Delete</string>
 
     <!-- Fragments -->
     <string name="fragment_home">Home</string>
@@ -75,12 +75,12 @@
 
     <string name="button_send_alert">Send alert</string>
 
-    <string name="dialog_add_volunteer">Add volunteer</string>
+    <string name="add_volunteer">Add volunteer</string>
 
-    <string name="volunteer_limit_message">Only 5 volunteers can be added!</string>
+    <string name="volunteers_limit_message">Only 5 volunteers can be added!</string>
 
-    <string name="button_call">Call</string>
-    <string name="button_locate">Locate</string>
+    <string name="action_call">Call</string>
+    <string name="action_locate">Locate</string>
 
     <string name="empty_volunteers_list_message">Start adding volunteers.</string>
 
@@ -90,7 +90,7 @@
     <string name="button_change_phone">Change phone</string>
     <string name="resend_message">Wait for 30 seconds, then resend the OTP.</string>
 
-    <string name="alert_service">Alert Service</string>
+    <string name="instant_alert">Instant Alert</string>
     <string name="fragment_permissions">Permissions</string>
     <string name="permissions_header">Alert Service requires the following permissions:</string>
     <string name="permission_accessibility_service">Start accessibility service</string>
@@ -108,15 +108,17 @@
     <string name="location_info">To send the location of victim with alert.</string>
     <string name="button_exit">Exit</string>
     <string name="button_grant">Grant</string>
+    <string name="button_alert">Alert</string>
 
     <string name="google_maps_url">https://www.google.com/maps/search/?api=1&amp;query=</string>
     <string name="button_send">Send</string>
     <string name="existing_volunteer_message">Already added!</string>
-    <string name="alert_volunteers">Alert the volunteers?</string>
+    <string name="send_alert_title">Alert the volunteers?</string>
+    <string name="send_alert_msg">An alert SMS will be sent to all the volunteers.</string>
     <string name="display_over_other_apps">Display over other apps</string>
     <string name="display_over_other_apps_description">In order to show the dialog for sending alert, from anywhere within you phone, the app requires access to the Display over other apps permission.</string>
     <string name="accessibility_service">Accessibility Service</string>
-    <string name="accessibility_service_description">An accessibility service named \"Alert Service\" needs to be running to send alert on long pressing the Volume Up button. </string>
+    <string name="accessibility_service_description">An accessibility service named \"Instant Alert\" needs to be running to instantly send alert on long pressing the Volume Up button. </string>
     <string name="button_start_service">Start service</string>
     <string name="button_grant_access">Grant access</string>
     <string name="special_permissions">Special permissions</string>
@@ -126,5 +128,14 @@
     <string name="required">Required</string>
     <string name="pick_from_contacts">Pick from contacts</string>
     <string name="country_code">+91</string>
+
+    <string name="item_remove_all">Remove all</string>
+
+    <string name="button_remove">Remove</string>
+    <string name="msg_remove_volunteers">Remove all volunteers?</string>
+
+    <string name="channel_alerts_name">Alerts</string>
+    <string name="pref_instant_alert">instant_alert</string>
+    <string name="pref_fresh_app">fresh_app</string>
 
 </resources>

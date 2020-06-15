@@ -4,9 +4,9 @@ import android.content.Context;
 
 import com.lina.securify.R;
 import com.lina.securify.databinding.FragmentSignUpBinding;
-import com.lina.securify.validators.EmailValidator;
-import com.lina.securify.validators.PasswordValidator;
-import com.lina.securify.validators.RequiredFieldValidator;
+import com.lina.securify.validation.EmailValidator;
+import com.lina.securify.validation.PasswordValidator;
+import com.lina.securify.validation.RequiredFieldValidator;
 
 public class SignUpValidation {
 

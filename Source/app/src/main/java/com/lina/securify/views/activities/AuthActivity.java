@@ -16,7 +16,6 @@ public class AuthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_auth);
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             // Go to MainActivity
@@ -24,6 +23,7 @@ public class AuthActivity extends AppCompatActivity {
             finish();
         }
 
+        setContentView(R.layout.activity_auth);
     }
 
     @Override

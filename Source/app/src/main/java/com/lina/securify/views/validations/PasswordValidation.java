@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.lina.securify.R;
 import com.lina.securify.databinding.FragmentPasswordBinding;
-import com.lina.securify.validators.PasswordValidator;
-import com.lina.securify.validators.RequiredFieldValidator;
+import com.lina.securify.validation.PasswordValidator;
+import com.lina.securify.validation.RequiredFieldValidator;
 
 /**
  * Abstracts the form validation for PasswordFragment.

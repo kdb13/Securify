@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- The final SMS string -->
+    <string name="alert_sms">%1$s\n\n%2$s\n\n%3$s</string>
+
+    <!-- Different parts of the SMS -->
+    <string name="alert_header">//%1$s\\\\</string>
     <string name="alert_description">%1$s: %2$s (%3$s)</string>
     <string name="alert_location">%1$s: %2$s</string>
-    <string name="alert_sms">%1$s\n\n%2$s\n\n%3$s</string>
-    <string name="alert_header">//%1$s\\\\</string>
 
     <string name="alert_help_message">This person needs your help</string>
-    <string name="alert_location_message">Current location</string>
+    <string name="alert_current_location">Current location</string>
     <string name="alert_no_location">No location</string>
-    <string name="help_message">I need help!</string>
+
+    <string name="alert_person_and_phone">%1$s (%2$s)</string>
+    <string name="alert_person_and_help_msg">%1$s\nneeds your help</string>
 
 </resources>

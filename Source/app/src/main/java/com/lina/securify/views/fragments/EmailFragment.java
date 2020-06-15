@@ -14,7 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.lina.securify.R;
 import com.lina.securify.data.repositories.AuthTaskListener;
 import com.lina.securify.databinding.FragmentEmailBinding;
-import com.lina.securify.viewmodels.LoginViewModel;
+import com.lina.securify.views.viewmodels.LoginViewModel;
 import com.lina.securify.views.validations.EmailValidation;
 
 /**

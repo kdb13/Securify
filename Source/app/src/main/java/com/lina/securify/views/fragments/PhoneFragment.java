@@ -22,7 +22,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.lina.securify.R;
 import com.lina.securify.data.repositories.AuthTaskListener;
 import com.lina.securify.databinding.FragmentPhoneBinding;
-import com.lina.securify.viewmodels.SignUpViewModel;
+import com.lina.securify.views.viewmodels.SignUpViewModel;
 import com.lina.securify.views.validations.PhoneValidation;
 
 import java.util.concurrent.TimeUnit;
@@ -114,7 +114,7 @@ public class PhoneFragment extends Fragment {
                 if (result == AuthTaskListener.EXISTING_PHONE) {
 
                     viewModel.isLoading.set(false);
-                    binding.inputPhone.setError(
+                    binding.inputLayoutPhone.setError(
                             requireContext().getString(R.string.error_existing_phone)
                     );
 

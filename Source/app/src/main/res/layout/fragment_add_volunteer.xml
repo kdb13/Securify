@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.lina.securify.views.viewmodels.AddVolunteerViewModel" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayout_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="@dimen/global_padding"
+            android:layout_marginEnd="@dimen/global_padding"
+            android:hint="@string/hint_name"
+            app:startIconDrawable="@drawable/ic_contacts"
+            app:startIconContentDescription="@string/pick_from_contacts"
+            app:helperText="@string/required">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editText_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName|textCapWords"
+                android:text="@={viewModel.name}"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayout_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/global_padding"
+            android:layout_marginEnd="@dimen/global_padding"
+            android:layout_marginTop="10dp"
+            android:hint="@string/hint_phone"
+            app:helperText="@string/required"
+            app:prefixText="@string/country_code"
+            app:counterEnabled="true"
+            app:counterMaxLength="@integer/phone_digits">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editText_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:text="@={viewModel.phone}"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+</layout>
+
+
+

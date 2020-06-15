@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lina.securify">
-    <!-- "Display over other apps" required for showing dialog outside the app -->
+
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:maxSdkVersion="26" android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
     <uses-feature android:name="android.hardware.telephony" />
+    <uses-feature android:name="android.hardware.location" />
 
     <application
         android:allowBackup="true"
@@ -21,21 +22,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AlertActivity"
-            android:showWhenLocked="true">
+        <activity
+            android:name=".views.activities.AlertActivity"
+            android:taskAffinity=""
+            android:excludeFromRecents="true">
 
         </activity>
 
-        <activity android:name=".views.activities.RequestPermissionsActivity" />
-        <activity
-            android:name=".views.activities.PermissionsActivity"
-            android:label="@string/activity_permissions"
-            android:parentActivityName=".views.activities.MainActivity" />
         <activity
             android:name=".views.activities.AuthActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/AppTheme.Startup">
+            android:theme="@style/AppTheme.Startup"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,8 +48,8 @@
             android:launchMode="singleTop" />
 
         <service
-            android:name=".services.AlertService"
-            android:label="@string/alert_service"
+            android:name=".alerts.instantalert.InstantAlertService"
+            android:label="@string/instant_alert"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
@@ -59,17 +57,18 @@
 
             <meta-data
                 android:name="android.accessibilityservice"
-                android:resource="@xml/alert_service_info" />
-
+                android:resource="@xml/info_instant_alert_service" />
         </service>
 
+
         <receiver
-            android:name=".receivers.AlertReceiver"
+            android:name=".alerts.showalert.AlertSmsReceiver"
             android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

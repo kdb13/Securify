@@ -9,17 +9,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStore;
-import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.lina.securify.R;
 import com.lina.securify.data.repositories.AuthTaskListener;
 import com.lina.securify.databinding.FragmentPasswordBinding;
-import com.lina.securify.viewmodels.LoginViewModel;
+import com.lina.securify.views.viewmodels.LoginViewModel;
 import com.lina.securify.views.validations.PasswordValidation;
 
 /**

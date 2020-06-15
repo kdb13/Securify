@@ -1,19 +1,26 @@
 package com.lina.securify.views.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.lina.securify.R;
+import com.lina.securify.alerts.showalert.AlertNotification;
 import com.lina.securify.databinding.ActivityMainBinding;
+import com.lina.securify.utils.Utils;
+import com.lina.securify.views.activities.AuthActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,19 +34,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
+
         setupNavigationUi();
+
+        createNotificationChannel();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     /**
      * Signs out a user and opens {@link AuthActivity}.
      */
-    public void signOut(MenuItem menuItem) {
+    public void logOut(MenuItem menuItem) {
         FirebaseAuth.getInstance().signOut();
 
         startActivity(new Intent(this, AuthActivity.class));
@@ -64,10 +74,33 @@ public class MainActivity extends AppCompatActivity {
         // Update the UI when destination changes
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
 
-            if (destination.getId() == R.id.dialog_special_permissions)
+            if (destination.getId() == R.id.fragment_addVolunteers) {
                 binding.toolbar.setNavigationIcon(R.drawable.ic_close);
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            } else {
+                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            }
 
         });
     }
 
+    private void createNotificationChannel() {
+
+        if (Utils.isSDK(Build.VERSION_CODES.O)) {
+
+            String channelAlertsName = getString(R.string.channel_alerts_name);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+
+            NotificationChannel channel = new NotificationChannel(
+                    AlertNotification.ALERT_CHANNEL_ID, channelAlertsName, importance);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+
+        }
+
+    }
 }

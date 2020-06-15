@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.lina.securify.viewmodels.SignUpViewModel" />
+            type="com.lina.securify.views.viewmodels.SignUpViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

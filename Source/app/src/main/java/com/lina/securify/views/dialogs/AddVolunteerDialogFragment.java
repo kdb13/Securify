@@ -1,35 +1,6 @@
 package com.lina.securify.views.dialogs;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
-
-import com.lina.securify.R;
-import com.lina.securify.data.models.Volunteer;
-import com.lina.securify.databinding.DialogAddVolunteerBinding;
-import com.lina.securify.utils.Utils;
-import com.lina.securify.contracts.RequestCodes;
-import com.lina.securify.viewmodels.VolunteersViewModel;
-import com.lina.securify.views.validations.AddVolunteerValidation;
 
 public class AddVolunteerDialogFragment extends DialogFragment {
 
