@@ -7,6 +7,10 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
 import android.telephony.SmsManager;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -51,10 +55,7 @@ public class AlertSender {
             ArrayList<String> requiredPermissions = new ArrayList<>();
             requiredPermissions.add(Manifest.permission.SEND_SMS);
             requiredPermissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-
-            if (Utils.isSDK(Build.VERSION_CODES.O)) {
-                requiredPermissions.add(Manifest.permission.READ_PHONE_STATE);
-            }
+            requiredPermissions.add(Manifest.permission.READ_PHONE_STATE);
 
             if (Utils.isSDK(Build.VERSION_CODES.Q)) {
                 requiredPermissions.add(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
@@ -80,7 +81,6 @@ public class AlertSender {
 
         // TASK: Extract volunteers' phones
         final Continuation<QuerySnapshot, List<String>> extractPhones = task -> {
-
             QuerySnapshot querySnapshot = Objects.requireNonNull(task.getResult());
 
             if (querySnapshot.isEmpty()) {
@@ -94,7 +94,6 @@ public class AlertSender {
             }
 
             return phones;
-
         };
 
         // TASK: Fetch phones of volunteers
@@ -105,8 +104,7 @@ public class AlertSender {
         final Task<DocumentSnapshot> taskFetchUser = usersRepository.getCurrentUser().get();
 
         // TASK: Fetch current location
-        @SuppressLint("MissingPermission")
-        final Task<Location> taskFetchLocation = locationProviderClient.getLastLocation();
+        @SuppressLint("MissingPermission") final Task<Location> taskFetchLocation = locationProviderClient.getLastLocation();
 
         // TASK: Extract coordinates from the location
         final Continuation<Location, String> extractCoordinates = task -> {
@@ -128,7 +126,7 @@ public class AlertSender {
         // All tasks in parallel
         final List<Task<?>> tasks = new ArrayList<>();
 
-        tasks.add(taskFetchVolunteers);
+        tasks.add(taskFetchPhonesOfVolunteers);
         tasks.add(taskFetchUser);
         tasks.add(taskFetchLocationCoordinates);
 
@@ -158,8 +156,8 @@ public class AlertSender {
                 })
                 .addOnFailureListener(e -> {
 
-                    if (e instanceof NoVolunteersException) {
-                        Utils.showToast(context, e.getMessage());
+                    if (e.getCause() instanceof NoVolunteersException) {
+                        Utils.showToast(context, e.getCause().getMessage());
                     }
 
                 });

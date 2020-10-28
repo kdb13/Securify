@@ -104,13 +104,14 @@ public class HomeFragment extends Fragment {
                 permissions.add(Manifest.permission.READ_SMS);
                 permissions.add(Manifest.permission.CALL_PHONE);
                 permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+                permissions.add(Manifest.permission.READ_PHONE_STATE);
 
                 if (Utils.isSDK(Build.VERSION_CODES.Q)) {
                     permissions.add(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
                 }
 
                 if (!Utils.arePermissionsGranted(context, permissions)) {
-                    requestPermissions((String[]) permissions.toArray(), REQUEST_PERMISSIONS);
+                    requestPermissions(permissions.toArray(new String[0]), REQUEST_PERMISSIONS);
                 }
 
                 viewModel.makeAppStale();

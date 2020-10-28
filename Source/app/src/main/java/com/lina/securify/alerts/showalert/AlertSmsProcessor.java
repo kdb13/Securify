@@ -14,7 +14,7 @@ public class AlertSmsProcessor {
 
     public static void process(Context context, SmsMessage smsMessage) {
 
-        UsersRepository usersRepository = UsersRepository.getInstance();
+        /*UsersRepository usersRepository = UsersRepository.getInstance();
 
         // Check if the phone number matches with the current user's one
         usersRepository.getCurrentUser().get()
@@ -37,9 +37,17 @@ public class AlertSmsProcessor {
 
                     }
 
-                });
+                });*/
 
+        // Parse the SMS
+        AlertSmsParser parser = new AlertSmsParser(context);
+        Victim victim = parser.parse(smsMessage.getMessageBody());
 
+        if (victim != null) {
+            // Notify the user
+            AlertNotification alertNotification = new AlertNotification(context, victim);
+            alertNotification.show();
+        }
     }
 
 }
